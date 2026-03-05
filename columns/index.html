@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コラム一覧 – BITCOIN バチーン！</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@400;700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="column-style.css">
+  <style>
+    /* ── COLUMN INDEX CARDS ── */
+    .col-index-grid {
+      margin: 1.5em 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .col-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--white);
+      border: 3px solid var(--dark);
+      border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+      box-shadow: 5px 5px 0 var(--dark);
+      padding: 14px 18px;
+      text-decoration: none;
+      color: var(--dark);
+      transition: all .15s;
+    }
+    .col-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--dark);
+      background: #fff3e0;
+      color: var(--dark);
+    }
+    .col-card:active {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0 var(--dark);
+    }
+    .col-num {
+      font-family: 'Zen Dots', sans-serif;
+      font-size: 20px;
+      color: var(--orange);
+      min-width: 40px;
+      text-align: center;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .col-card-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .col-card-arrow {
+      font-size: 18px;
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    /* ── QUIZ CTA ── */
+    .quiz-cta {
+      display: block;
+      background: var(--orange);
+      color: var(--yellow);
+      font-family: 'Boogaloo', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      padding: 16px;
+      border: 5px solid var(--dark);
+      border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+      box-shadow: 7px 7px 0 var(--dark);
+      cursor: pointer;
+      transition: all .15s;
+      text-align: center;
+      margin: 2em 0 1em;
+      text-decoration: none;
+      -webkit-text-stroke: 0.5px rgba(0,0,0,.15);
+    }
+    .quiz-cta:hover {
+      transform: translate(-4px,-4px);
+      box-shadow: 11px 11px 0 var(--dark);
+      background: var(--yellow); color: var(--dark);
+    }
+    .quiz-cta:active { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--dark); }
+  </style>
+</head>
+<body>
+
+<header class="col-header">
+  <a href="../index.html">← トップへ</a>
+  <a href="../Quiz/quiz-top.html">⚡ クイズへ</a>
+  <span class="col-title">📚 コラム一覧</span>
+</header>
+
+<div class="column-eyecatch">
+  <div>
+    <span class="eyecatch-label">コラム一覧</span>
+    <img src="../icon/001.png" alt="ビットコインくん" class="eyecatch-mascot">
+  </div>
+</div>
+
+<h1>📚 ビットコイン コラム 一覧</h1>
+
+<p>クイズと連動したコラムを読んで、ビットコインへの理解を深めよう！</p>
+
+<div class="col-index-grid">
+
+  <a href="column-0001.html" class="col-card">
+    <span class="col-num">01</span>
+    <span class="col-card-title">インフレ時代がきてる？時代の変わり目には、経験ではなく歴史に学ぼう！</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0003.html" class="col-card">
+    <span class="col-num">03</span>
+    <span class="col-card-title">通貨膨張というカンフル剤の功罪！</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0006.html" class="col-card">
+    <span class="col-num">06</span>
+    <span class="col-card-title">自由市場！自由市場！自由市場！</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0007.html" class="col-card">
+    <span class="col-num">07</span>
+    <span class="col-card-title">自由の源としての自由市場</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0009.html" class="col-card">
+    <span class="col-num">09</span>
+    <span class="col-card-title">サウンドマネー① かつて貨幣の王はゴールドだった</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0010.html" class="col-card">
+    <span class="col-num">10</span>
+    <span class="col-card-title">サウンドマネー② 私たちは、ビットコインを選び、保有し、使う</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0011.html" class="col-card">
+    <span class="col-num">11</span>
+    <span class="col-card-title">ビットコインの現在地 現状と夢物語の始まり</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0012.html" class="col-card">
+    <span class="col-num">12</span>
+    <span class="col-card-title">自由と権利を守るテクノロジー 私有財産権編</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+  <a href="column-0014.html" class="col-card">
+    <span class="col-num">14</span>
+    <span class="col-card-title">自由と国家とビットコイン</span>
+    <span class="col-card-arrow">▶</span>
+  </a>
+
+</div>
+
+<a href="../Quiz/quiz-top.html" class="quiz-cta">⚡ クイズに挑戦！ ⚡</a>
+
+</body>
+</html>

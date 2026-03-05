@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クイズに挑戦！ – BITCOIN バチーン！</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --orange: #FF6600;
+    --red:    #E82020;
+    --cyan:   #00F5FF;
+    --dark:   #160A00;
+    --white:  #FFFDE7;
+    --bg:     #FFE200;
+    --correct:#00C853;
+    --wrong:  #1565C0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--dark);
+    overflow-x: hidden;
+    background-image: radial-gradient(circle, rgba(255,102,0,0.14) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .quiz-header {
+    background: var(--dark);
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--orange);
+    position: relative;
+  }
+  .back-btn {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--yellow);
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+    border: 2px solid var(--orange);
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .back-btn:hover { background: var(--orange); }
+  .quiz-header h1 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(22px, 5vw, 42px);
+    color: var(--yellow);
+    -webkit-text-stroke: 2px var(--dark);
+    text-shadow: 4px 4px 0 var(--orange);
+    letter-spacing: 3px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar { background: var(--dark); height: 10px; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--cyan));
+    transition: width .5s ease;
+  }
+  .progress-label {
+    text-align: center;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 13px;
+    color: var(--orange);
+    padding: 8px;
+    letter-spacing: 2px;
+  }
+
+  /* ── QUIZ AREA ── */
+  .quiz-area {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 20px 60px;
+  }
+
+  /* ── IMAGE PANEL ── */
+  .img-panel {
+    background: white;
+    border: 6px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 10px 10px 0 var(--dark);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .img-panel img {
+    width: 100%; height: auto; display: block;
+  }
+
+  /* ── PROMPT ── */
+  .prompt {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 22px; font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  /* ── ○ × BUTTONS ── */
+  .answer-btns {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .btn-maru, .btn-batu {
+    width: 115px; height: 115px;
+    border-radius: 50%;
+    border: 6px solid var(--dark);
+    box-shadow: 6px 6px 0 var(--dark);
+    font-size: 54px; font-weight: 900;
+    cursor: pointer;
+    transition: all .15s;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--white);
+    line-height: 1;
+  }
+  .btn-maru { color: var(--orange); }
+  .btn-batu { color: var(--wrong); }
+  .btn-maru:hover { background: #fff0d0; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
+  .btn-batu:hover { background: #d0e4ff; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
+  .btn-maru:active, .btn-batu:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--dark); }
+
+  /* ── A / B BUTTONS ── */
+  .btn-a, .btn-b {
+    flex: 1;
+    padding: 22px 10px;
+    border: 6px solid var(--dark);
+    box-shadow: 6px 6px 0 var(--dark);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 46px; font-weight: 900;
+    cursor: pointer;
+    transition: all .15s;
+    border-radius: 12px 80px 10px 80px / 80px 10px 80px 8px;
+    background: var(--white);
+    color: var(--dark);
+    letter-spacing: 2px;
+  }
+  .btn-a { color: var(--orange); }
+  .btn-b { color: var(--wrong); }
+  .btn-a:hover { background: #fff0d0; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
+  .btn-b:hover { background: #d0e4ff; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
+  .btn-a:active, .btn-b:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--dark); }
+
+  /* ── RESULT BANNER ── */
+  .result-banner {
+    text-align: center;
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(32px, 7vw, 58px);
+    letter-spacing: 4px;
+    padding: 14px 20px;
+    border: 6px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 8px 8px 0 var(--dark);
+    margin-bottom: 20px;
+  }
+  .result-banner.correct {
+    background: var(--correct);
+    color: white;
+    -webkit-text-stroke: 1px rgba(0,0,0,.2);
+    animation: correctPop .45s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  .result-banner.wrong {
+    background: var(--wrong);
+    color: white;
+    animation: wrongShake .5s ease both;
+  }
+  @keyframes correctPop {
+    0%  { transform: scale(.3) rotate(-8deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(3deg); }
+    100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes wrongShake {
+    0%,100%{ transform: translateX(0); }
+    15%    { transform: translateX(-12px) rotate(-2deg); }
+    30%    { transform: translateX(12px) rotate(2deg); }
+    45%    { transform: translateX(-8px) rotate(-1deg); }
+    60%    { transform: translateX(8px) rotate(1deg); }
+    75%    { transform: translateX(-4px); }
+  }
+
+  /* ── SCORE BADGE ── */
+  .score-badge {
+    text-align: right;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .score-badge span { color: var(--orange); font-size: 18px; }
+
+  /* ── NEXT BUTTON ── */
+  .btn-next {
+    display: block; width: 100%;
+    background: var(--orange);
+    color: var(--yellow);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    padding: 16px;
+    border: 5px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    box-shadow: 7px 7px 0 var(--dark);
+    cursor: pointer;
+    transition: all .15s;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .btn-next:hover {
+    transform: translate(-4px,-4px);
+    box-shadow: 11px 11px 0 var(--dark);
+    background: var(--yellow); color: var(--dark);
+  }
+  .btn-next:active { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--dark); }
+  .btn-next.dark { background: var(--dark); color: var(--yellow); }
+  .btn-next.dark:hover { background: #333; }
+
+  /* ── COLUMN LINK BUTTON ── */
+  .btn-column {
+    display: block; width: 100%;
+    background: var(--cyan);
+    color: var(--dark);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    padding: 14px;
+    border: 5px solid var(--dark);
+    border-radius: 255px 10px 225px 10px / 10px 225px 10px 255px;
+    box-shadow: 7px 7px 0 var(--dark);
+    cursor: pointer;
+    transition: all .15s;
+    text-align: center;
+    margin-bottom: 12px;
+    text-decoration: none;
+    -webkit-text-stroke: 0.5px rgba(0,0,0,.15);
+    font-weight: 900;
+  }
+  .btn-column:hover {
+    transform: translate(-4px,-4px);
+    box-shadow: 11px 11px 0 var(--dark);
+    background: var(--yellow);
+    color: var(--dark);
+  }
+  .btn-column:active { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--dark); }
+
+  /* clickable image on column slide */
+  .img-panel.clickable { cursor: pointer; }
+  .img-panel.clickable:hover { opacity: 0.88; transition: opacity .15s; }
+
+  /* ── COMPLETE SCREEN ── */
+  .complete-screen { text-align: center; padding: 40px 20px; }
+  .complete-screen h2 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(38px, 8vw, 72px);
+    color: var(--orange);
+    -webkit-text-stroke: 3px var(--dark);
+    text-shadow: 6px 6px 0 var(--dark);
+    margin-bottom: 24px;
+    animation: correctPop .5s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  .score-display {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: clamp(28px, 6vw, 52px);
+    color: var(--dark);
+    background: var(--white);
+    border: 6px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 10px 10px 0 var(--dark);
+    padding: 20px 40px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .score-display .num { color: var(--orange); }
+  .score-comment {
+    font-family: 'Caveat', cursive;
+    font-size: 22px; font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 28px;
+  }
+
+  /* ── CONFETTI CANVAS ── */
+  #confettiCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ── SAD OVERLAY ── */
+  #sadOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    overflow: hidden;
+    display: none;
+  }
+  .raindrop {
+    position: absolute;
+    top: -40px;
+    font-size: 28px;
+    animation: rainFall linear forwards;
+    opacity: 0.75;
+  }
+  @keyframes rainFall {
+    to { transform: translateY(110vh); opacity: 0; }
+  }
+
+  /* ── BODY SHAKE ── */
+  @keyframes bodyShake {
+    0%,100%{ transform: translateX(0); }
+    20%    { transform: translateX(-10px); }
+    40%    { transform: translateX(10px); }
+    60%    { transform: translateX(-6px); }
+    80%    { transform: translateX(6px); }
+  }
+  body.shake { animation: bodyShake .5s ease; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+<div id="sadOverlay"></div>
+
+<div class="quiz-header">
+  <a href="quiz-top.html" class="back-btn">← クイズTOPへ</a>
+  <h1>⚡ クイズに挑戦 ⚡</h1>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill" style="width:0%"></div>
+</div>
+<div class="progress-label" id="progressLabel">1 / 20</div>
+
+<div class="quiz-area">
+
+  <!-- 問題フェーズ -->
+  <div id="questionPhase">
+    <div class="score-badge">正解: <span id="scoreDisp">0</span> / <span id="answeredDisp">0</span></div>
+    <div class="img-panel">
+      <img id="questionImg" src="" alt="クイズ問題">
+    </div>
+    <p class="prompt" id="promptText">○ か ✕ を選ぼう！</p>
+
+    <!-- ○/× ボタン -->
+    <div class="answer-btns" id="oxBtns">
+      <button class="btn-maru" onclick="answer('maru')">○</button>
+      <button class="btn-batu" onclick="answer('batsu')">✕</button>
+    </div>
+
+    <!-- A/B ボタン -->
+    <div class="answer-btns hidden" id="abBtns">
+      <button class="btn-a" onclick="answer('a')">A</button>
+      <button class="btn-b" onclick="answer('b')">B</button>
+    </div>
+  </div>
+
+  <!-- 解説フェーズ -->
+  <div id="resultPhase" class="hidden">
+    <div class="result-banner" id="resultBanner"></div>
+    <div class="img-panel" id="slideImgPanel">
+      <img id="slideImg" src="" alt="解説">
+    </div>
+    <a class="btn-column hidden" id="columnBtn" href="#" target="_blank">📖 コラムを読む →</a>
+    <button class="btn-next" id="nextBtn" onclick="nextSlide()">次へ ⚡</button>
+  </div>
+
+  <!-- 完了画面 -->
+  <div id="completeScreen" class="hidden complete-screen">
+    <h2 id="completeTitle">全問クリア！！⚡</h2>
+    <div class="score-display">
+      <span class="num" id="finalScore">0</span> / <span id="finalTotal">20</span>
+    </div>
+    <p class="score-comment" id="scoreComment"></p>
+    <button class="btn-next" onclick="restartQuiz()">⚡ もう一度挑戦！</button>
+    <button class="btn-next dark" onclick="location.href='../index.html'">← トップへ戻る</button>
+  </div>
+
+</div>
+
+<script>
+// ── クイズデータ（type:'ox' or 'ab'、answer:'maru'|'batsu'|'a'|'b'）
+const QUIZZES = [
+  { folder:'quiz-0001-01',    images:['13.png','14.png','15.png','16.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'quiz-0001-03',    images:['21.png','22.png','23.png','24.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'quiz-0001-14',    images:['65.png','66.png','67.png','68.png'], type:'ox', answer:'maru',  column:'../columns/column-0001.html' },
+  { folder:'quiz-0002-06',    images:['28.png','29.png','30.png','31.png'], type:'ox', answer:'maru',  column: null },
+  { folder:'quiz-0002-08',    images:['36.png','37.png','38.png','39.png'], type:'ox', answer:'batsu', column: null },
+  { folder:'quiz-0003-09',    images:['36.png','37.png','38.png','39.png'], type:'ox', answer:'maru',  column:'../columns/column-0003.html' },
+  { folder:'quiz-0003-10',    images:['40.png','41.png','42.png','43.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'quiz-0003-13',    images:['52.png','53.png','54.png','55.png'], type:'ab', answer:'a',     column:'../columns/column-0003.html' },
+  { folder:'quiz-0003-16',    images:['64.png','65.png','66.png','67.png'], type:'ab', answer:'b',     column:'../columns/column-0003.html' },
+  { folder:'quiz-0007-02',    images:['11.png','12.png','13.png','14.png'], type:'ab', answer:'a',     column:'../columns/column-0007.html' },
+  { folder:'quiz-0007-04',    images:['19.png','20.png','21.png','22.png'], type:'ab', answer:'b',     column:'../columns/column-0007.html' },
+  { folder:'quiz-0008-08-10', images:['35.png','36.png','37.png','38.png'], type:'ab', answer:'b',     column: null },
+  { folder:'quiz-0008-08-10', images:['39.png','40.png','41.png','42.png'], type:'ab', answer:'b',     column: null },
+  { folder:'quiz-0008-08-10', images:['43.png','44.png','45.png','46.png'], type:'ab', answer:'b',     column: null },
+  { folder:'quiz-0009-01',    images:['7.png','8.png','9.png','10.png'],    type:'ab', answer:'a',     column:'../columns/column-0009.html' },
+  { folder:'quiz-0010-11',    images:['47.png','48.png','49.png','50.png'], type:'ab', answer:'b',     column:'../columns/column-0010.html' },
+  { folder:'quiz-0010-19',    images:['79.png','80.png','81.png','82.png'], type:'ox', answer:'batsu', column:'../columns/column-0010.html' },
+  { folder:'quiz-0011-06',    images:['28.png','29.png','30.png','31.png'], type:'ab', answer:'a',     column:'../columns/column-0011.html' },
+  { folder:'quiz-0011-09',    images:['39.png','40.png','41.png','42.png'], type:'ab', answer:'b',     column:'../columns/column-0011.html' },
+  { folder:'quiz-0014-10',    images:['43.png','44.png','45.png','46.png'], type:'ab', answer:'a',     column:'../columns/column-0014.html' },
+];
+
+const TOTAL = QUIZZES.length;
+let currentQuiz = 0;
+let currentSlide = 0;
+let score = 0;
+let answered = 0;
+
+// ── CONFETTI ──────────────────────────────────────────────────
+const canvas = document.getElementById('confettiCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animId = null;
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function launchConfetti() {
+  particles = [];
+  const colors = ['#FF6600','#FFD700','#00F5FF','#FF1493','#00C853','#FF4500','#7B2FFF'];
+  for (let i = 0; i < 140; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * 200,
+      w: 8 + Math.random() * 10,
+      h: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 5,
+      vy: 3 + Math.random() * 5,
+      rot: Math.random() * 360,
+      rotV: (Math.random() - 0.5) * 8,
+      life: 1,
+    });
+  }
+  if (animId) cancelAnimationFrame(animId);
+  animConfetti();
+  setTimeout(stopConfetti, 3200);
+}
+
+function animConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.rot += p.rotV;
+    p.vy += 0.12; // gravity
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, 1 - p.y / (canvas.height * 0.95));
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot * Math.PI / 180);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    ctx.restore();
+  });
+  particles = particles.filter(p => p.y < canvas.height + 40);
+  if (particles.length) {
+    animId = requestAnimationFrame(animConfetti);
+  } else {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function stopConfetti() {
+  particles = [];
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+}
+
+// ── SAD RAIN ──────────────────────────────────────────────────
+function launchSadRain() {
+  const overlay = document.getElementById('sadOverlay');
+  overlay.innerHTML = '';
+  overlay.style.display = 'block';
+  const emojis = ['💧','😢','😭','💦'];
+  for (let i = 0; i < 28; i++) {
+    const d = document.createElement('div');
+    d.className = 'raindrop';
+    d.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    d.style.left = Math.random() * 100 + 'vw';
+    d.style.animationDuration = (0.8 + Math.random() * 1.2) + 's';
+    d.style.animationDelay    = (Math.random() * 0.8) + 's';
+    overlay.appendChild(d);
+  }
+  // body shake
+  document.body.classList.remove('shake');
+  void document.body.offsetWidth;
+  document.body.classList.add('shake');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.innerHTML = '';
+    document.body.classList.remove('shake');
+  }, 2200);
+}
+
+// ── QUIZ LOGIC ────────────────────────────────────────────────
+function updateProgress() {
+  const pct = (currentQuiz / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = (currentQuiz + 1) + ' / ' + TOTAL;
+}
+
+function updateScoreBadge() {
+  document.getElementById('scoreDisp').textContent    = score;
+  document.getElementById('answeredDisp').textContent = answered;
+}
+
+function loadQuestion() {
+  const q = QUIZZES[currentQuiz];
+  document.getElementById('questionImg').src = q.folder + '/' + q.images[0];
+  // ボタン切り替え
+  if (q.type === 'ox') {
+    document.getElementById('promptText').textContent = '○ か ✕ を選ぼう！';
+    document.getElementById('oxBtns').classList.remove('hidden');
+    document.getElementById('abBtns').classList.add('hidden');
+  } else {
+    document.getElementById('promptText').textContent = 'A か B を選ぼう！';
+    document.getElementById('oxBtns').classList.add('hidden');
+    document.getElementById('abBtns').classList.remove('hidden');
+  }
+  document.getElementById('questionPhase').classList.remove('hidden');
+  document.getElementById('resultPhase').classList.add('hidden');
+  updateProgress();
+  updateScoreBadge();
+}
+
+function answer(userChoice) {
+  const q = QUIZZES[currentQuiz];
+  const isCorrect = (userChoice === q.answer);
+  answered++;
+  if (isCorrect) score++;
+  updateScoreBadge();
+
+  currentSlide = 1;
+  document.getElementById('questionPhase').classList.add('hidden');
+  document.getElementById('resultPhase').classList.remove('hidden');
+
+  const banner = document.getElementById('resultBanner');
+  if (isCorrect) {
+    banner.textContent = '🎉 正解！！ ⚡';
+    banner.className   = 'result-banner correct';
+    launchConfetti();
+  } else {
+    // 正解を示す
+    const correctLabel = {maru:'○', batsu:'✕', a:'A', b:'B'}[q.answer];
+    banner.textContent = `😢 不正解… 正解は ${correctLabel}`;
+    banner.className   = 'result-banner wrong';
+    launchSadRain();
+  }
+
+  document.getElementById('slideImg').src = q.folder + '/' + q.images[currentSlide];
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const q = QUIZZES[currentQuiz];
+  const isLastSlide = currentSlide >= q.images.length - 1;
+  const isLastQuiz  = currentQuiz >= TOTAL - 1;
+  const btn = document.getElementById('nextBtn');
+  const colBtn = document.getElementById('columnBtn');
+  const panel  = document.getElementById('slideImgPanel');
+
+  // Show column link button only on the last slide if a column URL exists
+  if (isLastSlide && q.column) {
+    colBtn.href = q.column;
+    colBtn.classList.remove('hidden');
+    panel.classList.add('clickable');
+    panel.onclick = () => window.open(q.column, '_blank');
+  } else {
+    colBtn.classList.add('hidden');
+    panel.classList.remove('clickable');
+    panel.onclick = null;
+  }
+
+  if (isLastSlide && isLastQuiz) btn.textContent = '結果を見る ⚡';
+  else if (isLastSlide)          btn.textContent = '次のクイズへ ⚡';
+  else                           btn.textContent = '次へ ⚡';
+}
+
+function nextSlide() {
+  stopConfetti();
+  const q = QUIZZES[currentQuiz];
+  currentSlide++;
+  if (currentSlide < q.images.length) {
+    document.getElementById('slideImg').src = q.folder + '/' + q.images[currentSlide];
+    updateNextBtn();
+  } else {
+    currentQuiz++;
+    if (currentQuiz >= TOTAL) showComplete();
+    else loadQuestion();
+  }
+}
+
+function showComplete() {
+  document.getElementById('questionPhase').classList.add('hidden');
+  document.getElementById('resultPhase').classList.add('hidden');
+  document.getElementById('completeScreen').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = '全問クリア！';
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('finalTotal').textContent  = TOTAL;
+
+  // コメント
+  const pct = score / TOTAL;
+  let comment = '';
+  if      (pct === 1)    { comment = '🏆 完璧！Bitcoin マスター！'; launchConfetti(); }
+  else if (pct >= 0.8)   { comment = '⚡ 素晴らしい！もう少しで満点！'; launchConfetti(); }
+  else if (pct >= 0.6)   { comment = '💪 なかなかいい！もう一度挑戦しよう！'; }
+  else if (pct >= 0.4)   { comment = '📚 まだまだ学べる！もう一度！'; }
+  else                   { comment = '😢 もう一度じっくり復習しよう！'; }
+  document.getElementById('scoreComment').textContent = comment;
+}
+
+function restartQuiz() {
+  currentQuiz = 0; currentSlide = 0; score = 0; answered = 0;
+  stopConfetti();
+  document.getElementById('completeScreen').classList.add('hidden');
+  loadQuestion();
+}
+
+// スタート
+loadQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BITCOIN バチーン！</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --orange: #FF6600;
+    --red:    #E82020;
+    --cyan:   #00F5FF;
+    --dark:   #160A00;
+    --white:  #FFFDE7;
+    --bg:     #FFE200;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--dark);
+    overflow-x: hidden;
+    /* Manga halftone dot pattern */
+    background-image: radial-gradient(circle, rgba(255,102,0,0.14) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23FF6600' stroke='%23160A00' stroke-width='3'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-size='16' fill='%23FFD700' font-weight='900'%3E%E2%82%BF%3C/text%3E%3C/svg%3E"), auto;
+  }
+
+  /* ─────────────────────────────────────
+     VERTICAL SASH (fixed decoration)
+  ───────────────────────────────────── */
+  .v-sash {
+    position: fixed;
+    writing-mode: vertical-rl;
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 18px;
+    letter-spacing: 8px;
+    color: var(--orange);
+    opacity: 0.3;
+    top: 50%; transform: translateY(-50%);
+    z-index: 0;
+    pointer-events: none;
+    -webkit-text-stroke: 0.5px var(--dark);
+  }
+  .v-sash.l { left: 6px; }
+  .v-sash.r { right: 6px; transform: translateY(-50%) rotate(180deg); }
+
+  /* ─────────────────────────────────────
+     HERO
+  ───────────────────────────────────── */
+  .hero {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 56px 20px 30px;
+    overflow: hidden;
+  }
+
+  /* Starburst explosion */
+  .starburst {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -52%);
+    width: min(640px, 95vw); height: min(640px, 95vw);
+    background: conic-gradient(
+      from 0deg,
+      rgba(255,102,0,.22) 0deg 9deg,   transparent 9deg 18deg,
+      rgba(255,215,0,.4)  18deg 27deg,  transparent 27deg 36deg,
+      rgba(255,102,0,.22) 36deg 45deg,  transparent 45deg 54deg,
+      rgba(255,215,0,.4)  54deg 63deg,  transparent 63deg 72deg,
+      rgba(255,102,0,.22) 72deg 81deg,  transparent 81deg 90deg,
+      rgba(255,215,0,.4)  90deg 99deg,  transparent 99deg 108deg,
+      rgba(255,102,0,.22) 108deg 117deg,transparent 117deg 126deg,
+      rgba(255,215,0,.4)  126deg 135deg,transparent 135deg 144deg,
+      rgba(255,102,0,.22) 144deg 153deg,transparent 153deg 162deg,
+      rgba(255,215,0,.4)  162deg 171deg,transparent 171deg 180deg,
+      rgba(255,102,0,.22) 180deg 189deg,transparent 189deg 198deg,
+      rgba(255,215,0,.4)  198deg 207deg,transparent 207deg 216deg,
+      rgba(255,102,0,.22) 216deg 225deg,transparent 225deg 234deg,
+      rgba(255,215,0,.4)  234deg 243deg,transparent 243deg 252deg,
+      rgba(255,102,0,.22) 252deg 261deg,transparent 261deg 270deg,
+      rgba(255,215,0,.4)  270deg 279deg,transparent 279deg 288deg,
+      rgba(255,102,0,.22) 288deg 297deg,transparent 297deg 306deg,
+      rgba(255,215,0,.4)  306deg 315deg,transparent 315deg 324deg,
+      rgba(255,102,0,.22) 324deg 333deg,transparent 333deg 342deg,
+      rgba(255,215,0,.4)  342deg 351deg,transparent 351deg 360deg
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: slowspin 30s linear infinite;
+  }
+  @keyframes slowspin { to { transform: translate(-50%,-52%) rotate(360deg); } }
+
+  .hero-kana {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(17px, 3.2vw, 30px);
+    color: var(--orange);
+    letter-spacing: 5px;
+    position: relative; z-index: 1;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--cyan);
+    text-underline-offset: 4px;
+  }
+
+  .hero-title {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(76px, 16vw, 180px);
+    color: var(--yellow);
+    -webkit-text-stroke: 6px var(--dark);
+    text-shadow: 8px 8px 0 var(--orange), 15px 15px 0 var(--red);
+    letter-spacing: 4px;
+    line-height: 0.85;
+    position: relative; z-index: 1;
+    animation: titlePop .52s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  .hero-sfx {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(36px, 7.5vw, 88px);
+    color: var(--cyan);
+    -webkit-text-stroke: 3px var(--dark);
+    text-shadow: 5px 5px 0 var(--orange), 9px 9px 0 var(--dark);
+    letter-spacing: 5px;
+    position: relative; z-index: 1;
+    margin-top: -8px;
+    animation: titlePop .52s .22s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes titlePop {
+    0%  { transform: scale(.4) rotate(-12deg); opacity: 0; }
+    65% { transform: scale(1.1) rotate(2deg); }
+    100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  /* Floating lightning deco */
+  .dz {
+    position: absolute;
+    pointer-events: none;
+    filter: drop-shadow(0 0 12px var(--cyan));
+    z-index: 2;
+    animation: zapFloat 1.5s ease-in-out infinite alternate;
+  }
+  .dz1 { top: 18%; left:  4%; font-size: 64px; animation-delay: 0s; }
+  .dz2 { top: 12%; right: 5%; font-size: 48px; animation-delay: .4s; }
+  .dz3 { bottom:35%; left: 6%; font-size: 38px; animation-delay: .8s; }
+  .dz4 { bottom:25%; right:5%; font-size: 56px; animation-delay: .2s; }
+
+  @keyframes zapFloat {
+    from { transform: translateY(-7px) rotate(-10deg) scale(.92); opacity: .75; }
+    to   { transform: translateY( 7px) rotate( 10deg) scale(1.08); opacity: 1;   }
+  }
+
+  /* ─────────────────────────────────────
+     LIGHTNING ZIGZAG DIVIDER
+  ───────────────────────────────────── */
+  .zap-div {
+    position: relative; z-index: 10;
+    height: 52px; overflow: hidden; margin: 8px 0;
+  }
+  .zap-div svg { width: 100%; height: 52px; display: block; }
+
+  /* ─────────────────────────────────────
+     TICKER
+  ───────────────────────────────────── */
+  .ticker-wrap {
+    position: relative; z-index: 10;
+    background: var(--dark);
+    border-top: 5px solid var(--orange);
+    border-bottom: 5px solid var(--orange);
+    overflow: hidden;
+    padding: 13px 0;
+  }
+  .ticker-inner {
+    display: flex; gap: 60px;
+    animation: tickMove 22s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 16px; color: var(--yellow);
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ticker-item .z {
+    color: var(--cyan);
+    filter: drop-shadow(0 0 5px var(--cyan));
+    font-size: 18px;
+  }
+  @keyframes tickMove {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ─────────────────────────────────────
+     SFX SECTION HEADER
+  ───────────────────────────────────── */
+  .sfx-head {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 28px 20px 8px;
+  }
+  .sfx-head h2 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(40px, 7.5vw, 88px);
+    color: var(--orange);
+    -webkit-text-stroke: 3px var(--dark);
+    text-shadow: 5px 5px 0 var(--dark);
+    letter-spacing: 3px;
+    display: inline-block;
+  }
+  .sfx-head h2 em {
+    font-style: normal;
+    color: var(--cyan);
+    -webkit-text-stroke: 3px var(--dark);
+  }
+
+  /* ─────────────────────────────────────
+     SPEECH BUBBLE STAT CARDS
+  ───────────────────────────────────── */
+  .stats-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 34px;
+    padding: 12px 44px 44px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .sbcard {
+    background: var(--white);
+    border: 5px solid var(--dark);
+    /* hand-drawn border-radius */
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 26px 22px 24px;
+    position: relative;
+    box-shadow: 7px 7px 0 var(--dark);
+    transition: transform .15s, box-shadow .15s;
+    overflow: visible;
+  }
+  /* speech bubble tail – dark outline */
+  .sbcard::before {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: 22px;
+    width: 0; height: 0;
+    border-left: 22px solid transparent;
+    border-right:  8px solid transparent;
+    border-top:   30px solid var(--dark);
+  }
+  /* speech bubble tail – fill */
+  .sbcard::after {
+    content: '';
+    position: absolute;
+    bottom: -22px; left: 26px;
+    width: 0; height: 0;
+    border-left: 16px solid transparent;
+    border-right:  6px solid transparent;
+    border-top:   22px solid var(--white);
+    z-index: 1;
+  }
+  .sbcard:nth-child(1) { transform: rotate(-1.8deg); }
+  .sbcard:nth-child(2) { transform: rotate( 1.6deg); background: #FFF5CC; }
+  .sbcard:nth-child(2)::after { border-top-color: #FFF5CC; }
+  .sbcard:nth-child(3) { transform: rotate( -.8deg); background: #E8F8FF; }
+  .sbcard:nth-child(3)::after { border-top-color: #E8F8FF; }
+  .sbcard:nth-child(4) { transform: rotate( 2.4deg); background: #FFE8F0; }
+  .sbcard:nth-child(4)::after { border-top-color: #FFE8F0; }
+
+  .sbcard:hover {
+    transform: rotate(0deg) translate(-4px,-4px) !important;
+    box-shadow: 11px 11px 0 var(--dark);
+  }
+
+  .s-label {
+    font-family: 'Caveat', cursive;
+    font-size: 19px; font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .s-value {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: clamp(13px, 2.4vw, 21px);
+    color: var(--dark);
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+  .s-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 19px; font-weight: 700;
+    color: var(--red);
+    margin-top: 5px;
+  }
+
+  /* ─────────────────────────────────────
+     MANGA PANELS
+  ───────────────────────────────────── */
+  .panels-section {
+    position: relative; z-index: 10;
+    padding: 12px 44px 44px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .manga-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .mpanel {
+    background: var(--white);
+    border: 6px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    padding: 26px;
+    position: relative;
+    box-shadow: 8px 8px 0 var(--dark);
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .mpanel:hover {
+    transform: translate(-5px,-5px) rotate(-.5deg);
+    box-shadow: 13px 13px 0 var(--dark);
+  }
+
+  /* Big left panel */
+  .mpanel.big {
+    grid-column: 1; grid-row: 1 / 3;
+    background: var(--orange);
+    border-radius: 255px 12px 255px 10px / 10px 255px 8px 255px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .mpanel.big .m-title {
+    color: var(--yellow);
+    -webkit-text-stroke: 1px var(--red);
+    font-size: clamp(24px,3.5vw,38px);
+  }
+  .mpanel.big .m-body { color: var(--white); font-size: 17px; }
+
+  /* Halftone deco on big panel */
+  .mpanel.big::after {
+    content: '';
+    position: absolute; bottom: -15px; right: -15px;
+    width: 220px; height: 220px;
+    background-image: radial-gradient(circle, rgba(255,215,0,.35) 3px, transparent 3px);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+
+  .mpanel:nth-child(2) { background: #FFF5CC; transform: rotate( .7deg); }
+  .mpanel:nth-child(3) { background: #E8F8FF; transform: rotate(-.5deg); }
+  .mpanel:nth-child(4) { background: #FFE8F0; transform: rotate( .9deg); }
+  .mpanel:nth-child(5) { background: #F0FFE8; transform: rotate(-1.1deg); }
+
+  /* Ghost SFX text behind panel content */
+  .m-ghost {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 62px;
+    color: rgba(255,102,0,.1);
+    -webkit-text-stroke: 1px rgba(255,102,0,.08);
+    position: absolute; top: 8px; right: 12px;
+    pointer-events: none;
+    transform: rotate(-7deg);
+    line-height: 1;
+  }
+
+  .m-icon {
+    font-size: 52px; display: block;
+    margin-bottom: 12px;
+    animation: iconBob 1.2s ease-in-out infinite alternate;
+  }
+  @keyframes iconBob {
+    from { transform: translateY(0) rotate(-3deg); }
+    to   { transform: translateY(-10px) rotate(3deg); }
+  }
+
+  .m-title {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(20px,2.4vw,26px);
+    color: var(--dark); margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+  .m-body {
+    font-size: 15px; line-height: 1.8;
+    color: var(--dark); font-weight: 700;
+  }
+
+  /* ─────────────────────────────────────
+     PRICE CHART
+  ───────────────────────────────────── */
+  .chart-section {
+    position: relative; z-index: 10;
+    padding: 12px 44px 44px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .chart-frame {
+    background: var(--dark);
+    border: 6px solid var(--orange);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    padding: 30px;
+    box-shadow: 10px 10px 0 var(--orange);
+    position: relative; overflow: hidden;
+  }
+  .chart-frame::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,102,0,.06) 39px, rgba(255,102,0,.06) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,102,0,.06) 79px, rgba(255,102,0,.06) 80px);
+    pointer-events: none;
+  }
+  .chart-head {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 24px;
+    position: relative;
+  }
+  .chart-head h3 {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 26px; color: var(--yellow);
+    text-shadow: 0 0 20px rgba(255,215,0,.5);
+  }
+  .live-tag {
+    background: var(--cyan); color: var(--dark);
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px; font-weight: 900;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 3px solid var(--dark);
+    animation: blink 1s infinite;
+    box-shadow: 0 0 14px var(--cyan), 0 0 28px var(--cyan);
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .chart-canvas { width:100%; height:180px; }
+  svg.price-chart { width:100%; height:100%; }
+
+  .chart-btns {
+    display: flex; gap: 10px; justify-content: center;
+    margin-top: 18px; flex-wrap: wrap;
+  }
+  .c-btn {
+    background: transparent;
+    border: 3px solid rgba(255,102,0,.35);
+    border-radius: 100px 8px 100px 8px / 8px 100px 8px 100px;
+    color: rgba(255,215,0,.5);
+    padding: 6px 20px;
+    font-weight: 900; cursor: pointer;
+    font-size: 14px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: all .15s;
+  }
+  .c-btn.active, .c-btn:hover {
+    background: var(--orange);
+    border-color: var(--yellow);
+    color: var(--yellow);
+    transform: translate(-2px,-2px);
+    box-shadow: 4px 4px 0 rgba(255,102,0,.5);
+  }
+
+  /* ─────────────────────────────────────
+     CTA
+  ───────────────────────────────────── */
+  .cta-section {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 40px 20px 72px;
+  }
+  .cta-tag {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(28px,5.2vw,58px);
+    color: var(--yellow);
+    -webkit-text-stroke: 2px var(--dark);
+    background: var(--orange);
+    display: inline-block;
+    padding: 8px 36px;
+    border: 5px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 6px 6px 0 var(--dark);
+    margin-bottom: 30px;
+    letter-spacing: 4px;
+  }
+  .cta-wrap { position: relative; display: inline-block; }
+  .flank {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 52px;
+    filter: drop-shadow(0 0 10px var(--cyan));
+    animation: zapFloat .9s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  .flank.l { left: -64px; animation-delay: 0s; }
+  .flank.r { right: -64px; animation-delay: .45s; }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--cyan);
+    color: var(--dark);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(28px,5.5vw,52px);
+    letter-spacing: 4px;
+    padding: 20px 72px;
+    border: 6px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    box-shadow: 9px 9px 0 var(--dark);
+    text-decoration: none; cursor: pointer;
+    transition: all .15s;
+    position: relative; overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute; top:-50%; left:-60%;
+    width: 35%; height: 200%;
+    background: rgba(255,255,255,.3);
+    transform: skewX(-20deg);
+    transition: left .4s;
+  }
+  .cta-btn:hover {
+    transform: translate(-5px,-5px);
+    box-shadow: 14px 14px 0 var(--dark);
+    background: var(--yellow);
+  }
+  .cta-btn:hover::before { left: 130%; }
+  .cta-btn:active { transform: translate(4px,4px); box-shadow: 5px 5px 0 var(--dark); }
+
+  .cta-note {
+    margin-top: 22px;
+    font-family: 'Caveat', cursive;
+    font-size: 17px; font-weight: 700;
+    color: var(--orange); letter-spacing: 1px;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--dark);
+    text-underline-offset: 3px;
+  }
+
+  /* secondary CTA button – orange */
+  .cta-btn-col {
+    background: var(--orange);
+    color: var(--yellow);
+    -webkit-text-stroke: 0px;
+  }
+  .cta-btn-col:hover { background: var(--red); color: var(--yellow); }
+
+  /* hero CTA row */
+  .hero-cta {
+    position: relative; z-index: 2;
+    display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+    margin-top: 28px; padding-bottom: 12px;
+  }
+  .hero-cta .cta-btn {
+    font-size: clamp(16px, 3.2vw, 26px);
+    padding: 14px 44px;
+    box-shadow: 6px 6px 0 var(--dark);
+  }
+  .hero-cta .cta-btn:hover { box-shadow: 10px 10px 0 var(--dark); }
+
+  /* multi-button row in existing CTA section */
+  .cta-btns {
+    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+  }
+
+  /* mid-page CTA */
+  .mid-cta {
+    text-align: center;
+    padding: 36px 20px 42px;
+    position: relative; z-index: 10;
+  }
+  .mid-cta-lead {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(20px, 4vw, 36px);
+    color: var(--dark);
+    -webkit-text-stroke: 1px var(--orange);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+  .mid-cta .cta-btn {
+    font-size: clamp(16px, 3vw, 24px);
+    padding: 14px 40px;
+    box-shadow: 6px 6px 0 var(--dark);
+  }
+  .mid-cta .cta-btn:hover { box-shadow: 10px 10px 0 var(--dark); }
+
+  /* ─────────────────────────────────────
+     FOOTER
+  ───────────────────────────────────── */
+  footer {
+    position: relative; z-index: 10;
+    background: var(--dark);
+    padding: 0 30px 26px;
+    text-align: center;
+  }
+  .footer-stripe {
+    height: 8px;
+    background: repeating-linear-gradient(90deg,
+      var(--yellow) 0  24px, var(--orange) 24px 48px,
+      var(--red)    48px 72px, var(--cyan)  72px 96px,
+      var(--dark)   96px 120px
+    );
+    margin-bottom: 18px;
+  }
+  footer p {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 12px; color: var(--yellow);
+    letter-spacing: 3px; opacity: .65;
+  }
+
+  /* ─────────────────────────────────────
+     RESPONSIVE
+  ───────────────────────────────────── */
+  @media (max-width: 768px) {
+    .manga-grid { grid-template-columns: 1fr 1fr; }
+    .mpanel.big { grid-column: 1 / 3; grid-row: auto; }
+    .stats-grid, .panels-section, .chart-section { padding: 20px; }
+    .v-sash { display: none; }
+    .flank { display: none; }
+  }
+  @media (max-width: 480px) {
+    .manga-grid { grid-template-columns: 1fr; }
+    .mpanel.big { grid-column: 1; }
+    .sbcard:nth-child(n) { transform: none !important; }
+    .mpanel:nth-child(n) { transform: none !important; }
+  }
+
+  /* ─────────────────────────────────────
+     MASCOT / CHARACTER IMAGES
+  ───────────────────────────────────── */
+
+  /* Hero mascot – manga sticker style */
+  .hero-mascot {
+    position: relative; z-index: 2;
+    width: min(360px, 78vw);
+    height: auto;
+    border: 7px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 12px 12px 0 var(--dark), 0 0 48px rgba(255,102,0,.45);
+    background: white;
+    padding: 14px 20px 8px;
+    margin-top: 26px;
+    animation: mascotBob 2.8s ease-in-out infinite alternate;
+    display: inline-block;
+  }
+  @keyframes mascotBob {
+    from { transform: translateY(0) rotate(-2deg) scale(1); }
+    to   { transform: translateY(-22px) rotate(2deg) scale(1.04); }
+  }
+
+  /* Manga panel character images */
+  .m-icon {
+    font-size: 52px; display: block;
+    margin-bottom: 12px;
+    animation: iconBob 1.2s ease-in-out infinite alternate;
+  }
+  .m-icon img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    display: block;
+  }
+
+  /* Big orange panel – white circle behind character */
+  .mpanel.big .m-icon {
+    width: 130px; height: 130px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.22);
+    font-size: 0;
+  }
+  .mpanel.big .m-icon img {
+    width: 112px; height: 112px;
+    mix-blend-mode: normal;
+  }
+
+  /* CTA mascot */
+  .cta-mascot {
+    width: min(180px, 40vw);
+    height: auto;
+    border: 6px solid var(--dark);
+    border-radius: 50%;
+    box-shadow: 8px 8px 0 var(--dark), 0 0 30px rgba(255,102,0,.4);
+    background: white;
+    padding: 8px;
+    margin: 0 auto 20px;
+    display: block;
+    animation: mascotBob 2.2s ease-in-out infinite alternate;
+    animation-delay: .5s;
+  }
+
+  /* Footer vintage mascot */
+  .footer-mascot {
+    width: 90px;
+    height: auto;
+    opacity: 0.55;
+    margin: 0 auto 12px;
+    display: block;
+    filter: sepia(0.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- Vertical text sashes -->
+<div class="v-sash l">⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡</div>
+<div class="v-sash r">⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡</div>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<header class="hero">
+  <div class="starburst"></div>
+  <span class="dz dz1">⚡</span>
+  <span class="dz dz2">⚡</span>
+  <span class="dz dz3">⚡</span>
+  <span class="dz dz4">⚡</span>
+  <div class="hero-kana">～世界最強のデジタル通貨～</div>
+  <div class="hero-title">BITCOIN</div>
+  <img src="icon/bitcoin.jpg" alt="Bitcoin バーン！" class="hero-mascot">
+  <div class="hero-cta">
+    <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
+    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
+  </div>
+</header>
+
+<!-- ⚡ DIVIDER ⚡ -->
+<div class="zap-div">
+  <svg viewBox="0 0 1440 52" preserveAspectRatio="none">
+    <polyline fill="none" stroke="#FF6600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+    <polyline fill="none" stroke="#00F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════ TICKER ═══════════════════ -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次のハービング まであと 840日</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次のハービング まであと 840日</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
+  </div>
+</div>
+
+<!-- ═══════════════════ STATS ═══════════════════ -->
+<div class="sfx-head"><h2>ドーン！<em>⚡</em></h2></div>
+
+<div class="stats-grid">
+  <div class="sbcard">
+    <div class="s-label">💴 現在価格</div>
+    <div class="s-value" id="price">読み込み中…</div>
+    <div class="s-sub" id="change24h">⚡ ---</div>
+  </div>
+  <div class="sbcard">
+    <div class="s-label">📈 24時間高値</div>
+    <div class="s-value" id="high24h">---</div>
+    <div class="s-sub" id="high-sub">🔥 ---</div>
+  </div>
+  <div class="sbcard">
+    <div class="s-label">📉 24時間安値</div>
+    <div class="s-value" id="low24h">---</div>
+    <div class="s-sub">✊ 強いサポート</div>
+  </div>
+  <div class="sbcard">
+    <div class="s-label">🌐 ドミナンス</div>
+    <div class="s-value" id="dominance">---</div>
+    <div class="s-sub">👑 KING</div>
+  </div>
+</div>
+
+<!-- ⚡ DIVIDER ⚡ -->
+<div class="zap-div">
+  <svg viewBox="0 0 1440 52" preserveAspectRatio="none">
+    <polyline fill="none" stroke="#FF6600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+    <polyline fill="none" stroke="#00F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════ MANGA PANELS ═══════════════════ -->
+<div class="sfx-head"><h2>なぜ ビットコインなのか！！</h2></div>
+
+<div class="panels-section">
+  <div class="manga-grid">
+    <div class="mpanel big">
+      <div class="m-ghost">₿</div>
+      <span class="m-icon"><img src="icon/002.png" alt="Bitcoin キャラ"></span>
+      <h3 class="m-title">デジタルゴールド<br>2100万枚のみ</h3>
+      <p class="m-body">有限の発行枚数が価値を守る。中央銀行も政府も介入できない、真の希少資産。ワレヲ　モトメヨ！</p>
+    </div>
+    <div class="mpanel">
+      <div class="m-ghost">ズバッ</div>
+      <span class="m-icon" style="animation-delay:.2s"><img src="icon/004.png" alt="セキュリティ"></span>
+      <h3 class="m-title">最強セキュリティ</h3>
+      <p class="m-body">SHA-256で世界最強クラスの暗号化を実現。</p>
+    </div>
+    <div class="mpanel">
+      <div class="m-ghost">バシッ</div>
+      <span class="m-icon" style="animation-delay:.4s"><img src="icon/003.png" alt="送金"></span>
+      <h3 class="m-title">国境なし送金</h3>
+      <p class="m-body">24時間365日、世界中どこへでも数分で送金可能。</p>
+    </div>
+    <div class="mpanel">
+      <div class="m-ghost">ドーン</div>
+      <span class="m-icon" style="animation-delay:.6s"><img src="icon/005.png" alt="分散型"></span>
+      <h3 class="m-title">分散型ネットワーク</h3>
+      <p class="m-body">世界中のノードが支える非中央集権のエコシステム。</p>
+    </div>
+    <div class="mpanel">
+      <div class="m-ghost">カッ</div>
+      <span class="m-icon" style="animation-delay:.8s"><img src="icon/001.png" alt="ハービング"></span>
+      <h3 class="m-title">ハービング4年サイクル</h3>
+      <p class="m-body">4年ごとに報酬が半減。稀少性が増すたびに注目集まる。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MID CTA ═══════════════════ -->
+<div class="mid-cta">
+  <div class="mid-cta-lead">もっと深く知りたい？⚡</div>
+  <div class="cta-btns">
+    <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズで試す</a>
+    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムで学ぶ</a>
+  </div>
+</div>
+
+<!-- ⚡ DIVIDER ⚡ -->
+<div class="zap-div">
+  <svg viewBox="0 0 1440 52" preserveAspectRatio="none">
+    <polyline fill="none" stroke="#FF6600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+    <polyline fill="none" stroke="#00F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════ CHART ═══════════════════ -->
+<div class="sfx-head"><h2>チャート<em>⚡</em>バシッ</h2></div>
+
+<div class="chart-section">
+  <div class="chart-frame">
+    <div class="chart-head">
+      <h3>₿ 価格チャート</h3>
+      <span class="live-tag">⚡ LIVE</span>
+    </div>
+    <div class="chart-canvas">
+      <svg class="price-chart" viewBox="0 0 800 180" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#FF6600" stop-opacity=".7"/>
+            <stop offset="100%" stop-color="#FF6600" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <line x1="0" y1="45"  x2="800" y2="45"  stroke="rgba(255,102,0,.1)" stroke-width="1"/>
+        <line x1="0" y1="90"  x2="800" y2="90"  stroke="rgba(255,102,0,.1)" stroke-width="1"/>
+        <line x1="0" y1="135" x2="800" y2="135" stroke="rgba(255,102,0,.1)" stroke-width="1"/>
+        <path id="chartArea" d="" fill="url(#cg)" opacity=".6"/>
+        <path id="chartLine" d="" fill="none" stroke="#FF6600" stroke-width="3" filter="url(#glow)"/>
+        <circle id="chartDot" cx="800" cy="90" r="6" fill="#FFD700" stroke="#FF6600" stroke-width="3" filter="url(#glow)">
+          <animate attributeName="r" values="6;10;6" dur="1s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+        </circle>
+        <text id="chartHigh" x="10" y="18"  fill="rgba(255,215,0,.6)" font-size="11" font-family="monospace">---</text>
+        <text id="chartLow"  x="10" y="168" fill="rgba(255,215,0,.6)" font-size="11" font-family="monospace">---</text>
+      </svg>
+    </div>
+    <div class="chart-btns">
+      <button class="c-btn active" onclick="setActive(this,1)">1日</button>
+      <button class="c-btn" onclick="setActive(this,7)">1週</button>
+      <button class="c-btn" onclick="setActive(this,30)">1ヶ月</button>
+      <button class="c-btn" onclick="setActive(this,365)">1年</button>
+      <button class="c-btn" onclick="setActive(this,'max')">全期間</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CTA ═══════════════════ -->
+<div class="cta-section">
+  <div><div class="cta-tag">さあ、カモン！！</div></div>
+  <img src="icon/006.png" alt="Bitcoin マスコット" class="cta-mascot">
+  <div class="cta-btns">
+    <div class="cta-wrap">
+      <span class="flank l">⚡</span>
+      <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
+      <span class="flank r">⚡</span>
+    </div>
+    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
+  </div>
+  <p class="cta-note">※ 投資は自己責任でお願いします / クイズをよく理解した上でご利用ください</p>
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div class="footer-stripe"></div>
+  <p>⚡ BITCOIN バチーン！ © 2026 ⚡ &nbsp;|&nbsp; Decentralized. Unstoppable. Forever.</p>
+</footer>
+
+<script>
+  const CG = 'https://api.coingecko.com/api/v3';
+  let currentDays = 1;
+
+  // ── HELPERS ──────────────────────────────────────────
+  const fmtJpy  = n => '¥' + Math.round(n).toLocaleString('ja-JP');
+  const fmtUsd  = n => '$' + Math.round(n).toLocaleString('en-US');
+  const fmtLarge = n => {
+    if (n >= 1e12) return '¥' + (n / 1e12).toFixed(1) + '兆';
+    if (n >= 1e8)  return '¥' + (n / 1e8 ).toFixed(0) + '億';
+    return fmtJpy(n);
+  };
+
+  // ── PRICE & STATS ─────────────────────────────────────
+  async function fetchPrice() {
+    try {
+      // /coins/markets は high_24h・low_24h を確実に返す
+      const [marketsRes, usdRes] = await Promise.all([
+        fetch(`${CG}/coins/markets?vs_currency=jpy&ids=bitcoin`),
+        fetch(`${CG}/simple/price?ids=bitcoin&vs_currencies=usd`)
+      ]);
+      const [b] = await marketsRes.json();
+      const usd = (await usdRes.json()).bitcoin.usd;
+
+      document.getElementById('price').textContent   = fmtJpy(b.current_price);
+      document.getElementById('high24h').textContent = fmtJpy(b.high_24h);
+      document.getElementById('low24h').textContent  = fmtJpy(b.low_24h);
+
+      const chg = b.price_change_percentage_24h;
+      const chgEl = document.getElementById('change24h');
+      chgEl.textContent = (chg >= 0 ? '⚡ +' : '⚡ ') + chg.toFixed(2) + '%';
+      chgEl.style.color = chg >= 0 ? 'var(--red)' : '#1e90ff';
+
+      const sign = chg >= 0 ? '▲' : '▼';
+      const abs  = Math.abs(chg).toFixed(2);
+      document.querySelectorAll('.t-btcjpy').forEach(el =>
+        el.textContent = `BTC/JPY ${fmtJpy(b.current_price)} ${sign}+${abs}%`);
+      document.querySelectorAll('.t-btcusd').forEach(el =>
+        el.textContent = `BTC/USD ${fmtUsd(usd)} ${sign}+${abs}%`);
+      document.querySelectorAll('.t-mcap').forEach(el =>
+        el.textContent = '時価総額 ' + fmtLarge(b.market_cap));
+      document.querySelectorAll('.t-vol').forEach(el =>
+        el.textContent = '24h出来高 ' + fmtLarge(b.total_volume));
+    } catch (e) { console.warn('Price API:', e); }
+  }
+
+  // ── DOMINANCE ─────────────────────────────────────────
+  async function fetchDominance() {
+    try {
+      const r = await fetch(`${CG}/global`);
+      const pct = (await r.json()).data.market_cap_percentage.btc;
+      document.getElementById('dominance').textContent = pct.toFixed(1) + '%';
+    } catch (e) {}
+  }
+
+  // ── HALVING COUNTDOWN ─────────────────────────────────
+  async function fetchHalving() {
+    try {
+      const height = await fetch('https://mempool.space/api/blocks/tip/height')
+                       .then(r => r.json());
+      const next = Math.ceil((height + 1) / 210000) * 210000;
+      const days = Math.round((next - height) * 10 / 60 / 24);
+      document.querySelectorAll('.t-halving').forEach(el =>
+        el.textContent = `次のハービング まであと ${days.toLocaleString()}日`);
+    } catch (e) {}
+  }
+
+  // ── CHART DATA ────────────────────────────────────────
+  async function fetchChart(days) {
+    currentDays = days;
+    try {
+      const r = await fetch(`${CG}/coins/bitcoin/market_chart?vs_currency=jpy&days=${days}`);
+      drawChart((await r.json()).prices);
+    } catch (e) { console.warn('Chart API:', e); }
+  }
+
+  function drawChart(prices) {
+    if (!prices || prices.length < 2) return;
+    const vals = prices.map(p => p[1]);
+    const min  = Math.min(...vals);
+    const max  = Math.max(...vals);
+    const rng  = max - min || 1;
+    const W = 800, H = 160, PT = 10, PB = 170;
+
+    const pts = vals.map((v, i) => [
+      (i / (vals.length - 1)) * W,
+      PT + (1 - (v - min) / rng) * (H - PT)
+    ]);
+
+    const lineD = 'M' + pts.map(p => p.join(',')).join(' L');
+    const areaD = `M0,${PB} L` + pts.map(p => p.join(',')).join(' L') + ` L${W},${PB} Z`;
+
+    document.getElementById('chartLine').setAttribute('d', lineD);
+    document.getElementById('chartArea').setAttribute('d', areaD);
+
+    const last = pts[pts.length - 1];
+    document.getElementById('chartDot').setAttribute('cx', last[0]);
+    document.getElementById('chartDot').setAttribute('cy', last[1]);
+
+    const fmtM = v => v >= 1e6
+      ? '¥' + (v / 1e6).toFixed(2) + 'M'
+      : fmtJpy(v);
+    document.getElementById('chartHigh').textContent = fmtM(max);
+    document.getElementById('chartLow').textContent  = fmtM(min);
+  }
+
+  // ── CHART BUTTON ──────────────────────────────────────
+  function setActive(btn, days) {
+    document.querySelectorAll('.c-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    fetchChart(days);
+  }
+
+  // ── SCROLL REVEAL ─────────────────────────────────────
+  document.querySelectorAll('.sbcard, .mpanel').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transition = `opacity .5s ${i * .09}s ease`;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) el.style.opacity = '1';
+    }, { threshold: .12 }).observe(el);
+  });
+
+  // ── INIT ──────────────────────────────────────────────
+  fetchPrice();
+  fetchDominance();
+  fetchHalving();
+  fetchChart(1);
+
+  // 60秒ごとに自動更新
+  setInterval(() => { fetchPrice(); fetchChart(currentDays); }, 60000);
+</script>
+</body>
+</html>
