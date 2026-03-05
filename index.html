@@ -562,7 +562,7 @@
 
   /* multi-button row in existing CTA section */
   .cta-btns {
-    display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+    display: flex; flex-direction: column; gap: 20px; align-items: center;
   }
 
   /* mid-page CTA */
@@ -579,6 +579,7 @@
     margin-bottom: 24px;
     letter-spacing: 2px;
   }
+  .mid-cta .cta-btns { flex-direction: row; flex-wrap: wrap; justify-content: center; }
   .mid-cta .cta-btn {
     font-size: clamp(16px, 3vw, 24px);
     padding: 14px 40px;
@@ -743,14 +744,14 @@
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次のハービング まであと 840日</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 まであと 840日</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
     <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
     <!-- duplicate for seamless loop -->
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次のハービング まであと 840日</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 まであと 840日</span></span>
     <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
     <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
   </div>
@@ -823,8 +824,8 @@
     </div>
     <div class="mpanel">
       <div class="m-ghost">カッ</div>
-      <span class="m-icon" style="animation-delay:.8s"><img src="icon/001.png" alt="ハービング"></span>
-      <h3 class="m-title">ハービング4年サイクル</h3>
+      <span class="m-icon" style="animation-delay:.8s"><img src="icon/001.png" alt="半減期"></span>
+      <h3 class="m-title">半減期4年サイクル</h3>
       <p class="m-body">4年ごとに報酬が半減。稀少性が増すたびに注目集まる。</p>
     </div>
   </div>
@@ -977,7 +978,7 @@
       const next = Math.ceil((height + 1) / 210000) * 210000;
       const days = Math.round((next - height) * 10 / 60 / 24);
       document.querySelectorAll('.t-halving').forEach(el =>
-        el.textContent = `次のハービング まであと ${days.toLocaleString()}日`);
+        el.textContent = `次の半減期 まであと ${days.toLocaleString()}日`);
     } catch (e) {}
   }
 
