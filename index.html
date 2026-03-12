@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BITCOIN バチーン！</title>
+<title>BITCOIN バチーン！ ⚡ ビットコイン教育サイト</title>
+<meta name="description" content="クイズとコラムで学ぶビットコインと経済の基礎知識。サウンドマネーの世界へようこそ！">
+<meta property="og:title" content="BITCOIN バチーン！ ⚡ ビットコイン教育サイト">
+<meta property="og:description" content="クイズとコラムで学ぶビットコインと経済の基礎知識。サウンドマネーの世界へようこそ！">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bitcoinbacheen.netlify.app/">
+<meta property="og:image" content="https://bitcoinbacheen.netlify.app/icon/bitcoin.jpg">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BITCOIN バチーン！ ⚡ ビットコイン教育サイト">
+<meta name="twitter:description" content="クイズとコラムで学ぶビットコインと経済の基礎知識。サウンドマネーの世界へようこそ！">
+<meta name="twitter:image" content="https://bitcoinbacheen.netlify.app/icon/bitcoin.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -539,6 +550,152 @@
     text-underline-offset: 3px;
   }
 
+  /* ─────────────────────────────────────
+     MANGA FEATURE
+  ───────────────────────────────────── */
+  .manga-feature-section {
+    position: relative; z-index: 10;
+    padding: 12px 44px 44px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .manga-feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 36px;
+    background: var(--dark);
+    border: 6px solid var(--orange);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 10px 10px 0 var(--orange);
+    padding: 36px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .manga-feature-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,102,0,0.08) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+
+  .manga-award-badge {
+    position: absolute;
+    top: 18px; right: 24px;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 12px;
+    color: var(--dark);
+    background: var(--yellow);
+    border: 3px solid var(--dark);
+    border-radius: 100px;
+    padding: 5px 16px;
+    letter-spacing: 1px;
+    box-shadow: 3px 3px 0 var(--dark);
+    white-space: nowrap;
+  }
+
+  .manga-cover-link {
+    flex-shrink: 0;
+    display: block;
+  }
+  .manga-cover {
+    width: min(220px, 38vw);
+    display: block;
+    border: 5px solid var(--orange);
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 var(--orange);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .manga-cover-link:hover .manga-cover {
+    transform: rotate(-2deg) scale(1.04);
+    box-shadow: 12px 12px 0 var(--orange);
+  }
+
+  .manga-feature-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 8px;
+  }
+
+  .manga-feature-title {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(18px, 2.8vw, 30px);
+    color: var(--yellow);
+    line-height: 1.4;
+    letter-spacing: 1px;
+    -webkit-text-stroke: 0.5px var(--orange);
+  }
+
+  .manga-feature-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 1px;
+  }
+
+  .manga-judge-comment {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255,253,231,0.8);
+    line-height: 1.9;
+    border-left: 4px solid var(--cyan);
+    padding-left: 14px;
+  }
+  .manga-judge-label {
+    display: inline-block;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 10px;
+    color: var(--dark);
+    background: var(--cyan);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    margin-right: 6px;
+  }
+
+  .manga-feature-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .manga-btn {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 18px;
+    padding: 8px 26px;
+    border: 3px solid var(--dark);
+    border-radius: 100px 8px 100px 8px / 8px 100px 8px 100px;
+    box-shadow: 4px 4px 0 var(--dark);
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: transform .12s, box-shadow .12s;
+    display: inline-block;
+  }
+  .manga-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--dark);
+  }
+  .manga-btn-read {
+    color: var(--dark);
+    background: var(--cyan);
+  }
+  .manga-btn-contest {
+    color: var(--yellow);
+    background: var(--orange);
+  }
+
+  @media (max-width: 640px) {
+    .manga-feature-section { padding: 20px; }
+    .manga-feature-card { flex-direction: column; align-items: center; text-align: center; gap: 20px; padding: 28px 20px 24px; }
+    .manga-award-badge { top: 12px; right: 12px; font-size: 10px; }
+    .manga-cover { width: min(200px, 60vw); }
+    .manga-feature-btns { justify-content: center; }
+  }
+
   /* secondary CTA button – orange */
   .cta-btn-col {
     background: var(--orange);
@@ -560,32 +717,10 @@
   }
   .hero-cta .cta-btn:hover { box-shadow: 10px 10px 0 var(--dark); }
 
-  /* multi-button row in existing CTA section */
+  /* multi-button row in CTA section */
   .cta-btns {
-    display: flex; flex-direction: column; gap: 20px; align-items: center;
+    display: flex; flex-direction: row; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center;
   }
-
-  /* mid-page CTA */
-  .mid-cta {
-    text-align: center;
-    padding: 36px 20px 42px;
-    position: relative; z-index: 10;
-  }
-  .mid-cta-lead {
-    font-family: 'Boogaloo', sans-serif;
-    font-size: clamp(20px, 4vw, 36px);
-    color: var(--dark);
-    -webkit-text-stroke: 1px var(--orange);
-    margin-bottom: 24px;
-    letter-spacing: 2px;
-  }
-  .mid-cta .cta-btns { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-  .mid-cta .cta-btn {
-    font-size: clamp(16px, 3vw, 24px);
-    padding: 14px 40px;
-    box-shadow: 6px 6px 0 var(--dark);
-  }
-  .mid-cta .cta-btn:hover { box-shadow: 10px 10px 0 var(--dark); }
 
   /* ─────────────────────────────────────
      FOOTER
@@ -725,6 +860,7 @@
   <div class="hero-cta">
     <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
     <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
+    <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
   </div>
 </header>
 
@@ -741,19 +877,23 @@
 <!-- ═══════════════════ TICKER ═══════════════════ -->
 <div class="ticker-wrap">
   <div class="ticker-inner">
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 まであと 840日</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-btcjpy">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-mcap">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-vol">取得中…</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-btcusd">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-supply">流通量 取得中…</span></span>
+    <span class="ticker-item t-static"><span class="z">⚡</span> BITCOIN バチーン！ ⚡ ビットコイン教育サイト</span>
+    <span class="ticker-item t-static"><span class="z">⚡</span> クイズとコラムでサウンドマネーを学ぼう</span>
     <!-- duplicate for seamless loop -->
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcjpy">BTC/JPY ¥14,200,000 ▲+3.2%</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-mcap">時価総額 ¥280兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-vol">24h出来高 ¥4.8兆</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 まであと 840日</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> <span class="t-btcusd">BTC/USD $95,400 ▲+3.2%</span></span>
-    <span class="ticker-item"><span class="z">⚡</span> 流通量 19,800,000 BTC</span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-btcjpy">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-mcap">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-vol">取得中…</span></span>
+    <span class="ticker-item"><span class="z">⚡</span> <span class="t-halving">次の半減期 取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-btcusd">取得中…</span></span>
+    <span class="ticker-item t-price-item"><span class="z">⚡</span> <span class="t-supply">流通量 取得中…</span></span>
+    <span class="ticker-item t-static"><span class="z">⚡</span> BITCOIN バチーン！ ⚡ ビットコイン教育サイト</span>
+    <span class="ticker-item t-static"><span class="z">⚡</span> クイズとコラムでサウンドマネーを学ぼう</span>
   </div>
 </div>
 
@@ -802,25 +942,25 @@
       <div class="m-ghost">₿</div>
       <span class="m-icon"><img src="icon/002.png" alt="Bitcoin キャラ"></span>
       <h3 class="m-title">デジタルゴールド<br>2100万枚のみ</h3>
-      <p class="m-body">有限の発行枚数が価値を守る。中央銀行も政府も介入できない、真の希少資産。ワレヲ　モトメヨ！</p>
+      <p class="m-body">ビットコインの価値が上がるんじゃない。マネーの価値が下がるのだ。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">ズバッ</div>
       <span class="m-icon" style="animation-delay:.2s"><img src="icon/004.png" alt="セキュリティ"></span>
       <h3 class="m-title">最強セキュリティ</h3>
-      <p class="m-body">SHA-256で世界最強クラスの暗号化を実現。</p>
+      <p class="m-body">偽札や偽ゴールドはあっても偽ビットコインはありえない。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">バシッ</div>
       <span class="m-icon" style="animation-delay:.4s"><img src="icon/003.png" alt="送金"></span>
       <h3 class="m-title">国境なし送金</h3>
-      <p class="m-body">24時間365日、世界中どこへでも数分で送金可能。</p>
+      <p class="m-body">ビットコインは自由に持ち運べる。身ぐるみ剥がされたって大丈夫。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">ドーン</div>
       <span class="m-icon" style="animation-delay:.6s"><img src="icon/005.png" alt="分散型"></span>
       <h3 class="m-title">分散型ネットワーク</h3>
-      <p class="m-body">世界中のノードが支える非中央集権のエコシステム。</p>
+      <p class="m-body">ビットコインは消えない。ウイルスのように消えない。核兵器のように消えない。麻薬のように消えない。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">カッ</div>
@@ -831,12 +971,38 @@
   </div>
 </div>
 
-<!-- ═══════════════════ MID CTA ═══════════════════ -->
-<div class="mid-cta">
-  <div class="mid-cta-lead">もっと深く知りたい？⚡</div>
-  <div class="cta-btns">
-    <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズで試す</a>
-    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムで学ぶ</a>
+
+<!-- ⚡ DIVIDER ⚡ -->
+<div class="zap-div">
+  <svg viewBox="0 0 1440 52" preserveAspectRatio="none">
+    <polyline fill="none" stroke="#FF6600" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+    <polyline fill="none" stroke="#00F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".55"
+      points="0,26 60,4 90,50 150,6 210,48 270,8 330,46 390,6 450,48 510,10 570,44 630,8 690,48 750,8 810,46 870,6 930,48 990,10 1050,44 1110,8 1170,48 1230,8 1290,44 1350,8 1440,26"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════ MANGA FEATURE ═══════════════════ -->
+<div class="sfx-head"><h2>マンガ<em>⚡</em>よんでけ！</h2></div>
+
+<div class="manga-feature-section">
+  <div class="manga-feature-card">
+    <div class="manga-award-badge">🏆 準大賞受賞作</div>
+    <a href="Manga/index.html" class="manga-cover-link">
+      <img src="Manga/0000.png" alt="ビットコイナーを嫌いになってもビットコインは嫌いにならないでください！" class="manga-cover">
+    </a>
+    <div class="manga-feature-info">
+      <div class="manga-feature-title">ビットコイナーを嫌いになっても<br>ビットコインは嫌いにならないでください！</div>
+      <div class="manga-feature-sub">賞金総額1BTC ビットコイン漫画コンテスト 準大賞受賞</div>
+      <div class="manga-judge-comment">
+        <span class="manga-judge-label">審査員コメント</span>
+        シニカルな絵とタッチが好き嫌いに影響しそうだが、ビットコイナーをディスりながら同時にビットコインへの愛情を表現していておもしろい。後半のコラムでもただビットコインを持ち上げるのではなく中立的に評価をしている事が伺える。このまま教科書としても採用できそう
+      </div>
+      <div class="manga-feature-btns">
+        <a href="Manga/index.html" class="manga-btn manga-btn-read">📚 マンガを読む ⚡</a>
+        <a href="https://lostinbitcoin.jp/manga-contest/" target="_blank" rel="noopener noreferrer" class="manga-btn manga-btn-contest">🏆 受賞ページへ</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -897,7 +1063,7 @@
 <!-- ═══════════════════ CTA ═══════════════════ -->
 <div class="cta-section">
   <div><div class="cta-tag">さあ、カモン！！</div></div>
-  <img src="icon/006.png" alt="Bitcoin マスコット" class="cta-mascot">
+  <img src="icon/0003.png" alt="Bitcoin マスコット" class="cta-mascot">
   <div class="cta-btns">
     <div class="cta-wrap">
       <span class="flank l">⚡</span>
@@ -905,6 +1071,7 @@
       <span class="flank r">⚡</span>
     </div>
     <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
+    <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
   </div>
   <p class="cta-note">※ 投資は自己責任でお願いします / クイズをよく理解した上でご利用ください</p>
 </div>
@@ -912,7 +1079,7 @@
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
   <div class="footer-stripe"></div>
-  <p>⚡ BITCOIN バチーン！ © 2026 ⚡ &nbsp;|&nbsp; Decentralized. Unstoppable. Forever.</p>
+  <p>⚡ BITCOIN バチーン！ © 2026 Dai-nonsugar ⚡ &nbsp;|&nbsp; Decentralized. Unstoppable. Forever.</p>
 </footer>
 
 <script>
@@ -948,17 +1115,28 @@
       chgEl.textContent = (chg >= 0 ? '⚡ +' : '⚡ ') + chg.toFixed(2) + '%';
       chgEl.style.color = chg >= 0 ? 'var(--red)' : '#1e90ff';
 
-      const sign = chg >= 0 ? '▲' : '▼';
-      const abs  = Math.abs(chg).toFixed(2);
+      const sign    = chg >= 0 ? '▲' : '▼';
+      const chgStr  = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
       document.querySelectorAll('.t-btcjpy').forEach(el =>
-        el.textContent = `BTC/JPY ${fmtJpy(b.current_price)} ${sign}+${abs}%`);
+        el.textContent = `BTC/JPY ${fmtJpy(b.current_price)} ${sign}${chgStr}`);
       document.querySelectorAll('.t-btcusd').forEach(el =>
-        el.textContent = `BTC/USD ${fmtUsd(usd)} ${sign}+${abs}%`);
+        el.textContent = `BTC/USD ${fmtUsd(usd)} ${sign}${chgStr}`);
       document.querySelectorAll('.t-mcap').forEach(el =>
         el.textContent = '時価総額 ' + fmtLarge(b.market_cap));
       document.querySelectorAll('.t-vol').forEach(el =>
         el.textContent = '24h出来高 ' + fmtLarge(b.total_volume));
-    } catch (e) { console.warn('Price API:', e); }
+      document.querySelectorAll('.t-supply').forEach(el =>
+        el.textContent = '流通量 ' + (b.circulating_supply / 1e6).toFixed(2) + 'M BTC');
+
+      // API成功時：非表示になっていた価格アイテムを復元
+      document.querySelectorAll('.ticker-item.t-price-item').forEach(el =>
+        el.style.display = '');
+    } catch (e) {
+      console.warn('Price API:', e);
+      // API失敗時：数値アイテムを非表示にしてキャッチコピーのみ流す
+      document.querySelectorAll('.ticker-item.t-price-item').forEach(el =>
+        el.style.display = 'none');
+    }
   }
 
   // ── DOMINANCE ─────────────────────────────────────────

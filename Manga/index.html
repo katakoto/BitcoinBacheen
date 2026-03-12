@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マンガで学ぶビットコイン ⚡ BITCOIN バチーン！</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Boogaloo&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --orange: #FF6600;
+    --dark:   #160A00;
+    --cyan:   #00F5FF;
+    --white:  #FFFDE7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #0d0d0d;
+    color: var(--white);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── HEADER BAR ── */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--dark);
+    border-bottom: 3px solid var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 100;
+    gap: 12px;
+  }
+
+  #header a.home-btn {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    color: var(--yellow);
+    text-decoration: none;
+    border: 2px solid var(--orange);
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: background .15s;
+    flex-shrink: 0;
+  }
+  #header a.home-btn:hover { background: var(--orange); }
+
+  #header .title {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 16px;
+    color: var(--yellow);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #page-info {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 12px;
+    color: var(--cyan);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 52px; left: 0;
+    height: 3px;
+    background: var(--orange);
+    z-index: 100;
+    transition: width .2s ease;
+  }
+
+  /* ── VIEWER ── */
+  #viewer {
+    position: fixed;
+    top: 55px; bottom: 52px;
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    user-select: none;
+  }
+
+  #manga-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+    transition: opacity .12s ease;
+    pointer-events: none;
+  }
+
+  /* click zones */
+  #zone-prev, #zone-next {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 50%;
+    z-index: 10;
+  }
+  #zone-prev { left: 0; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='18' fill='rgba(255,102,0,0.7)' stroke='%23FFD700' stroke-width='2'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='20' fill='%23FFD700'%3E%E2%80%B9%3C/text%3E%3C/svg%3E") 20 20, w-resize; }
+  #zone-next { right: 0; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='18' fill='rgba(255,102,0,0.7)' stroke='%23FFD700' stroke-width='2'/%3E%3Ctext x='20' y='26' text-anchor='middle' font-size='20' fill='%23FFD700'%3E%E2%80%BA%3C/text%3E%3C/svg%3E") 20 20, e-resize; }
+
+  /* hover hint overlay */
+  .zone-hint {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 48px;
+    color: rgba(255,215,0,0.0);
+    transition: color .2s;
+    pointer-events: none;
+  }
+  #zone-prev .zone-hint { left: 12px; }
+  #zone-next .zone-hint { right: 12px; }
+  #zone-prev:hover .zone-hint,
+  #zone-next:hover .zone-hint { color: rgba(255,215,0,0.35); }
+
+  /* ── FOOTER BAR ── */
+  #footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--dark);
+    border-top: 3px solid var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 100;
+    padding: 0 16px;
+  }
+
+  .nav-btn {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 18px;
+    background: transparent;
+    border: 2px solid var(--orange);
+    color: var(--yellow);
+    padding: 5px 20px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  .nav-btn:hover:not(:disabled) {
+    background: var(--orange);
+    transform: scale(1.06);
+  }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  #thumbnail-toggle {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 10px;
+    background: transparent;
+    border: 2px solid rgba(255,102,0,0.4);
+    color: rgba(255,215,0,0.5);
+    padding: 4px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: 1px;
+  }
+  #thumbnail-toggle:hover { border-color: var(--orange); color: var(--yellow); }
+
+  /* ── THUMBNAIL STRIP ── */
+  #thumb-strip {
+    position: fixed;
+    bottom: 52px; left: 0; right: 0;
+    height: 0;
+    overflow: hidden;
+    background: rgba(22,10,0,0.97);
+    border-top: 0px solid var(--orange);
+    z-index: 99;
+    transition: height .25s ease, border-top-width .25s ease;
+  }
+  #thumb-strip.open {
+    height: 110px;
+    border-top-width: 3px;
+  }
+  #thumb-inner {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    height: 100%;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: var(--orange) transparent;
+  }
+  .thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 88px;
+    object-fit: cover;
+    border: 2px solid rgba(255,102,0,0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity .15s, border-color .15s, transform .15s;
+  }
+  .thumb:hover { opacity: 1; transform: scale(1.08); }
+  .thumb.active {
+    border-color: var(--cyan);
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 8px var(--cyan);
+  }
+
+  /* ── LOADING ── */
+  #loading {
+    position: fixed;
+    inset: 0;
+    background: #0d0d0d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 28px;
+    color: var(--yellow);
+    letter-spacing: 4px;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+</style>
+</head>
+<body>
+
+<div id="loading">⚡ LOADING ⚡</div>
+
+<!-- HEADER -->
+<div id="header">
+  <a class="home-btn" href="../index.html">⚡ TOP</a>
+  <div class="title">マンガで学ぶビットコイン</div>
+  <div id="page-info">1 / 84</div>
+</div>
+
+<div id="progress-bar" style="width:0%"></div>
+
+<!-- VIEWER -->
+<div id="viewer">
+  <div id="zone-prev"><span class="zone-hint">‹</span></div>
+  <img id="manga-img" src="0000.png" alt="マンガ 1ページ目">
+  <div id="zone-next"><span class="zone-hint">›</span></div>
+</div>
+
+<!-- THUMBNAIL STRIP -->
+<div id="thumb-strip">
+  <div id="thumb-inner"></div>
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+  <button class="nav-btn" id="btn-prev">‹ 前へ</button>
+  <button id="thumbnail-toggle">■ 一覧</button>
+  <button class="nav-btn" id="btn-next">次へ ›</button>
+</div>
+
+<script>
+  const TOTAL = 84;
+  let current = 0;
+  let thumbsOpen = false;
+
+  const img      = document.getElementById('manga-img');
+  const pageInfo = document.getElementById('page-info');
+  const progress = document.getElementById('progress-bar');
+  const btnPrev  = document.getElementById('btn-prev');
+  const btnNext  = document.getElementById('btn-next');
+  const loading  = document.getElementById('loading');
+  const thumbStrip = document.getElementById('thumb-strip');
+  const thumbInner = document.getElementById('thumb-inner');
+
+  function pad(n) { return String(n).padStart(4, '0'); }
+  function src(n) { return `${pad(n)}.png`; }
+
+  // ── render ──────────────────────────────
+  function goTo(n, direction) {
+    if (n < 0 || n >= TOTAL) return;
+    img.style.opacity = '0';
+    setTimeout(() => {
+      current = n;
+      img.src = src(current);
+      img.alt = `マンガ ${current + 1}ページ目`;
+      img.style.opacity = '1';
+      updateUI();
+      preload(current + 1);
+      preload(current - 1);
+      scrollThumbIntoView();
+    }, 80);
+  }
+
+  function updateUI() {
+    pageInfo.textContent = `${current + 1} / ${TOTAL}`;
+    progress.style.width = ((current + 1) / TOTAL * 100) + '%';
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === TOTAL - 1;
+    document.querySelectorAll('.thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === current);
+    });
+  }
+
+  // ── preload ──────────────────────────────
+  function preload(n) {
+    if (n < 0 || n >= TOTAL) return;
+    const pre = new Image();
+    pre.src = src(n);
+  }
+
+  // ── thumb strip ──────────────────────────
+  function buildThumbs() {
+    for (let i = 0; i < TOTAL; i++) {
+      const t = document.createElement('img');
+      t.className = 'thumb' + (i === 0 ? ' active' : '');
+      t.src = src(i);
+      t.alt = `${i + 1}ページ`;
+      t.loading = 'lazy';
+      t.addEventListener('click', () => { goTo(i); });
+      thumbInner.appendChild(t);
+    }
+  }
+
+  function scrollThumbIntoView() {
+    const thumbs = thumbInner.querySelectorAll('.thumb');
+    if (thumbs[current]) {
+      thumbs[current].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }
+
+  document.getElementById('thumbnail-toggle').addEventListener('click', () => {
+    thumbsOpen = !thumbsOpen;
+    thumbStrip.classList.toggle('open', thumbsOpen);
+    if (thumbsOpen) scrollThumbIntoView();
+  });
+
+  // ── navigation ───────────────────────────
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+  document.getElementById('zone-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('zone-next').addEventListener('click', () => goTo(current + 1));
+
+  // keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
+  });
+
+  // touch swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) goTo(dx < 0 ? current + 1 : current - 1);
+    touchX = null;
+  }, { passive: true });
+
+  // ── init ─────────────────────────────────
+  img.addEventListener('load', () => {
+    loading.style.display = 'none';
+    updateUI();
+    preload(1);
+    preload(2);
+  });
+  img.addEventListener('error', () => { loading.style.display = 'none'; });
+
+  buildThumbs();
+  updateUI();
+</script>
+</body>
+</html>
