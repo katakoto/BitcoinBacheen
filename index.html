@@ -768,8 +768,18 @@
   ───────────────────────────────────── */
 
   /* Hero mascot – manga sticker style */
-  .hero-mascot {
+  .mascot-link {
     position: relative; z-index: 2;
+    display: inline-block;
+    margin-top: 26px;
+    animation: mascotBob 2.8s ease-in-out infinite alternate;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .mascot-link:hover {
+    animation-play-state: paused;
+  }
+  .hero-mascot {
     width: min(360px, 78vw);
     height: auto;
     border: 7px solid var(--dark);
@@ -777,9 +787,36 @@
     box-shadow: 12px 12px 0 var(--dark), 0 0 48px rgba(255,102,0,.45);
     background: white;
     padding: 14px 20px 8px;
-    margin-top: 26px;
-    animation: mascotBob 2.8s ease-in-out infinite alternate;
-    display: inline-block;
+    display: block;
+    transition: box-shadow .2s;
+  }
+  .mascot-link:hover .hero-mascot {
+    box-shadow: 18px 18px 0 var(--dark), 0 0 70px rgba(255,102,0,.8);
+  }
+  /* 号外オーバーレイ */
+  .mascot-gougai {
+    position: absolute;
+    inset: 0;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(232,32,32,.88);
+    color: var(--yellow);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(52px, 14vw, 88px);
+    -webkit-text-stroke: 3px var(--dark);
+    text-shadow: 4px 4px 0 var(--dark);
+    letter-spacing: 4px;
+    opacity: 0;
+    transform: scale(.6) rotate(-10deg);
+    transition: opacity .2s ease, transform .28s cubic-bezier(.36,.07,.19,.97);
+    pointer-events: none;
+  }
+  .mascot-link:hover .mascot-gougai,
+  .mascot-link:focus-visible .mascot-gougai {
+    opacity: 1;
+    transform: scale(1) rotate(-5deg);
   }
   @keyframes mascotBob {
     from { transform: translateY(0) rotate(-2deg) scale(1); }
@@ -856,7 +893,10 @@
   <span class="dz dz4">⚡</span>
   <div class="hero-kana">～世界最強のデジタル通貨～</div>
   <div class="hero-title">BITCOIN</div>
-  <img src="icon/bitcoin.jpg" alt="Bitcoin バーン！" class="hero-mascot">
+  <a href="sitemap.html" class="mascot-link" aria-label="号外！サイトマップへ">
+    <img src="icon/bitcoin.jpg" alt="Bitcoin バーン！" class="hero-mascot">
+    <span class="mascot-gougai" aria-hidden="true">号外！</span>
+  </a>
   <div class="hero-cta">
     <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
     <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
