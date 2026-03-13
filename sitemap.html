@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>紙面案内 — BITCOIN バチーン！日報</title>
+<meta name="description" content="BITCOIN バチーン！の全コンテンツ案内。クイズ・コラム・マンガが一覧できる号外紙面。">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@400;700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ── ROOT ─────────────────────────────────────── */
+:root {
+  --yellow: #FFD700;
+  --orange: #FF6600;
+  --red:    #E82020;
+  --cyan:   #00F5FF;
+  --dark:   #160A00;
+  --white:  #FFFDE7;
+  --paper:  #EFD8A0;
+  --paper2: #F7EAC0;
+  --ink:    #140800;
+  --sepia:  #7A5C10;
+  --rule:   #2a1400;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--dark);
+  font-family: 'M PLUS Rounded 1c', 'Hiragino Kaku Gothic ProN', sans-serif;
+  color: var(--ink);
+  /* halftone dots - subtle on dark bg */
+  background-image: radial-gradient(circle, rgba(255,102,0,0.25) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── 号外 GOUGAI BANNER ───────────────────────── */
+.gougai-banner {
+  background: var(--red);
+  border-bottom: 6px solid var(--dark);
+  border-top: 6px solid var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 8px 20px;
+  overflow: hidden;
+  position: relative;
+}
+.gougai-banner::before,
+.gougai-banner::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px, transparent 6px,
+    var(--dark) 6px, var(--dark) 8px
+  );
+  opacity: 0.3;
+}
+.gougai-banner::before { left: 0; }
+.gougai-banner::after  { right: 0; }
+
+.gougai-text {
+  font-family: 'Boogaloo', sans-serif;
+  font-size: clamp(28px, 6vw, 56px);
+  color: var(--yellow);
+  -webkit-text-stroke: 3px var(--dark);
+  text-shadow: 4px 4px 0 var(--dark);
+  letter-spacing: 4px;
+  animation: gougaiPulse 1.2s ease-in-out infinite alternate;
+}
+.gougai-lightning {
+  font-size: clamp(22px, 4vw, 40px);
+  filter: drop-shadow(0 0 10px var(--cyan));
+  animation: zapFloat 1.4s ease-in-out infinite alternate;
+}
+@keyframes gougaiPulse {
+  from { transform: scale(.97); opacity:.9; }
+  to   { transform: scale(1.03); opacity: 1; }
+}
+@keyframes zapFloat {
+  from { transform: translateY(-4px) rotate(-8deg); }
+  to   { transform: translateY( 4px) rotate( 8deg); }
+}
+
+/* ── MASTHEAD ─────────────────────────────────── */
+.masthead {
+  background: var(--paper);
+  border-bottom: 5px double var(--rule);
+  padding: 18px 16px 12px;
+  position: relative;
+  overflow: hidden;
+}
+/* aged paper noise overlay */
+.masthead::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.6;
+}
+.masthead-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+.masthead-meta-left {
+  font-size: 11px;
+  color: var(--sepia);
+  line-height: 1.8;
+  border-right: 2px solid var(--sepia);
+  padding-right: 14px;
+}
+.masthead-meta-left strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+}
+.masthead-title-block {
+  text-align: center;
+  position: relative;
+}
+.masthead-ruby {
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  color: var(--sepia);
+  letter-spacing: 6px;
+  display: block;
+  margin-bottom: 2px;
+}
+.masthead-logo {
+  font-family: 'Boogaloo', sans-serif;
+  font-size: clamp(36px, 7vw, 72px);
+  color: var(--dark);
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 3px 3px 0 var(--orange), 5px 5px 0 rgba(0,0,0,.15);
+  -webkit-text-stroke: 1px var(--rule);
+}
+.masthead-logo span {
+  color: var(--orange);
+}
+.masthead-sub {
+  font-size: clamp(10px, 2vw, 14px);
+  color: var(--sepia);
+  letter-spacing: 8px;
+  margin-top: 4px;
+  border-top: 1px solid var(--sepia);
+  border-bottom: 1px solid var(--sepia);
+  padding: 3px 0;
+  display: block;
+}
+.masthead-meta-right {
+  font-size: 11px;
+  color: var(--sepia);
+  line-height: 1.8;
+  border-left: 2px solid var(--sepia);
+  padding-left: 14px;
+  text-align: right;
+}
+.masthead-meta-right strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* ── TICKER ───────────────────────────────────── */
+.ticker-wrap {
+  background: var(--dark);
+  border-top: 3px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
+  overflow: hidden;
+  padding: 8px 0;
+}
+.ticker-inner {
+  display: flex; gap: 50px;
+  animation: tickMove 20s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 13px;
+  color: var(--yellow);
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+}
+@keyframes tickMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── NEWSPAPER BODY ──────────────────────────── */
+.newspaper {
+  background: var(--paper);
+  max-width: 1100px;
+  margin: 0 auto;
+  border: 5px solid var(--rule);
+  border-top: none;
+  position: relative;
+}
+/* aged paper background texture */
+.newspaper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(120,80,0,0.04) 28px,
+      rgba(120,80,0,0.04) 29px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── SECTION LABEL ───────────────────────────── */
+.section-rule {
+  position: relative;
+  z-index: 1;
+  background: var(--dark);
+  color: var(--yellow);
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 11px;
+  letter-spacing: 6px;
+  padding: 5px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 3px solid var(--orange);
+}
+.section-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--orange);
+  opacity: 0.4;
+}
+
+/* ── MAIN GRID ──────────────────────────────── */
+.main-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 200px 1fr 220px;
+  border-bottom: 4px double var(--rule);
+}
+.col-left, .col-center, .col-right {
+  padding: 18px 16px;
+}
+.col-left {
+  border-right: 3px double var(--rule);
+}
+.col-center {
+  border-right: 3px double var(--rule);
+}
+
+/* ── COLUMN LABEL (vertical decorative) ──────── */
+.col-eyebrow {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--sepia);
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+/* ── HEADLINE ─────────────────────────────────── */
+.headline-xl {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(22px, 3.5vw, 34px);
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--ink);
+  border-bottom: 3px solid var(--orange);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.headline-xl .kicker {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+  font-family: 'Zen Dots', sans-serif;
+}
+.headline-lg {
+  font-size: clamp(16px, 2.5vw, 22px);
+  font-weight: 900;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 8px;
+  border-left: 5px solid var(--orange);
+  padding-left: 10px;
+}
+.headline-sm {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--sepia);
+  padding-bottom: 4px;
+}
+.article-body {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #3a2000;
+}
+
+/* ── ARTICLE LIST (コラム一覧) ─────────────────── */
+.article-list {
+  list-style: none;
+  margin-top: 10px;
+}
+.article-list li {
+  border-bottom: 1px dashed var(--sepia);
+  padding: 7px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.article-list li:last-child { border-bottom: none; }
+.art-num {
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 9px;
+  color: var(--orange);
+  background: var(--ink);
+  padding: 1px 5px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+.art-link {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 700;
+  transition: color .15s;
+}
+.art-link:hover {
+  color: var(--orange);
+  text-decoration: underline;
+}
+
+/* ── FEATURE BOX ─────────────────────────────── */
+.feature-box {
+  border: 3px solid var(--dark);
+  margin-bottom: 16px;
+  background: var(--paper2);
+  position: relative;
+  overflow: hidden;
+}
+.feature-box-header {
+  background: var(--dark);
+  color: var(--yellow);
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  padding: 5px 12px;
+}
+.feature-box-body {
+  padding: 14px 14px 16px;
+}
+
+/* ── MANGA FEATURE ───────────────────────────── */
+.manga-feature {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+.manga-thumb-wrap {
+  flex-shrink: 0;
+  border: 3px solid var(--dark);
+  overflow: hidden;
+  width: 100px;
+}
+.manga-thumb-wrap img {
+  width: 100%;
+  display: block;
+  filter: sepia(20%);
+}
+.manga-info { flex: 1; }
+
+/* ── QUIZ BOX ─────────────────────────────────── */
+.quiz-box {
+  border: 4px solid var(--orange);
+  background: var(--dark);
+  color: var(--white);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.quiz-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255,215,0,.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.quiz-box-header {
+  background: var(--orange);
+  color: var(--dark);
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 22px;
+  padding: 8px 14px;
+  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.quiz-box-body {
+  padding: 14px;
+}
+.quiz-stat {
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 10px;
+  color: var(--yellow);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+.quiz-desc {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #f0ddb0;
+  margin-bottom: 14px;
+}
+.quiz-btn {
+  display: block;
+  background: var(--yellow);
+  color: var(--dark);
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 18px;
+  text-align: center;
+  padding: 10px 14px;
+  border: 3px solid var(--dark);
+  letter-spacing: 3px;
+  transition: transform .1s, box-shadow .1s;
+  box-shadow: 4px 4px 0 var(--orange);
+}
+.quiz-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--orange);
+}
+.quiz-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--orange);
+}
+
+/* ── STAMP ────────────────────────────────────── */
+.stamp {
+  display: inline-block;
+  border: 3px solid var(--red);
+  color: var(--red);
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  padding: 3px 8px;
+  transform: rotate(-8deg);
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+.stamp-new {
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  letter-spacing: 2px;
+  font-family: 'Zen Dots', sans-serif;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+/* ── HORIZONTAL RULE ─────────────────────────── */
+.h-rule {
+  border: none;
+  border-top: 2px solid var(--rule);
+  margin: 12px 0;
+  opacity: 0.3;
+}
+.h-rule-bold {
+  border: none;
+  border-top: 4px double var(--rule);
+  margin: 14px 0;
+  opacity: 0.5;
+}
+
+/* ── BOTTOM GRID ─────────────────────────────── */
+.bottom-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 4px double var(--rule);
+}
+.bottom-left {
+  border-right: 3px double var(--rule);
+  padding: 18px 18px;
+}
+.bottom-right {
+  padding: 18px 18px;
+}
+
+/* ── AUTHOR BIO ───────────────────────────────── */
+.author-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.author-avatar {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border: 3px solid var(--dark);
+  background: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  /* halftone pattern */
+  background-image: radial-gradient(circle, rgba(255,215,0,.5) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+.author-name {
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 22px;
+  color: var(--ink);
+  -webkit-text-stroke: 0.5px var(--rule);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.author-name .reading {
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  color: var(--sepia);
+  font-weight: normal;
+  margin-left: 6px;
+  letter-spacing: 1px;
+}
+.author-bio {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #3a2000;
+}
+.contact-line {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--sepia);
+  border-top: 1px dashed var(--sepia);
+  padding-top: 8px;
+}
+.contact-line a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 12px;
+}
+.contact-line a:hover { color: var(--orange); }
+
+/* ── LIGHTNING TIP ───────────────────────────── */
+.tip-box {
+  background: var(--dark);
+  border: 4px solid var(--yellow);
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.tip-box::before {
+  content: '⚡⚡⚡';
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.05;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.tip-title {
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 20px;
+  color: var(--yellow);
+  -webkit-text-stroke: 0.5px var(--dark);
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+.tip-sub {
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+.tip-address {
+  background: #0a0500;
+  color: var(--cyan);
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 11px;
+  padding: 8px 10px;
+  border: 1px solid var(--cyan);
+  letter-spacing: 1px;
+  word-break: break-all;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tip-address .zap {
+  color: var(--yellow);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+#qr-canvas {
+  margin: 0 auto 10px;
+  border: 4px solid var(--yellow);
+  display: inline-block;
+  background: #fff;
+  padding: 6px;
+}
+.tip-note {
+  font-size: 10px;
+  color: #a08040;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+/* ── FOOTER ──────────────────────────────────── */
+.newspaper-footer {
+  position: relative;
+  z-index: 1;
+  background: var(--ink);
+  color: var(--yellow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px;
+  font-family: 'Zen Dots', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-logo {
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.footer-back {
+  background: var(--orange);
+  color: var(--dark);
+  padding: 6px 14px;
+  font-family: 'Boogaloo', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  border: 2px solid var(--yellow);
+  transition: transform .1s;
+  display: inline-block;
+}
+.footer-back:hover { transform: scale(1.04); }
+
+/* ── OUTER WRAPPER ───────────────────────────── */
+.outer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 0 24px;
+}
+.outer-border {
+  border-left: 5px solid var(--rule);
+  border-right: 5px solid var(--rule);
+}
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 800px) {
+  .masthead-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .masthead-meta-left,
+  .masthead-meta-right {
+    border: none;
+    padding: 0;
+    text-align: center;
+  }
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+  .col-left, .col-center {
+    border-right: none;
+    border-bottom: 3px double var(--rule);
+  }
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+  .bottom-left {
+    border-right: none;
+    border-bottom: 3px double var(--rule);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ 号外バナー ═══════════════════════════════ -->
+<div class="gougai-banner" role="banner">
+  <span class="gougai-lightning">⚡</span>
+  <span class="gougai-text">号　外</span>
+  <span class="gougai-lightning">₿</span>
+  <span class="gougai-text">GOUGAI</span>
+  <span class="gougai-lightning">⚡</span>
+</div>
+
+<!-- ══ 題字 MASTHEAD ════════════════════════════ -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-meta-left">
+      <strong>発行：BITCOIN バチーン！</strong>
+      <span id="pub-date">令和7年 春</span><br>
+      <span>紙面案内 第一号</span>
+    </div>
+    <div class="masthead-title-block">
+      <span class="masthead-ruby">びっとこいん・ばちーん！</span>
+      <div class="masthead-logo">BITCOIN <span>バチーン！</span></div>
+      <span class="masthead-sub">⚡ 日 報 ⚡ NIPPŌ ⚡ DAILY ⚡</span>
+    </div>
+    <div class="masthead-meta-right">
+      <strong>サウンドマネーの時代</strong>
+      <span>クイズ・コラム・マンガ</span><br>
+      <span>bitcoin教育メディア</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══ TICKER ════════════════════════════════════ -->
+<div class="ticker-wrap" aria-label="ティッカー">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">⚡ BITCOIN ⚡</span>
+    <span class="ticker-item">₿ サウンドマネー革命</span>
+    <span class="ticker-item">⚡ 2100万枚の約束</span>
+    <span class="ticker-item">₿ 分散型台帳 革命</span>
+    <span class="ticker-item">⚡ HODL HODL HODL</span>
+    <span class="ticker-item">₿ インフレに勝てるか？</span>
+    <span class="ticker-item">⚡ 中央銀行よ、さらば</span>
+    <span class="ticker-item">₿ BITCOIN バチーン！</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">⚡ BITCOIN ⚡</span>
+    <span class="ticker-item">₿ サウンドマネー革命</span>
+    <span class="ticker-item">⚡ 2100万枚の約束</span>
+    <span class="ticker-item">₿ 分散型台帳 革命</span>
+    <span class="ticker-item">⚡ HODL HODL HODL</span>
+    <span class="ticker-item">₿ インフレに勝てるか？</span>
+    <span class="ticker-item">⚡ 中央銀行よ、さらば</span>
+    <span class="ticker-item">₿ BITCOIN バチーン！</span>
+  </div>
+</div>
+
+<!-- ══ NEWSPAPER BODY ════════════════════════════ -->
+<div class="outer">
+<div class="newspaper" role="main">
+
+  <!-- セクションラベル -->
+  <div class="section-rule">⚡ 本日の紙面 &nbsp;·&nbsp; CONTENTS &nbsp;·&nbsp; 目次</div>
+
+  <!-- ── MAIN 3カラム GRID ── -->
+  <div class="main-grid">
+
+    <!-- 左カラム：コラム一覧 -->
+    <aside class="col-left">
+      <span class="col-eyebrow">コ ラ ム 欄</span>
+
+      <div class="headline-lg">📖 コラム全記事</div>
+      <p class="article-body">ビットコインと経済の本質に迫る読み物。インフレ・自由市場・サウンドマネーを徹底解説。</p>
+      <hr class="h-rule">
+
+      <ul class="article-list">
+        <li>
+          <span class="art-num">001</span>
+          <a href="columns/column-0001.html" class="art-link">インフレ時代がきてる？時代の変わり目には、経験ではなく歴史に学ぼう！</a>
+        </li>
+        <li>
+          <span class="art-num">003</span>
+          <a href="columns/column-0003.html" class="art-link">通貨膨張というカンフル剤の功罪！</a>
+        </li>
+        <li>
+          <span class="art-num">006</span>
+          <a href="columns/column-0006.html" class="art-link">自由市場！自由市場！自由市場！</a>
+        </li>
+        <li>
+          <span class="art-num">007</span>
+          <a href="columns/column-0007.html" class="art-link">自由の源としての自由市場</a>
+        </li>
+        <li>
+          <span class="art-num">009</span>
+          <a href="columns/column-0009.html" class="art-link">サウンドマネー① かつて貨幣の王はゴールドだった</a>
+        </li>
+        <li>
+          <span class="art-num">010</span>
+          <a href="columns/column-0010.html" class="art-link">サウンドマネー② 私たちは、ビットコインを選び、保有し、使う</a>
+        </li>
+        <li>
+          <span class="art-num">011</span>
+          <a href="columns/column-0011.html" class="art-link">ビットコインの現在地　現状と夢物語の始まり</a>
+        </li>
+        <li>
+          <span class="art-num">012</span>
+          <a href="columns/column-0012.html" class="art-link">自由と権利を守るテクノロジー　私有財産権編</a>
+        </li>
+        <li>
+          <span class="art-num">014</span>
+          <a href="columns/column-0014.html" class="art-link">自由と国家とビットコイン</a>
+        </li>
+      </ul>
+
+      <hr class="h-rule-bold">
+      <a href="columns/index.html" style="display:block; text-align:center; font-family:'Boogaloo',sans-serif; font-size:16px; letter-spacing:3px; background:var(--orange); color:var(--dark); padding:8px; border:3px solid var(--dark); margin-top:6px; transition:transform .1s; box-shadow:3px 3px 0 var(--dark);" onmouseover="this.style.transform='translate(-1px,-1px)'" onmouseout="this.style.transform=''">
+        📖 コラム一覧へ
+      </a>
+    </aside>
+
+    <!-- 中央カラム：メイン記事 -->
+    <section class="col-center">
+      <span class="col-eyebrow">特 集 面</span>
+
+      <!-- 大見出し -->
+      <div class="headline-xl">
+        <span class="kicker">⚡ 特大号外 ⚡</span><br>
+        ビットコインが世界を変える！<br>
+        <span style="font-size:0.65em; color:var(--sepia);">── あなたはまだ「お金の正体」を知らない ──</span>
+      </div>
+
+      <p class="article-body">
+        インフレという名の静かな略奪。中央銀行が刷り続ける紙幣の陰で、私たちの資産は目減りしてゆく。
+        しかし今、人類は2100万枚という絶対的な希少性を持つ「デジタルゴールド」を手に入れた。
+        本紙ではクイズ・コラム・マンガの三本柱で、ビットコインの本質に迫る。
+      </p>
+
+      <hr class="h-rule">
+
+      <!-- マンガ特集 -->
+      <div class="feature-box">
+        <div class="feature-box-header">📚 マンガ特集 &nbsp;·&nbsp; MANGA FEATURE</div>
+        <div class="feature-box-body">
+          <div class="stamp" style="float:right; margin-left:10px;">受賞作品</div>
+          <div class="headline-lg" style="border-color:var(--cyan);">ビットコイナーを嫌いになっても<br>ビットコインは嫌いにならないでください！</div>
+          <div class="manga-feature">
+            <div class="manga-thumb-wrap">
+              <a href="Manga/index.html">
+                <img src="Manga/0000.png" alt="マンガ表紙" loading="lazy">
+              </a>
+            </div>
+            <div class="manga-info">
+              <p class="article-body">
+                ビットコイン漫画コンテストで受賞した作品。主人公は偏見を持ちながらもBitcoinの本質に気づいていく。笑いあり、驚きあり。レトロポップな絵柄で描かれる現代の経済寓話。
+              </p>
+              <hr class="h-rule">
+              <a href="Manga/index.html" style="display:inline-block; margin-top:8px; font-family:'Boogaloo',sans-serif; font-size:16px; letter-spacing:2px; background:var(--dark); color:var(--yellow); padding:7px 16px; border:3px solid var(--orange); transition:transform .1s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">
+                📚 マンガを読む ⚡
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- このサイトについて -->
+      <div class="feature-box" style="margin-bottom:0;">
+        <div class="feature-box-header">🗞 本紙について &nbsp;·&nbsp; ABOUT</div>
+        <div class="feature-box-body">
+          <p class="article-body">
+            <strong>BITCOIN バチーン！</strong>は、ビットコインと経済の基礎を「クイズ」「コラム」「マンガ」で楽しく学べる無料教育メディアです。
+            堅苦しい経済学の話も、昭和レトロポップなデザインと漫画文法で噛み砕いて届けます。サウンドマネーの世界へようこそ。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右カラム：クイズ＋速報 -->
+    <aside class="col-right">
+      <span class="col-eyebrow">ク イ ズ 欄</span>
+
+      <!-- クイズBOX -->
+      <div class="quiz-box">
+        <div class="quiz-box-header">⚡ クイズ ⚡</div>
+        <div class="quiz-box-body">
+          <div class="quiz-stat">BITCOIN QUIZ &nbsp;·&nbsp; 全問挑戦</div>
+          <p class="quiz-desc">
+            ビットコイン・インフレ・自由市場・サウンドマネー——知識を試せる本格クイズ。あなたは何問正解できる？
+          </p>
+          <a href="Quiz/quiz-top.html" class="quiz-btn">⚡ クイズに挑戦！ ⚡</a>
+        </div>
+      </div>
+
+      <!-- 速報的メモ -->
+      <div class="feature-box">
+        <div class="feature-box-header">📣 速 報</div>
+        <div class="feature-box-body" style="padding:10px 12px;">
+          <p class="headline-sm">2100万という壁</p>
+          <p class="article-body">ビットコインの発行上限は永遠に2100万枚。これはプロトコルに刻まれた「約束」であり、誰も変えられない。</p>
+          <hr class="h-rule">
+          <p class="headline-sm">半減期という事件</p>
+          <p class="article-body">約4年ごとに採掘報酬が半分になる。希少性が増すたびに、世界が注目する。</p>
+          <hr class="h-rule">
+          <p class="headline-sm">あなた自身が銀行になれる</p>
+          <p class="article-body">自己管理ウォレットがあれば、誰の許可もいらない。これがビットコインの真髄だ。</p>
+        </div>
+      </div>
+
+    </aside>
+  </div><!-- /main-grid -->
+
+  <!-- ── BOTTOM 2カラム GRID ── -->
+  <div class="section-rule">📰 社告欄 &nbsp;·&nbsp; NOTICE &nbsp;·&nbsp; 作者・投げ銭</div>
+  <div class="bottom-grid">
+
+    <!-- 作者紹介 -->
+    <div class="bottom-left">
+      <div class="headline-sm" style="font-size:14px; border-color:var(--orange);">📰 作者紹介 &nbsp;<span class="stamp-new">PROFILE</span></div>
+      <hr class="h-rule">
+      <div class="author-card">
+        <div class="author-avatar">₿</div>
+        <div>
+          <div class="author-name">Dai-nonsugar<span class="reading">だい・のんしゅがー</span></div>
+          <p class="author-bio">
+            ビットコイン・サウンドマネー・自由市場に魅せられた在野の書き手。「お金の仕組み」を漫画とクイズとコラムで伝えることをライフワークとする。堅苦しい経済の話を、昭和ポップな温度で届けたい。
+          </p>
+          <div class="contact-line">
+            📬 お問い合わせ：<a href="mailto:Dai-nonsugar@bitcoinbacheen.com">Dai-nonsugar@bitcoinbacheen.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightning チップ -->
+    <div class="bottom-right">
+      <div class="tip-box">
+        <div class="tip-title">⚡ チップ歓迎！ ⚡</div>
+        <div class="tip-sub">LIGHTNING TIP &nbsp;·&nbsp; ZAPS WELCOME</div>
+        <div id="qr-canvas"></div>
+        <div class="tip-address">
+          <span class="zap">⚡</span>
+          <span>Dai-nonsugar@bitcoinbacheen.com</span>
+          <span class="zap">⚡</span>
+        </div>
+        <p class="tip-note" style="color:#a0c8d0;">↑ Lightning Address をウォレットにコピーしてお送りください</p>
+        <p class="tip-note">QRコードはLightning対応ウォレットでスキャン</p>
+      </div>
+    </div>
+
+  </div><!-- /bottom-grid -->
+
+  <!-- フッター -->
+  <div class="newspaper-footer">
+    <span class="footer-logo">₿ BITCOIN バチーン！日報</span>
+    <span>© Dai-nonsugar — bitcoinbacheen.com</span>
+    <a href="index.html" class="footer-back">← トップへ戻る</a>
+  </div>
+
+</div><!-- /newspaper -->
+</div><!-- /outer -->
+
+<script>
+/* ─── 発行日を今日の日付で設定 ─── */
+(function() {
+  const d = new Date();
+  const reiwa = d.getFullYear() - 2018;
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  const el = document.getElementById('pub-date');
+  if (el) el.textContent = `令和${reiwa}年 ${m}月${day}日`;
+})();
+
+/* ─── QR コード生成 ─── */
+(function() {
+  const container = document.getElementById('qr-canvas');
+  if (!container || typeof QRCode === 'undefined') return;
+  new QRCode(container, {
+    text: 'lightning:Dai-nonsugar@bitcoinbacheen.com',
+    width: 150,
+    height: 150,
+    colorDark: '#140800',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+})();
+</script>
+
+</body>
+</html>
