@@ -1123,7 +1123,8 @@
 </footer>
 
 <script>
-  const CG = 'https://api.coingecko.com/api/v3';
+  const BINANCE = 'https://api.binance.com/api/v3';
+  const CG      = 'https://api.coingecko.com/api/v3';
   let currentDays = 1;
 
   // ── HELPERS ──────────────────────────────────────────
@@ -1135,51 +1136,56 @@
     return fmtJpy(n);
   };
 
-  // ── PRICE & STATS ─────────────────────────────────────
+  // ── PRICE & STATS (Binance — API key不要・高速) ────────
   async function fetchPrice() {
     try {
-      // /coins/markets は high_24h・low_24h を確実に返す
-      const [marketsRes, usdRes] = await Promise.all([
-        fetch(`${CG}/coins/markets?vs_currency=jpy&ids=bitcoin`),
-        fetch(`${CG}/simple/price?ids=bitcoin&vs_currencies=usd`)
+      const [jpyRes, usdRes] = await Promise.all([
+        fetch(`${BINANCE}/ticker/24hr?symbol=BTCJPY`),
+        fetch(`${BINANCE}/ticker/price?symbol=BTCUSDT`)
       ]);
-      const [b] = await marketsRes.json();
-      const usd = (await usdRes.json()).bitcoin.usd;
+      const b   = await jpyRes.json();
+      const usd = await usdRes.json();
 
-      document.getElementById('price').textContent   = fmtJpy(b.current_price);
-      document.getElementById('high24h').textContent = fmtJpy(b.high_24h);
-      document.getElementById('low24h').textContent  = fmtJpy(b.low_24h);
+      const price  = parseFloat(b.lastPrice);
+      const high   = parseFloat(b.highPrice);
+      const low    = parseFloat(b.lowPrice);
+      const chg    = parseFloat(b.priceChangePercent);
+      const vol    = parseFloat(b.quoteVolume);   // JPY建て出来高
+      const usdPx  = parseFloat(usd.price);
+      const SUPPLY = 19_870_000;                  // 流通量概算 (BTC)
+      const mcap   = price * SUPPLY;
 
-      const chg = b.price_change_percentage_24h;
+      document.getElementById('price').textContent   = fmtJpy(price);
+      document.getElementById('high24h').textContent = fmtJpy(high);
+      document.getElementById('low24h').textContent  = fmtJpy(low);
+
       const chgEl = document.getElementById('change24h');
       chgEl.textContent = (chg >= 0 ? '⚡ +' : '⚡ ') + chg.toFixed(2) + '%';
       chgEl.style.color = chg >= 0 ? 'var(--red)' : '#1e90ff';
 
-      const sign    = chg >= 0 ? '▲' : '▼';
-      const chgStr  = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+      const sign   = chg >= 0 ? '▲' : '▼';
+      const chgStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
       document.querySelectorAll('.t-btcjpy').forEach(el =>
-        el.textContent = `BTC/JPY ${fmtJpy(b.current_price)} ${sign}${chgStr}`);
+        el.textContent = `BTC/JPY ${fmtJpy(price)} ${sign}${chgStr}`);
       document.querySelectorAll('.t-btcusd').forEach(el =>
-        el.textContent = `BTC/USD ${fmtUsd(usd)} ${sign}${chgStr}`);
+        el.textContent = `BTC/USD ${fmtUsd(usdPx)} ${sign}${chgStr}`);
       document.querySelectorAll('.t-mcap').forEach(el =>
-        el.textContent = '時価総額 ' + fmtLarge(b.market_cap));
+        el.textContent = '時価総額 ' + fmtLarge(mcap));
       document.querySelectorAll('.t-vol').forEach(el =>
-        el.textContent = '24h出来高 ' + fmtLarge(b.total_volume));
+        el.textContent = '24h出来高 ' + fmtLarge(vol));
       document.querySelectorAll('.t-supply').forEach(el =>
-        el.textContent = '流通量 ' + (b.circulating_supply / 1e6).toFixed(2) + 'M BTC');
+        el.textContent = '流通量 ' + (SUPPLY / 1e6).toFixed(2) + 'M BTC');
 
-      // API成功時：非表示になっていた価格アイテムを復元
       document.querySelectorAll('.ticker-item.t-price-item').forEach(el =>
         el.style.display = '');
     } catch (e) {
-      console.warn('Price API:', e);
-      // API失敗時：数値アイテムを非表示にしてキャッチコピーのみ流す
+      console.warn('Price API (Binance):', e);
       document.querySelectorAll('.ticker-item.t-price-item').forEach(el =>
         el.style.display = 'none');
     }
   }
 
-  // ── DOMINANCE ─────────────────────────────────────────
+  // ── DOMINANCE (CoinGecko — Binanceでは取得不可) ────────
   async function fetchDominance() {
     try {
       const r = await fetch(`${CG}/global`);
@@ -1200,13 +1206,22 @@
     } catch (e) {}
   }
 
-  // ── CHART DATA ────────────────────────────────────────
+  // ── CHART DATA (Binance klines) ────────────────────────
+  // days → [interval, limit]
+  const CHART_CFG = { 1: ['1h', 24], 7: ['4h', 42], 30: ['1d', 30] };
+
   async function fetchChart(days) {
     currentDays = days;
     try {
-      const r = await fetch(`${CG}/coins/bitcoin/market_chart?vs_currency=jpy&days=${days}`);
-      drawChart((await r.json()).prices);
-    } catch (e) { console.warn('Chart API:', e); }
+      const [interval, limit] = CHART_CFG[days] || ['1h', 24];
+      const r = await fetch(
+        `${BINANCE}/klines?symbol=BTCJPY&interval=${interval}&limit=${limit}`
+      );
+      // Binance klines: [openTime, open, high, low, close, ...]
+      // drawChart は [[timestamp, price], ...] 形式を期待
+      const prices = (await r.json()).map(k => [k[0], parseFloat(k[4])]);
+      drawChart(prices);
+    } catch (e) { console.warn('Chart API (Binance):', e); }
   }
 
   function drawChart(prices) {
