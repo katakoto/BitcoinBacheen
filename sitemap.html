@@ -6,7 +6,6 @@
 <title>紙面案内 — BITCOIN バチーン！日報</title>
 <meta name="description" content="BITCOIN バチーン！の全コンテンツ案内。クイズ・コラム・マンガが一覧できる号外紙面。">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@400;700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 /* ── ROOT ─────────────────────────────────────── */
 :root {
@@ -937,14 +936,17 @@ a { color: inherit; text-decoration: none; }
       <div class="headline-sm" style="font-size:14px; border-color:var(--orange);">📰 作者紹介 &nbsp;<span class="stamp-new">PROFILE</span></div>
       <hr class="h-rule">
       <div class="author-card">
-        <div class="author-avatar">₿</div>
+        <div class="author-avatar" style="background:none; border:none; padding:0;">
+          <img src="profile/260313kappa.png" alt="Dai-nonsugar" style="width:64px; height:64px; object-fit:cover; border:3px solid var(--dark); display:block;">
+        </div>
         <div>
           <div class="author-name">Dai-nonsugar<span class="reading">だい・のんしゅがー</span></div>
           <p class="author-bio">
-            「ビットコイン＝お金の仕組み」を漫画とクイズとコラムで伝えることをライフワークとする。堅苦しい経済の話を、ポップな温度で届けたい。
+            ビットコイナー修行中！バチーン！！
           </p>
           <div class="contact-line">
-            📬 お問い合わせ：<a href="mailto:Dai-nonsugar@bitcoinbacheen.com">Dai-nonsugar@bitcoinbacheen.com</a>
+            📬 お問い合わせ：<a href="mailto:info@dai-nonsugar.com">info@dai-nonsugar.com</a><br>
+            𝕏 <a href="https://x.com/dainonsugar2026" target="_blank" rel="noopener">@dainonsugar2026</a>
           </div>
         </div>
       </div>
@@ -955,10 +957,10 @@ a { color: inherit; text-decoration: none; }
       <div class="tip-box">
         <div class="tip-title">⚡ チップ歓迎！ ⚡</div>
         <div class="tip-sub">LIGHTNING TIP &nbsp;·&nbsp; ZAPS WELCOME</div>
-        <div id="qr-canvas"></div>
+        <img src="profile/lightningQR.png" alt="Lightning QR" id="qr-canvas" style="width:162px; height:162px; display:block;">
         <div class="tip-address">
           <span class="zap">⚡</span>
-          <span>Dai-nonsugar@bitcoinbacheen.com</span>
+          <span>dai-nonsugar@walletofsatoshi.com</span>
           <span class="zap">⚡</span>
         </div>
         <p class="tip-note" style="color:#a0c8d0;">↑ Lightning Address をウォレットにコピーしてお送りください</p>
@@ -989,19 +991,6 @@ a { color: inherit; text-decoration: none; }
   if (el) el.textContent = `令和${reiwa}年 ${m}月${day}日`;
 })();
 
-/* ─── QR コード生成 ─── */
-(function() {
-  const container = document.getElementById('qr-canvas');
-  if (!container || typeof QRCode === 'undefined') return;
-  new QRCode(container, {
-    text: 'lightning:Dai-nonsugar@bitcoinbacheen.com',
-    width: 150,
-    height: 150,
-    colorDark: '#140800',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
-})();
 </script>
 
 </body>
