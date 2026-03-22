@@ -315,54 +315,54 @@ async function runSequence() {
   await wait(100);
 
   // 1. 白フラッシュ①
-  await flash(flashEl, '1', 60);
-  await flash(flashEl, '0', 120);
-  await wait(80);
+  await flash(flashEl, '1', 80);
+  await flash(flashEl, '0', 180);
+  await wait(120);
 
   // 2. 稲妻エフェクト
   await lightningBurst();
-  await wait(100);
+  await wait(200);
 
   // 3. 「Bitcoinバチーン！」スケールイン
   spawnSparks(stage);
-  bacheen.style.transition = 'opacity 200ms ease, transform 280ms cubic-bezier(0.175,0.885,0.32,1.4)';
+  bacheen.style.transition = 'opacity 300ms ease, transform 400ms cubic-bezier(0.175,0.885,0.32,1.4)';
   bacheen.style.opacity = '1';
   bacheen.style.transform = 'scale(1)';
-  await wait(350);
+  await wait(700);
 
   // 4. 白フラッシュ②（軽め）
-  await flash(flashEl, '0.6', 50);
-  await flash(flashEl, '0', 100);
-  await wait(200);
-
-  // 5. 「お金の常識を、」
-  sub1.style.transition = 'opacity 220ms ease, transform 280ms cubic-bezier(0.175,0.885,0.32,1.4)';
-  sub1.style.opacity = '1';
-  sub1.style.transform = 'scale(1)';
+  await flash(flashEl, '0.6', 80);
+  await flash(flashEl, '0', 150);
   await wait(300);
 
+  // 5. 「お金の常識を、」
+  sub1.style.transition = 'opacity 300ms ease, transform 380ms cubic-bezier(0.175,0.885,0.32,1.4)';
+  sub1.style.opacity = '1';
+  sub1.style.transform = 'scale(1)';
+  await wait(600);
+
   // 6. 「ぶっ壊せ。」
-  sub2.style.transition = 'opacity 220ms ease, transform 300ms cubic-bezier(0.175,0.885,0.32,1.4)';
+  sub2.style.transition = 'opacity 300ms ease, transform 400ms cubic-bezier(0.175,0.885,0.32,1.4)';
   sub2.style.opacity = '1';
   sub2.style.transform = 'scale(1)';
   spawnSparks(stage);
-  await wait(380);
+  await wait(700);
 
   // 7. 「Smash the money myth.」
-  enTxt.style.transition = 'opacity 400ms ease, transform 400ms ease';
+  enTxt.style.transition = 'opacity 500ms ease, transform 500ms ease';
   enTxt.style.opacity = '1';
   enTxt.style.transform = 'translateY(0)';
-  await wait(450);
+  await wait(800);
 
   // 8. テキストフェードアウト → マスコットがスライドイン
   [bacheen, sub1, sub2, enTxt].forEach(el => {
-    el.style.transition = 'opacity 300ms ease';
+    el.style.transition = 'opacity 400ms ease';
     el.style.opacity = '0';
   });
-  await wait(300);
-  mascot.style.transition = 'bottom 600ms cubic-bezier(0.175,0.885,0.32,1.2)';
+  await wait(450);
+  mascot.style.transition = 'bottom 900ms cubic-bezier(0.175,0.885,0.32,1.2)';
   mascot.style.bottom = '0';
-  await wait(650);
+  await wait(1100);
 
   // 追加稲妻（締め）
   await lightningBurst();
