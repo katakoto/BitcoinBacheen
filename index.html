@@ -1043,6 +1043,69 @@
   }
 
   /* ─────────────────────────────────────
+     MEME SECTION
+  ───────────────────────────────────── */
+  .meme-section {
+    position: relative; z-index: 10;
+    max-width: 860px;
+    margin: 0 auto 0;
+    padding: 0 24px 48px;
+  }
+  .meme-inner {
+    background: #0a0a0a;
+    border: 4px solid var(--orange);
+    border-radius: 14px 255px 12px 255px / 255px 12px 255px 14px;
+    box-shadow: 8px 8px 0 var(--dark);
+    padding: 28px 28px 32px;
+    text-align: center;
+  }
+  .meme-desc {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 14px;
+    color: #bbb;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .meme-thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .meme-thumbs img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #222;
+    transition: border-color .2s;
+  }
+  .meme-thumbs img:hover { border-color: var(--orange); }
+  .meme-btn {
+    display: inline-block;
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    background: #111;
+    border: 4px solid var(--orange);
+    border-radius: 10px 200px 8px 200px / 200px 8px 200px 10px;
+    padding: 12px 36px;
+    box-shadow: 6px 6px 0 var(--orange);
+    text-decoration: none;
+    transition: all .15s;
+  }
+  .meme-btn:hover {
+    background: var(--orange);
+    color: var(--dark);
+    transform: translate(-3px,-3px);
+    box-shadow: 9px 9px 0 var(--dark);
+  }
+  @media (max-width: 480px) {
+    .meme-thumbs { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─────────────────────────────────────
      FOOTER
   ───────────────────────────────────── */
   footer {
@@ -1495,6 +1558,22 @@
   </div>
 </div>
 
+<!-- ═══════════════════ MEME GALLERY ═══════════════════ -->
+<div class="sfx-head"><h2>ミーム画像<em>⚡</em>シェアしよ！</h2></div>
+
+<div class="meme-section">
+  <div class="meme-inner">
+    <p class="meme-desc">お金の常識を、ぶっ壊せ。— 気に入ったミーム画像を X でシェアしよう！</p>
+    <div class="meme-thumbs">
+      <img src="Quiz/images/0014/83.png" alt="ミーム画像サンプル1">
+      <img src="Quiz/images/0007/40.png" alt="ミーム画像サンプル2">
+      <img src="Quiz/images/0010/80.png" alt="ミーム画像サンプル3">
+      <img src="Quiz/images/0001/83.png" alt="ミーム画像サンプル4">
+    </div>
+    <a href="meme/gallery.html" class="meme-btn">⚡ ミーム画像ギャラリー ⚡</a>
+  </div>
+</div>
+
 <!-- ═══════════════════ CTA ═══════════════════ -->
 <div class="cta-section">
   <div><div class="cta-tag">さあ、カモン！！</div></div>
@@ -1507,6 +1586,7 @@
     </div>
     <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
     <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
+    <a class="cta-btn cta-btn-col" href="meme/gallery.html">🖼 ミームをシェア</a>
   </div>
   <p class="cta-note">※ 投資は自己責任でお願いします / クイズやコラムをよく理解した上でご利用ください</p>
 </div>
