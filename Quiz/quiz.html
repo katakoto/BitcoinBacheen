@@ -141,7 +141,7 @@
   .btn-maru:active, .btn-batu:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--dark); }
 
   /* ── A / B BUTTONS ── */
-  .btn-a, .btn-b {
+  .btn-a, .btn-b, .btn-c {
     flex: 1;
     padding: 22px 10px;
     border: 6px solid var(--dark);
@@ -157,9 +157,11 @@
   }
   .btn-a { color: var(--orange); }
   .btn-b { color: var(--wrong); }
+  .btn-c { color: #7B2FFF; }
   .btn-a:hover { background: #fff0d0; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
   .btn-b:hover { background: #d0e4ff; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
-  .btn-a:active, .btn-b:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--dark); }
+  .btn-c:hover { background: #f0d8ff; transform: translate(-4px,-4px); box-shadow: 10px 10px 0 var(--dark); }
+  .btn-a:active, .btn-b:active, .btn-c:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 var(--dark); }
 
   /* ── RESULT BANNER ── */
   .result-banner {
@@ -347,14 +349,14 @@
 <div id="sadOverlay"></div>
 
 <div class="quiz-header">
-  <a href="quiz-top.html" class="back-btn">← クイズTOPへ</a>
+  <a href="quiz-top.html" class="back-btn" id="backBtn">← クイズTOPへ</a>
   <h1>⚡ クイズに挑戦 ⚡</h1>
 </div>
 
 <div class="progress-bar">
   <div class="progress-fill" id="progressFill" style="width:0%"></div>
 </div>
-<div class="progress-label" id="progressLabel">1 / 20</div>
+<div class="progress-label" id="progressLabel">1 / ...</div>
 
 <div class="quiz-area">
 
@@ -377,6 +379,13 @@
       <button class="btn-a" onclick="answer('a')">A</button>
       <button class="btn-b" onclick="answer('b')">B</button>
     </div>
+
+    <!-- A/B/C ボタン -->
+    <div class="answer-btns hidden" id="abcBtns">
+      <button class="btn-a" onclick="answer('a')">A</button>
+      <button class="btn-b" onclick="answer('b')">B</button>
+      <button class="btn-c" onclick="answer('c')">C</button>
+    </div>
   </div>
 
   <!-- 解説フェーズ -->
@@ -393,7 +402,7 @@
   <div id="completeScreen" class="hidden complete-screen">
     <h2 id="completeTitle">全問クリア！！⚡</h2>
     <div class="score-display">
-      <span class="num" id="finalScore">0</span> / <span id="finalTotal">20</span>
+      <span class="num" id="finalScore">0</span> / <span id="finalTotal">295</span>
     </div>
     <p class="score-comment" id="scoreComment"></p>
     <button class="btn-next" onclick="restartQuiz()">⚡ もう一度挑戦！</button>
@@ -403,31 +412,335 @@
 </div>
 
 <script>
-// ── クイズデータ（type:'ox' or 'ab'、answer:'maru'|'batsu'|'a'|'b'）
+// ── クイズデータ（type:'ox'|'ab'|'abc'、answer:'maru'|'batsu'|'a'|'b'|'c'）
 const QUIZZES = [
-  { folder:'quiz-0001-01',    images:['13.png','14.png','15.png','16.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
-  { folder:'quiz-0001-03',    images:['21.png','22.png','23.png','24.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
-  { folder:'quiz-0001-14',    images:['65.png','66.png','67.png','68.png'], type:'ox', answer:'maru',  column:'../columns/column-0001.html' },
-  { folder:'quiz-0002-06',    images:['28.png','29.png','30.png','31.png'], type:'ox', answer:'maru',  column: null },
-  { folder:'quiz-0002-08',    images:['36.png','37.png','38.png','39.png'], type:'ox', answer:'batsu', column: null },
-  { folder:'quiz-0003-09',    images:['36.png','37.png','38.png','39.png'], type:'ox', answer:'maru',  column:'../columns/column-0003.html' },
-  { folder:'quiz-0003-10',    images:['40.png','41.png','42.png','43.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
-  { folder:'quiz-0003-13',    images:['52.png','53.png','54.png','55.png'], type:'ab', answer:'a',     column:'../columns/column-0003.html' },
-  { folder:'quiz-0003-16',    images:['64.png','65.png','66.png','67.png'], type:'ab', answer:'b',     column:'../columns/column-0003.html' },
-  { folder:'quiz-0007-02',    images:['11.png','12.png','13.png','14.png'], type:'ab', answer:'a',     column:'../columns/column-0007.html' },
-  { folder:'quiz-0007-04',    images:['19.png','20.png','21.png','22.png'], type:'ab', answer:'b',     column:'../columns/column-0007.html' },
-  { folder:'quiz-0008-08-10', images:['35.png','36.png','37.png','38.png'], type:'ab', answer:'b',     column: null },
-  { folder:'quiz-0008-08-10', images:['39.png','40.png','41.png','42.png'], type:'ab', answer:'b',     column: null },
-  { folder:'quiz-0008-08-10', images:['43.png','44.png','45.png','46.png'], type:'ab', answer:'b',     column: null },
-  { folder:'quiz-0009-01',    images:['7.png','8.png','9.png','10.png'],    type:'ab', answer:'a',     column:'../columns/column-0009.html' },
-  { folder:'quiz-0010-11',    images:['47.png','48.png','49.png','50.png'], type:'ab', answer:'b',     column:'../columns/column-0010.html' },
-  { folder:'quiz-0010-19',    images:['79.png','80.png','81.png','82.png'], type:'ox', answer:'batsu', column:'../columns/column-0010.html' },
-  { folder:'quiz-0011-06',    images:['28.png','29.png','30.png','31.png'], type:'ab', answer:'a',     column:'../columns/column-0011.html' },
-  { folder:'quiz-0011-09',    images:['39.png','40.png','41.png','42.png'], type:'ab', answer:'b',     column:'../columns/column-0011.html' },
-  { folder:'quiz-0014-10',    images:['43.png','44.png','45.png','46.png'], type:'ab', answer:'a',     column:'../columns/column-0014.html' },
+  { folder:'images/0000', images:['1.png', '2.png', '3.png', '4.png'], type:'ab', answer:'b', column:'../columns/column-0000.html' },
+  { folder:'images/0001', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['6.png', '7.png', '8.png', '9.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['10.png', '11.png', '12.png', '13.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['14.png', '15.png', '16.png', '17.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['18.png', '19.png', '20.png', '21.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['22.png', '23.png', '24.png', '25.png'], type:'ox', answer:'maru', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['26.png', '27.png', '28.png', '29.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['30.png', '31.png', '32.png', '33.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['34.png', '35.png', '36.png', '37.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['42.png', '43.png', '44.png', '45.png'], type:'ox', answer:'maru', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['46.png', '47.png', '48.png', '49.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['50.png', '51.png', '52.png', '53.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['54.png', '55.png', '56.png', '57.png'], type:'ox', answer:'maru', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['58.png', '59.png', '60.png', '61.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['62.png', '63.png', '64.png', '65.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['66.png', '67.png', '68.png', '69.png'], type:'ox', answer:'maru', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['70.png', '71.png', '72.png', '73.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['74.png', '75.png', '76.png', '77.png'], type:'ox', answer:'maru', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['78.png', '79.png', '80.png', '81.png'], type:'ox', answer:'batsu', column:'../columns/column-0001.html' },
+  { folder:'images/0001', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0001.html' },
+  { folder:'images/0002', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['6.png', '7.png', '8.png', '9.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['10.png', '11.png', '12.png', '13.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['14.png', '15.png', '16.png', '17.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['18.png', '19.png', '20.png', '21.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['22.png', '23.png', '24.png', '25.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['26.png', '27.png', '28.png', '29.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['30.png', '31.png', '32.png', '33.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['34.png', '35.png', '36.png', '37.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['42.png', '43.png', '44.png', '45.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['46.png', '47.png', '48.png', '49.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['50.png', '51.png', '52.png', '53.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['54.png', '55.png', '56.png', '57.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['58.png', '59.png', '60.png', '61.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['62.png', '63.png', '64.png', '65.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['66.png', '67.png', '68.png', '69.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['70.png', '71.png', '72.png', '73.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['74.png', '75.png', '76.png', '77.png'], type:'ox', answer:'batsu', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['78.png', '79.png', '80.png', '81.png'], type:'ox', answer:'maru', column:'../columns/column-0002.html' },
+  { folder:'images/0002', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0002.html' },
+  { folder:'images/0003', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'maru', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['6.png', '7.png', '8.png', '9.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['14.png', '15.png', '16.png', '17.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['22.png', '23.png', '24.png', '25.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['30.png', '31.png', '32.png', '33.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['34.png', '35.png', '36.png', '37.png'], type:'ox', answer:'maru', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'batsu', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'a', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['54.png', '55.png', '56.png', '57.png'], type:'abc', answer:'c', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['58.png', '59.png', '60.png', '61.png'], type:'abc', answer:'c', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['66.png', '67.png', '68.png', '69.png'], type:'abc', answer:'c', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['70.png', '71.png', '72.png', '73.png'], type:'abc', answer:'c', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'a', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0003', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0003.html' },
+  { folder:'images/0004', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['10.png', '11.png', '12.png', '13.png'], type:'ox', answer:'batsu', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['54.png', '55.png', '56.png', '57.png'], type:'ox', answer:'batsu', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'a', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['62.png', '63.png', '64.png', '65.png'], type:'ox', answer:'batsu', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['66.png', '67.png', '68.png', '69.png'], type:'ox', answer:'batsu', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0004.html' },
+  { folder:'images/0004', images:['82.png', '83.png'], type:'ab', answer:'b', column:null },
+  { folder:'images/0005', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['26.png', '27.png', '28.png', '29.png'], type:'abc', answer:'c', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'maru', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['50.png', '51.png', '52.png', '53.png'], type:'ox', answer:'batsu', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['54.png', '55.png', '56.png', '57.png'], type:'ox', answer:'maru', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['66.png', '67.png', '68.png', '69.png'], type:'ox', answer:'batsu', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['74.png', '75.png', '76.png', '77.png'], type:'abc', answer:'c', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0005', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0005.html' },
+  { folder:'images/0006', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'batsu', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['30.png', '31.png', '32.png', '33.png'], type:'abc', answer:'c', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0006', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0006.html' },
+  { folder:'images/0007', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'a', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'a', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['10.png', '11.png', '12.png', '13.png'], type:'ox', answer:'maru', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['26.png', '27.png', '28.png', '29.png'], type:'ox', answer:'batsu', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'maru', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['42.png', '43.png', '44.png', '45.png'], type:'ox', answer:'batsu', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'a', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['58.png', '59.png', '60.png', '61.png'], type:'ox', answer:'maru', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['70.png', '71.png', '72.png', '73.png'], type:'ox', answer:'batsu', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['74.png', '75.png', '76.png', '77.png'], type:'ox', answer:'batsu', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0007', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0007.html' },
+  { folder:'images/0008', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'batsu', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'a', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['18.png', '19.png', '20.png', '21.png'], type:'ox', answer:'maru', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'a', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['54.png', '55.png', '56.png', '57.png'], type:'abc', answer:'c', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['62.png', '63.png', '64.png', '65.png'], type:'ox', answer:'batsu', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['66.png', '67.png', '68.png', '69.png'], type:'abc', answer:'c', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['74.png', '75.png', '76.png', '77.png'], type:'abc', answer:'c', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'a', column:'../columns/column-0008.html' },
+  { folder:'images/0008', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0008.html' },
+  { folder:'images/0009', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['10.png', '11.png', '12.png', '13.png'], type:'abc', answer:'c', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['14.png', '15.png', '16.png', '17.png'], type:'abc', answer:'c', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['46.png', '47.png', '48.png', '49.png'], type:'ox', answer:'maru', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['50.png', '51.png', '52.png', '53.png'], type:'abc', answer:'c', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'a', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['78.png', '79.png', '80.png', '81.png'], type:'ox', answer:'batsu', column:'../columns/column-0009.html' },
+  { folder:'images/0009', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0009.html' },
+  { folder:'images/0010', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['26.png', '27.png', '28.png', '29.png'], type:'abc', answer:'c', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['74.png', '75.png', '76.png', '77.png'], type:'ox', answer:'batsu', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0010', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0010.html' },
+  { folder:'images/0011', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'batsu', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['58.png', '59.png', '60.png', '61.png'], type:'ox', answer:'batsu', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'a', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['70.png', '71.png', '72.png', '73.png'], type:'ox', answer:'batsu', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0011', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0011.html' },
+  { folder:'images/0012', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['6.png', '7.png', '8.png', '9.png'], type:'abc', answer:'c', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['38.png', '39.png', '40.png', '41.png'], type:'ox', answer:'batsu', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['54.png', '55.png', '56.png', '57.png'], type:'ox', answer:'batsu', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'a', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['78.png', '79.png', '80.png', '81.png'], type:'abc', answer:'c', column:'../columns/column-0012.html' },
+  { folder:'images/0012', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0012.html' },
+  { folder:'images/0013', images:['2.png', '3.png', '4.png', '5.png'], type:'ox', answer:'maru', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['26.png', '27.png', '28.png', '29.png'], type:'abc', answer:'c', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['54.png', '55.png', '56.png', '57.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'a', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['70.png', '71.png', '72.png', '73.png'], type:'ox', answer:'batsu', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['74.png', '75.png', '76.png', '77.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['78.png', '79.png', '80.png', '81.png'], type:'ox', answer:'batsu', column:'../columns/column-0013.html' },
+  { folder:'images/0013', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0013.html' },
+  { folder:'images/0014', images:['2.png', '3.png', '4.png', '5.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['6.png', '7.png', '8.png', '9.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['10.png', '11.png', '12.png', '13.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['14.png', '15.png', '16.png', '17.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['18.png', '19.png', '20.png', '21.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['22.png', '23.png', '24.png', '25.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['26.png', '27.png', '28.png', '29.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['30.png', '31.png', '32.png', '33.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['34.png', '35.png', '36.png', '37.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['38.png', '39.png', '40.png', '41.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['42.png', '43.png', '44.png', '45.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['46.png', '47.png', '48.png', '49.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['50.png', '51.png', '52.png', '53.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['54.png', '55.png', '56.png', '57.png'], type:'abc', answer:'c', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['58.png', '59.png', '60.png', '61.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['62.png', '63.png', '64.png', '65.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['66.png', '67.png', '68.png', '69.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['70.png', '71.png', '72.png', '73.png'], type:'ab', answer:'a', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['74.png', '75.png', '76.png', '77.png'], type:'ox', answer:'batsu', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['78.png', '79.png', '80.png', '81.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
+  { folder:'images/0014', images:['82.png', '83.png'], type:'ab', answer:'b', column:'../columns/column-0014.html' },
 ];
 
-const TOTAL = QUIZZES.length;
+// ── URLパラメータでクイズセットを決定 ──────────────────────────
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const _params = new URLSearchParams(window.location.search);
+const _mode   = _params.get('mode');
+const _stage  = _params.get('stage');
+
+let activeQuizzes;
+let quizLabel = '';
+
+if (_stage !== null) {
+  const folder = 'images/' + _stage.padStart(4, '0');
+  activeQuizzes = QUIZZES.filter(q => q.folder === folder);
+  quizLabel = 'ステージ ' + _stage;
+  document.getElementById('backBtn').href = 'quiz-stage.html';
+} else if (_mode === 'random') {
+  activeQuizzes = shuffleArray([...QUIZZES]).slice(0, 20);
+  quizLabel = 'ランダム 20 問';
+} else {
+  activeQuizzes = QUIZZES;
+  quizLabel = '全 ' + QUIZZES.length + ' 問';
+}
+
+const TOTAL = activeQuizzes.length;
 let currentQuiz = 0;
 let currentSlide = 0;
 let score = 0;
@@ -527,7 +840,7 @@ function launchSadRain() {
 function updateProgress() {
   const pct = (currentQuiz / TOTAL) * 100;
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = (currentQuiz + 1) + ' / ' + TOTAL;
+  document.getElementById('progressLabel').textContent = (currentQuiz + 1) + ' / ' + TOTAL + '　' + quizLabel;
 }
 
 function updateScoreBadge() {
@@ -536,17 +849,24 @@ function updateScoreBadge() {
 }
 
 function loadQuestion() {
-  const q = QUIZZES[currentQuiz];
+  const q = activeQuizzes[currentQuiz];
   document.getElementById('questionImg').src = q.folder + '/' + q.images[0];
   // ボタン切り替え
   if (q.type === 'ox') {
     document.getElementById('promptText').textContent = '○ か ✕ を選ぼう！';
     document.getElementById('oxBtns').classList.remove('hidden');
     document.getElementById('abBtns').classList.add('hidden');
+    document.getElementById('abcBtns').classList.add('hidden');
+  } else if (q.type === 'abc') {
+    document.getElementById('promptText').textContent = 'A か B か C を選ぼう！';
+    document.getElementById('oxBtns').classList.add('hidden');
+    document.getElementById('abBtns').classList.add('hidden');
+    document.getElementById('abcBtns').classList.remove('hidden');
   } else {
     document.getElementById('promptText').textContent = 'A か B を選ぼう！';
     document.getElementById('oxBtns').classList.add('hidden');
     document.getElementById('abBtns').classList.remove('hidden');
+    document.getElementById('abcBtns').classList.add('hidden');
   }
   document.getElementById('questionPhase').classList.remove('hidden');
   document.getElementById('resultPhase').classList.add('hidden');
@@ -555,7 +875,7 @@ function loadQuestion() {
 }
 
 function answer(userChoice) {
-  const q = QUIZZES[currentQuiz];
+  const q = activeQuizzes[currentQuiz];
   const isCorrect = (userChoice === q.answer);
   answered++;
   if (isCorrect) score++;
@@ -572,7 +892,7 @@ function answer(userChoice) {
     launchConfetti();
   } else {
     // 正解を示す
-    const correctLabel = {maru:'○', batsu:'✕', a:'A', b:'B'}[q.answer];
+    const correctLabel = {maru:'○', batsu:'✕', a:'A', b:'B', c:'C'}[q.answer];
     banner.textContent = `😢 不正解… 正解は ${correctLabel}`;
     banner.className   = 'result-banner wrong';
     launchSadRain();
@@ -583,7 +903,7 @@ function answer(userChoice) {
 }
 
 function updateNextBtn() {
-  const q = QUIZZES[currentQuiz];
+  const q = activeQuizzes[currentQuiz];
   const isLastSlide = currentSlide >= q.images.length - 1;
   const isLastQuiz  = currentQuiz >= TOTAL - 1;
   const btn = document.getElementById('nextBtn');
@@ -609,7 +929,7 @@ function updateNextBtn() {
 
 function nextSlide() {
   stopConfetti();
-  const q = QUIZZES[currentQuiz];
+  const q = activeQuizzes[currentQuiz];
   currentSlide++;
   if (currentSlide < q.images.length) {
     document.getElementById('slideImg').src = q.folder + '/' + q.images[currentSlide];
@@ -644,6 +964,10 @@ function showComplete() {
 function restartQuiz() {
   currentQuiz = 0; currentSlide = 0; score = 0; answered = 0;
   stopConfetti();
+  // ランダムモードは再シャッフル
+  if (_mode === 'random') {
+    activeQuizzes = shuffleArray([...QUIZZES]).slice(0, 20);
+  }
   document.getElementById('completeScreen').classList.add('hidden');
   loadQuestion();
 }

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ステージ選択 | BITCOIN バチーン！ ⚡</title>
+<meta name="description" content="クイズとコラムで学ぶビットコインと経済の基礎知識。サウンドマネーの世界へようこそ！">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --orange: #FF6600;
+    --cyan:   #00F5FF;
+    --dark:   #160A00;
+    --white:  #FFFDE7;
+    --bg:     #FFE200;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background-color: var(--bg);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--dark);
+    overflow-x: hidden;
+    background-image: radial-gradient(circle, rgba(255,102,0,0.14) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .quiz-header {
+    background: var(--dark);
+    padding: 14px 20px;
+    text-align: center;
+    border-bottom: 5px solid var(--orange);
+    position: relative;
+  }
+  .back-btn {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--yellow);
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+    border: 2px solid var(--orange);
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .back-btn:hover { background: var(--orange); }
+  .quiz-header h1 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(20px, 5vw, 36px);
+    color: var(--yellow);
+    -webkit-text-stroke: 2px var(--dark);
+    text-shadow: 4px 4px 0 var(--orange);
+    letter-spacing: 3px;
+  }
+
+  /* ── MAIN ── */
+  .stage-area {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 16px 80px;
+  }
+
+  .section-label {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 13px;
+    color: var(--orange);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  /* ── RANDOM BUTTON ── */
+  .btn-random {
+    display: block; width: 100%;
+    background: var(--orange);
+    color: var(--yellow);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    padding: 18px;
+    border: 5px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    box-shadow: 7px 7px 0 var(--dark);
+    cursor: pointer;
+    transition: all .15s;
+    text-align: center;
+    margin-bottom: 28px;
+    text-decoration: none;
+    -webkit-text-stroke: 0.5px rgba(0,0,0,.15);
+  }
+  .btn-random:hover {
+    transform: translate(-4px,-4px);
+    box-shadow: 11px 11px 0 var(--dark);
+    background: var(--yellow); color: var(--dark);
+  }
+  .btn-random:active { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--dark); }
+
+  /* ── STAGE GRID ── */
+  .stage-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .stage-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    border: 3px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    box-shadow: 5px 5px 0 var(--dark);
+    padding: 14px 18px;
+    text-decoration: none;
+    color: var(--dark);
+    transition: all .15s;
+  }
+  .stage-card:hover {
+    transform: translate(-3px,-3px);
+    box-shadow: 8px 8px 0 var(--dark);
+    background: #fff3e0;
+  }
+  .stage-card:active {
+    transform: translate(2px,2px);
+    box-shadow: 3px 3px 0 var(--dark);
+  }
+
+  .stage-num {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 18px;
+    color: var(--orange);
+    min-width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .stage-info {
+    flex: 1;
+  }
+  .stage-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .stage-sub {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  .stage-count {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    color: var(--orange);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .stage-arrow {
+    font-size: 16px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  body::after {
+    content: '';
+    display: block;
+    height: 8px;
+    background: repeating-linear-gradient(90deg,
+      var(--yellow) 0 24px, var(--orange) 24px 48px,
+      #E82020 48px 72px, var(--cyan) 72px 96px,
+      var(--dark) 96px 120px
+    );
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-header">
+  <a href="quiz-top.html" class="back-btn">← TOPへ</a>
+  <h1>⚡ ステージ選択 ⚡</h1>
+</div>
+
+<div class="stage-area">
+
+  <p class="section-label">── まずはランダムでさくっと ──</p>
+  <a href="quiz.html?mode=random" class="btn-random">⚡ ランダム 20 問！ ⚡</a>
+
+  <p class="section-label">── ステージを選んで挑戦 ──</p>
+  <div class="stage-grid" id="stageGrid"></div>
+
+</div>
+
+<script>
+const STAGES = [
+  { num:'00', title:'このクイズとは？',       sub:'ビットコインの2つの問い',       count:1  },
+  { num:'01', title:'インフレ①',              sub:'経済の波編',                    count:21 },
+  { num:'02', title:'インフレ②',              sub:'貨幣的現象編',                  count:21 },
+  { num:'03', title:'通貨膨張',               sub:'カンフル剤の功罪',              count:21 },
+  { num:'04', title:'通貨発行の仕組み',       sub:'人の性編',                      count:21 },
+  { num:'05', title:'歴史は繰り返す',         sub:'1930年代と現在',                count:21 },
+  { num:'06', title:'自由市場①',             sub:'自由市場とは何か',              count:21 },
+  { num:'07', title:'自由市場②',             sub:'自由の源',                      count:21 },
+  { num:'08', title:'貨幣と自由市場',         sub:'貨幣発行自由化論',              count:21 },
+  { num:'09', title:'サウンドマネー①',       sub:'ゴールド編',                    count:21 },
+  { num:'10', title:'サウンドマネー②',       sub:'ビットコイン編',                count:21 },
+  { num:'11', title:'ビットコインの現在地',   sub:'現状と夢物語',                  count:21 },
+  { num:'12', title:'自由のテクノロジー①',   sub:'私有財産権編',                  count:21 },
+  { num:'13', title:'自己主権のテクノロジー', sub:'プライバシー編',                count:21 },
+  { num:'14', title:'自由と国家',             sub:'ビットコインと自由思想',        count:21 },
+];
+
+const grid = document.getElementById('stageGrid');
+STAGES.forEach(s => {
+  const a = document.createElement('a');
+  a.className = 'stage-card';
+  a.href = `quiz.html?stage=${s.num}`;
+  a.innerHTML = `
+    <span class="stage-num">${s.num}</span>
+    <span class="stage-info">
+      <span class="stage-title">${s.title}</span>
+      <span class="stage-sub">${s.sub}</span>
+    </span>
+    <span class="stage-count">${s.count}問</span>
+    <span class="stage-arrow">▶</span>
+  `;
+  grid.appendChild(a);
+});
+</script>
+
+</body>
+</html>

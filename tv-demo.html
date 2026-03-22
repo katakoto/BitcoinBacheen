@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📺 昭和レトロTV デモ</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --orange: #FF6600;
+    --red:    #E82020;
+    --cyan:   #00F5FF;
+    --dark:   #160A00;
+    --white:  #FFFDE7;
+    --bg:     #FFE200;
+    /* Showa TV colors */
+    --tv-body: #C8A96E;       /* 昭和ウッド調 */
+    --tv-body-dark: #8B6914;
+    --tv-bezel: #2A1A06;
+    --tv-screen-bg: #0A0A1A;
+    --tv-knob: #5C3D11;
+    --tv-leg: #6B4A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--dark);
+    overflow-x: hidden;
+    background-image: radial-gradient(circle, rgba(255,102,0,0.14) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .sfx-head {
+    text-align: center;
+    padding: 20px 20px 30px;
+  }
+  .sfx-head h2 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(40px, 7.5vw, 80px);
+    color: var(--orange);
+    -webkit-text-stroke: 3px var(--dark);
+    text-shadow: 5px 5px 0 var(--dark);
+    letter-spacing: 3px;
+    display: inline-block;
+  }
+  .sfx-head h2 em {
+    font-style: normal;
+    color: var(--cyan);
+    -webkit-text-stroke: 3px var(--dark);
+  }
+
+  /* ─── TV WRAPPER ─── */
+  .tv-section {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .tv-outer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ─── ANTENNAS ─── */
+  .tv-antennas {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    margin-bottom: -6px;
+    position: relative;
+    z-index: 2;
+  }
+  .tv-antenna {
+    width: 10px;
+    height: 90px;
+    background: linear-gradient(to top, var(--tv-body-dark), #B8860B, #D4AF37);
+    border: 3px solid var(--dark);
+    border-radius: 6px 6px 0 0;
+    position: relative;
+  }
+  .tv-antenna.left  { transform: rotate(-18deg); transform-origin: bottom center; }
+  .tv-antenna.right { transform: rotate(18deg);  transform-origin: bottom center; }
+  /* Antenna ball tip */
+  .tv-antenna::before {
+    content: '';
+    position: absolute;
+    top: -9px; left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    background: var(--cyan);
+    border: 3px solid var(--dark);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--cyan), 0 0 22px var(--cyan);
+    animation: antennaPulse 1.5s ease-in-out infinite alternate;
+  }
+  .tv-antenna.right::before { animation-delay: .75s; }
+  @keyframes antennaPulse {
+    from { box-shadow: 0 0 6px var(--cyan), 0 0 12px var(--cyan); opacity: .7; }
+    to   { box-shadow: 0 0 14px var(--cyan), 0 0 30px var(--cyan); opacity: 1; }
+  }
+
+  /* ─── TV BODY ─── */
+  .tv-body {
+    background: linear-gradient(145deg, #D4AA70 0%, #C8A050 40%, #A07828 100%);
+    border: 7px solid var(--dark);
+    border-radius: 38px 38px 32px 32px;
+    box-shadow:
+      10px 10px 0 var(--dark),
+      inset 0 4px 12px rgba(255,255,255,0.25),
+      inset 0 -6px 16px rgba(0,0,0,0.3);
+    padding: 28px 32px 24px;
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  /* Wood grain texture overlay */
+  .tv-body::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background-image:
+      repeating-linear-gradient(
+        92deg,
+        transparent 0px, transparent 6px,
+        rgba(139,93,20,0.08) 6px, rgba(139,93,20,0.08) 7px
+      );
+    pointer-events: none;
+  }
+
+  /* Brand badge */
+  .tv-brand {
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 13px;
+    color: var(--yellow);
+    background: var(--dark);
+    border: 2px solid var(--tv-body-dark);
+    border-radius: 20px;
+    padding: 2px 16px;
+    letter-spacing: 3px;
+    white-space: nowrap;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  }
+
+  /* ─── MAIN CONTENT ROW (screen + controls) ─── */
+  .tv-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 14px;
+  }
+
+  /* ─── SCREEN BEZEL ─── */
+  .tv-screen-bezel {
+    flex: 1;
+    background: var(--tv-bezel);
+    border: 5px solid var(--dark);
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow:
+      inset 0 0 24px rgba(0,0,0,0.8),
+      inset 0 0 8px rgba(0,0,80,0.5),
+      4px 4px 0 rgba(0,0,0,0.4);
+    position: relative;
+  }
+
+  /* Corner screws */
+  .tv-screen-bezel::before,
+  .tv-screen-bezel::after {
+    content: '✕';
+    position: absolute;
+    font-size: 9px;
+    color: rgba(255,255,255,0.2);
+    line-height: 1;
+  }
+  .tv-screen-bezel::before { top: 4px; left: 6px; }
+  .tv-screen-bezel::after  { top: 4px; right: 6px; }
+
+  /* ─── SCREEN ─── */
+  .tv-screen {
+    position: relative;
+    background: var(--tv-screen-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 0 40px rgba(0,180,255,0.25), inset 0 0 60px rgba(0,0,80,0.4);
+  }
+
+  .tv-screen iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* CRT scanline overlay */
+  .tv-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.12) 3px,
+      rgba(0,0,0,0.12) 4px
+    );
+    pointer-events: none;
+    z-index: 5;
+    border-radius: inherit;
+  }
+
+  /* CRT phosphor glow vignette */
+  .tv-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+      transparent 55%,
+      rgba(0,0,30,0.55) 100%
+    );
+    pointer-events: none;
+    z-index: 6;
+    border-radius: inherit;
+  }
+
+  /* CRT flicker animation */
+  .tv-screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,180,255,0.03);
+    animation: crtFlicker 8s linear infinite;
+    pointer-events: none;
+    z-index: 7;
+    border-radius: inherit;
+  }
+  @keyframes crtFlicker {
+    0%, 94%, 96%, 98%, 100% { opacity: 1; }
+    95% { opacity: 0.85; }
+    97% { opacity: 0.92; }
+    99% { opacity: 0.88; }
+  }
+
+  /* ─── CONTROLS PANEL ─── */
+  .tv-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    flex-shrink: 0;
+    width: 80px;
+  }
+
+  /* Knob */
+  .tv-knob {
+    width: 54px; height: 54px;
+    background: radial-gradient(circle at 35% 35%, #7B5214, #3D2508);
+    border: 4px solid var(--dark);
+    border-radius: 50%;
+    box-shadow: 3px 3px 0 var(--dark), inset 0 2px 6px rgba(255,255,255,0.15);
+    position: relative;
+    cursor: pointer;
+    transition: transform .12s;
+  }
+  .tv-knob:hover { transform: rotate(30deg) scale(1.08); }
+  /* Knob indicator line */
+  .tv-knob::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 14px;
+    background: var(--yellow);
+    border-radius: 2px;
+    box-shadow: 0 0 4px var(--yellow);
+  }
+  /* Knob label */
+  .tv-knob::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -22px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Caveat', cursive;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--dark);
+    white-space: nowrap;
+  }
+
+  /* Power LED */
+  .tv-power-led {
+    width: 16px; height: 16px;
+    background: var(--red);
+    border: 3px solid var(--dark);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--red), 0 0 16px rgba(232,32,32,0.5);
+    animation: ledBlink 2s ease-in-out infinite;
+  }
+  @keyframes ledBlink {
+    0%, 90%, 100% { opacity: 1; box-shadow: 0 0 8px var(--red), 0 0 16px rgba(232,32,32,0.5); }
+    95% { opacity: 0.3; box-shadow: none; }
+  }
+
+  /* Speaker grille */
+  .tv-speaker {
+    display: grid;
+    grid-template-columns: repeat(3, 8px);
+    grid-template-rows: repeat(5, 8px);
+    gap: 4px;
+    background: var(--tv-bezel);
+    border: 3px solid var(--dark);
+    border-radius: 8px;
+    padding: 6px 5px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  }
+  .spk-dot {
+    width: 8px; height: 8px;
+    background: var(--dark);
+    border-radius: 50%;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.1);
+  }
+
+  /* Channel display (fake 7-seg) */
+  .tv-channel {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 18px;
+    color: var(--cyan);
+    background: #000;
+    border: 3px solid var(--dark);
+    border-radius: 6px;
+    padding: 3px 10px;
+    text-shadow: 0 0 10px var(--cyan);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 6px rgba(0,245,255,0.2);
+    letter-spacing: 2px;
+  }
+
+  /* ─── TV BOTTOM STRIP ─── */
+  .tv-bottom-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 14px;
+    padding: 0 10px;
+  }
+
+  .tv-vhf {
+    font-family: 'Caveat', cursive;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    opacity: 0.6;
+    letter-spacing: 2px;
+  }
+
+  /* ─── TV LEGS ─── */
+  .tv-legs {
+    display: flex;
+    justify-content: center;
+    gap: 60%;
+    margin-top: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .tv-leg {
+    width: 22px; height: 44px;
+    background: linear-gradient(to bottom, #8B6914, #5C3D11);
+    border: 4px solid var(--dark);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 0 var(--dark);
+  }
+
+  /* ─── ON AIR BADGE ─── */
+  .on-air-badge {
+    position: absolute;
+    top: -18px; right: -18px;
+    background: var(--red);
+    color: var(--yellow);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 8px 18px;
+    border: 4px solid var(--dark);
+    border-radius: 100px 8px 100px 8px / 8px 100px 8px 100px;
+    box-shadow: 5px 5px 0 var(--dark);
+    animation: onAirPulse 1.2s ease-in-out infinite alternate;
+    white-space: nowrap;
+  }
+  @keyframes onAirPulse {
+    from { transform: scale(1) rotate(-2deg); box-shadow: 5px 5px 0 var(--dark); }
+    to   { transform: scale(1.06) rotate(1deg); box-shadow: 7px 7px 0 var(--dark); }
+  }
+
+  /* ─── DECORATIVE ELEMENTS ─── */
+  .tv-deco-zap {
+    position: absolute;
+    font-size: 52px;
+    filter: drop-shadow(0 0 12px var(--cyan));
+    pointer-events: none;
+    animation: zapFloat 1.6s ease-in-out infinite alternate;
+  }
+  .tv-deco-zap.left  { left: -70px; top: 40%; animation-delay: 0s; }
+  .tv-deco-zap.right { right: -70px; top: 30%; animation-delay: .8s; }
+  @keyframes zapFloat {
+    from { transform: translateY(-8px) rotate(-12deg) scale(.9); opacity: .7; }
+    to   { transform: translateY(8px)  rotate(12deg)  scale(1.1); opacity: 1; }
+  }
+
+  /* Speech bubble below TV */
+  .tv-caption {
+    background: var(--white);
+    border: 5px solid var(--dark);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 7px 7px 0 var(--dark);
+    padding: 18px 30px;
+    text-align: center;
+    max-width: 560px;
+    margin: 36px auto 0;
+    position: relative;
+  }
+  .tv-caption::before {
+    content: '';
+    position: absolute;
+    top: -28px; left: 50%; transform: translateX(-50%);
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-bottom: 28px solid var(--dark);
+  }
+  .tv-caption::after {
+    content: '';
+    position: absolute;
+    top: -18px; left: 50%; transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 18px solid var(--white);
+    z-index: 1;
+  }
+  .tv-caption p {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(16px, 2.6vw, 22px);
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.6;
+  }
+  .tv-caption p strong {
+    color: var(--orange);
+    font-size: 1.2em;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .tv-content { gap: 12px; }
+    .tv-controls { width: 60px; }
+    .tv-knob { width: 42px; height: 42px; }
+    .tv-deco-zap { display: none; }
+    .on-air-badge { top: -14px; right: -10px; font-size: 13px; padding: 6px 12px; }
+    .tv-body { padding: 20px 16px 18px; }
+    .tv-antennas { gap: 80px; }
+    .tv-antenna { height: 64px; }
+    .tv-legs { gap: 50%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sfx-head">
+  <h2>📺 バーン！<em>⚡ ON AIR</em>！</h2>
+</div>
+
+<div class="tv-section">
+  <!-- Decorative lightning bolts -->
+  <span class="tv-deco-zap left">⚡</span>
+  <span class="tv-deco-zap right">⚡</span>
+
+  <!-- ON AIR badge -->
+  <div class="on-air-badge">📡 ON AIR ●</div>
+
+  <div class="tv-outer">
+
+    <!-- Antennas -->
+    <div class="tv-antennas">
+      <div class="tv-antenna left"></div>
+      <div class="tv-antenna right"></div>
+    </div>
+
+    <!-- TV Body -->
+    <div class="tv-body">
+      <div class="tv-brand">⚡ BITCOIN-VISION ⚡</div>
+
+      <div class="tv-content">
+
+        <!-- Screen -->
+        <div class="tv-screen-bezel">
+          <div class="tv-screen">
+            <!-- Replace VIDEO_ID with actual YouTube ID -->
+            <iframe
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+            <div class="tv-scanlines"></div>
+            <div class="tv-vignette"></div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="tv-controls">
+          <div class="tv-channel">ch.₿</div>
+          <div class="tv-knob" data-label="チャンネル"></div>
+          <div class="tv-knob" data-label="音量"></div>
+          <div class="tv-power-led"></div>
+          <div class="tv-speaker">
+            <div class="spk-dot"></div><div class="spk-dot"></div><div class="spk-dot"></div>
+            <div class="spk-dot"></div><div class="spk-dot"></div><div class="spk-dot"></div>
+            <div class="spk-dot"></div><div class="spk-dot"></div><div class="spk-dot"></div>
+            <div class="spk-dot"></div><div class="spk-dot"></div><div class="spk-dot"></div>
+            <div class="spk-dot"></div><div class="spk-dot"></div><div class="spk-dot"></div>
+          </div>
+        </div>
+
+      </div><!-- /tv-content -->
+
+      <div class="tv-bottom-strip">
+        <span class="tv-vhf">VHF · UHF</span>
+        <span class="tv-vhf">STEREO</span>
+        <span class="tv-vhf">MADE IN JAPAN</span>
+      </div>
+
+    </div><!-- /tv-body -->
+
+    <!-- Legs -->
+    <div class="tv-legs">
+      <div class="tv-leg"></div>
+      <div class="tv-leg"></div>
+    </div>
+
+  </div><!-- /tv-outer -->
+
+  <!-- Speech bubble caption -->
+  <div class="tv-caption">
+    <p>📺 <strong>ビットコインTVへようこそ！</strong><br>
+    昭和レトロTV で最強コンテンツをお届け⚡<br>
+    <small style="color:var(--orange);font-size:0.85em;">← ここに埋め込む動画のURLを教えてください</small></p>
+  </div>
+
+</div>
+
+</body>
+</html>
