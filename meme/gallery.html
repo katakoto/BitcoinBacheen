@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ミーム画像ギャラリー | BITCOIN バチーン！ ⚡</title>
+<meta property="og:title" content="ミーム画像ギャラリー | BITCOIN バチーン！ ⚡">
+<meta property="og:description" content="お金の常識を、ぶっ壊せ。#Bitcoin #ビットコイン">
+<meta property="og:image" content="https://katakoto.github.io/BitcoinBacheen/icon/bitcoin.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Boogaloo&family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: #111;
+    border-bottom: 3px solid #F5A623;
+    padding: 14px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .back-btn {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: #F5A623;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    text-decoration: none;
+    border: 2px solid #F5A623;
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+  .back-btn:hover { background: #F5A623; color: #000; }
+  header h1 {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(18px, 4vw, 30px);
+    color: #F5A623;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(245,166,35,0.5);
+  }
+  header p {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* ── FILTER ── */
+  .filter-area {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 16px 8px;
+  }
+  .filter-label {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .filter-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-btn {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    padding: 6px 14px;
+    border: 2px solid #333;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #888;
+    background: transparent;
+    transition: all .15s;
+    letter-spacing: 1px;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: #F5A623;
+    color: #F5A623;
+    background: rgba(245,166,35,0.08);
+  }
+
+  /* ── COUNT ── */
+  .count-bar {
+    max-width: 900px;
+    margin: 12px auto 0;
+    padding: 0 16px;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    max-width: 900px;
+    margin: 16px auto 60px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── CARD ── */
+  .meme-card {
+    background: #111;
+    border: 2px solid #222;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .meme-card:hover {
+    border-color: #F5A623;
+    box-shadow: 0 0 20px rgba(245,166,35,0.2);
+  }
+  .meme-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    background: #1a1a1a;
+  }
+  .meme-card-body {
+    padding: 10px;
+  }
+  .meme-stage {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 10px;
+    color: #F5A623;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .btn-share {
+    display: block;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 11px;
+    padding: 8px;
+    border: 2px solid #F5A623;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all .15s;
+  }
+  .btn-share:hover {
+    background: #F5A623;
+    color: #000;
+  }
+
+  /* ── EMPTY ── */
+  .empty {
+    grid-column: 1/-1;
+    text-align: center;
+    color: #444;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: 13px;
+    padding: 60px 0;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="../index.html" class="back-btn">← トップへ</a>
+  <h1>⚡ ミーム画像ギャラリー ⚡</h1>
+  <p>気に入った画像を X でシェアしよう！</p>
+</header>
+
+<div class="filter-area">
+  <div class="filter-label">── STAGE でフィルター ──</div>
+  <div class="filter-btns" id="filterBtns"></div>
+</div>
+<div class="count-bar" id="countBar"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+const BASE_CARD = 'cards/';
+const BASE_IMG  = '../Quiz/images/';
+const BASE_URL  = 'https://katakoto.github.io/BitcoinBacheen/meme/cards/';
+const TWEET_TEXT = encodeURIComponent('お金の常識を、ぶっ壊せ。 #Bitcoin #ビットコイン ⚡');
+
+const STAGES = [
+  { num:'00', title:'このクイズとは？' },
+  { num:'01', title:'インフレ①' },
+  { num:'02', title:'インフレ②' },
+  { num:'03', title:'通貨膨張' },
+  { num:'04', title:'通貨発行の仕組み' },
+  { num:'05', title:'歴史は繰り返す' },
+  { num:'06', title:'自由市場①' },
+  { num:'07', title:'自由市場②' },
+  { num:'08', title:'貨幣と自由市場' },
+  { num:'09', title:'サウンドマネー①' },
+  { num:'10', title:'サウンドマネー②' },
+  { num:'11', title:'ビットコインの現在地' },
+  { num:'12', title:'自由のテクノロジー①' },
+  { num:'13', title:'自己主権のテクノロジー' },
+  { num:'14', title:'自由と国家' },
+];
+
+function lastSlides(stageNum) {
+  if (stageNum === 0) return [4];
+  const slides = [];
+  for (let i = 4; i <= 80; i += 4) slides.push(i);
+  slides.push(83);
+  return slides;
+}
+
+// 全画像データを構築
+const ALL_ITEMS = [];
+STAGES.forEach(s => {
+  const stageInt = parseInt(s.num);
+  const stagePad = s.num.padStart(4, '0');
+  lastSlides(stageInt).forEach(slide => {
+    const slidePad = String(slide).padStart(2, '0');
+    ALL_ITEMS.push({
+      stage: s.num,
+      stageTitle: s.title,
+      stagePad,
+      slidePad,
+      imgSrc: `${BASE_IMG}${stagePad}/${slidePad}.png`,
+      cardId: `${stagePad}-${slidePad}`,
+    });
+  });
+});
+
+// フィルター状態
+let activeStage = 'all';
+
+// フィルターボタン生成
+const filterBtns = document.getElementById('filterBtns');
+const allBtn = document.createElement('button');
+allBtn.className = 'filter-btn active';
+allBtn.textContent = 'ALL';
+allBtn.dataset.stage = 'all';
+filterBtns.appendChild(allBtn);
+
+STAGES.forEach(s => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.textContent = `${s.num} ${s.title}`;
+  btn.dataset.stage = s.num;
+  filterBtns.appendChild(btn);
+});
+
+filterBtns.addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  activeStage = btn.dataset.stage;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGrid();
+});
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const countBar = document.getElementById('countBar');
+  const filtered = activeStage === 'all'
+    ? ALL_ITEMS
+    : ALL_ITEMS.filter(item => item.stage === activeStage);
+
+  countBar.textContent = `${filtered.length} 枚表示中`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty">画像がありません</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(item => {
+    const tweetUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(BASE_URL + item.cardId + '.html')}&text=${TWEET_TEXT}`;
+
+    const card = document.createElement('div');
+    card.className = 'meme-card';
+    card.innerHTML = `
+      <img src="${item.imgSrc}" alt="BITCOIN バチーン！ STAGE${item.stage}" loading="lazy">
+      <div class="meme-card-body">
+        <div class="meme-stage">STAGE ${item.stage} — ${item.stageTitle}</div>
+        <a href="${tweetUrl}" target="_blank" rel="noopener" class="btn-share">𝕏 でシェア</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+renderGrid();
+</script>
+</body>
+</html>
