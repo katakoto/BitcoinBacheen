@@ -380,6 +380,19 @@ a { color: inherit; text-decoration: none; }
   padding: 14px 14px 16px;
 }
 
+/* ── YOUTUBE EMBED ── */
+.yt-embed-wrap {
+  margin: 4px 0 0;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+.yt-embed-wrap iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
 /* ── MANGA FEATURE ───────────────────────────── */
 .manga-feature {
   display: flex;
@@ -909,6 +922,17 @@ a { color: inherit; text-decoration: none; }
                 📚 マンガを読む ⚡
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- コラム スライドショー動画 -->
+      <div class="feature-box">
+        <div class="feature-box-header">🎬 コラム動画 &nbsp;·&nbsp; COLUMN VIDEO</div>
+        <div class="feature-box-body" style="padding:0;">
+          <p style="font-family:'Zen Dots',sans-serif; font-size:11px; letter-spacing:2px; color:#333; padding:10px 14px 8px;">▶ コラムのスライドショー版はこちら！</p>
+          <div class="yt-embed-wrap">
+            <iframe src="https://www.youtube.com/embed/6VGDRYGWR-Y" title="コラムのスライドショー版" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
           </div>
         </div>
       </div>
