@@ -84,6 +84,23 @@
       background: var(--yellow); color: var(--dark);
     }
     .quiz-cta:active { transform: translate(3px,3px); box-shadow: 4px 4px 0 var(--dark); }
+
+    /* ── YOUTUBE EMBED ── */
+    .yt-embed-wrap {
+      margin: 1.5em 0;
+      border: 4px solid var(--dark);
+      border-radius: 12px;
+      box-shadow: 6px 6px 0 var(--dark);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+    .yt-embed-wrap iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -104,6 +121,11 @@
 <h1>📚 ビットコイン コラム 一覧</h1>
 
 <p>クイズと連動したコラムを読んで、ビットコインへの理解を深めよう！</p>
+
+<p style="font-weight:900; font-size:16px; margin-bottom:6px;">▶ コラムのスライドショー版はこちら！</p>
+<div class="yt-embed-wrap">
+  <iframe src="https://www.youtube.com/embed/6VGDRYGWR-Y" title="コラムのスライドショー版" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+</div>
 
 <div class="col-index-grid">
 
