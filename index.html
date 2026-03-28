@@ -1690,7 +1690,7 @@
 
   // ── CHART DATA (Binance klines) ────────────────────────
   // days → [interval, limit]
-  const CHART_CFG = { 1: ['1h', 24], 7: ['4h', 42], 30: ['1d', 30] };
+  const CHART_CFG = { 1: ['1h', 24], 7: ['4h', 42], 30: ['1d', 30], 365: ['1d', 365], max: ['1w', 260] };
 
   async function fetchChart(days) {
     currentDays = days;
