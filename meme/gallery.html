@@ -222,6 +222,12 @@ function lastSlides(stageNum) {
   return slides;
 }
 
+// 除外リスト
+const EXCLUDED = new Set([
+  '0002-83','0003-83','0004-83','0005-83','0006-83','0007-83',
+  '0008-83','0009-83','0010-83','0011-83','0012-83','0013-83','0014-83',
+]);
+
 // 全画像データを構築
 const ALL_ITEMS = [];
 STAGES.forEach(s => {
@@ -229,13 +235,15 @@ STAGES.forEach(s => {
   const stagePad = s.num.padStart(4, '0');
   lastSlides(stageInt).forEach(slide => {
     const slidePad = String(slide).padStart(2, '0');
+    const cardId = `${stagePad}-${slidePad}`;
+    if (EXCLUDED.has(cardId)) return;
     ALL_ITEMS.push({
       stage: s.num,
       stageTitle: s.title,
       stagePad,
       slidePad,
       imgSrc: `${BASE_IMG}${stagePad}/${slide}.png`,
-      cardId: `${stagePad}-${slidePad}`,
+      cardId,
     });
   });
 });
