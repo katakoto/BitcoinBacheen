@@ -1107,6 +1107,170 @@
   }
 
   /* ─────────────────────────────────────
+     STICKER SHOP
+  ───────────────────────────────────── */
+  .shop-section {
+    position: relative; z-index: 10;
+    max-width: 860px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+  .shop-heading {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(28px, 5.5vw, 54px);
+    color: var(--dark);
+    -webkit-text-stroke: 2px var(--dark);
+    text-align: center;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+  .shop-heading .tag-new {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Zen Dots', sans-serif;
+    padding: 3px 10px;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 8px;
+    transform: rotate(-3deg);
+    box-shadow: 3px 3px 0 var(--dark);
+    letter-spacing: 1px;
+  }
+  .shop-inner {
+    background: var(--dark);
+    border: 5px solid var(--yellow);
+    border-radius: 16px 255px 14px 255px / 255px 14px 255px 16px;
+    box-shadow: 10px 10px 0 var(--orange);
+    padding: 32px 28px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .shop-inner::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; height: 400px;
+    background: conic-gradient(
+      from 0deg,
+      rgba(255,215,0,.07) 0deg 18deg, transparent 18deg 36deg,
+      rgba(255,102,0,.07) 36deg 54deg, transparent 54deg 72deg,
+      rgba(255,215,0,.07) 72deg 90deg, transparent 90deg 108deg,
+      rgba(255,102,0,.07) 108deg 126deg, transparent 126deg 144deg,
+      rgba(255,215,0,.07) 144deg 162deg, transparent 162deg 180deg,
+      rgba(255,102,0,.07) 180deg 198deg, transparent 198deg 216deg,
+      rgba(255,215,0,.07) 216deg 234deg, transparent 234deg 252deg,
+      rgba(255,102,0,.07) 252deg 270deg, transparent 270deg 288deg,
+      rgba(255,215,0,.07) 288deg 306deg, transparent 306deg 324deg,
+      rgba(255,102,0,.07) 324deg 342deg, transparent 342deg 360deg
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    animation: slowspin 20s linear infinite;
+  }
+  .shop-copy {
+    font-size: 13px;
+    color: #bbb;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+  .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 0 auto 28px;
+    max-width: 480px;
+    position: relative; z-index: 1;
+  }
+  .sticker-thumb {
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 10px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .sticker-thumb:hover {
+    border-color: var(--yellow);
+    transform: scale(1.08) rotate(2deg);
+    box-shadow: 0 0 12px rgba(255,215,0,0.5);
+  }
+  .sticker-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: drop-shadow(0 0 4px rgba(255,215,0,0.2));
+  }
+  .shop-price {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,215,0,0.12);
+    border: 2px solid var(--yellow);
+    border-radius: 8px;
+    padding: 10px 24px;
+    margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+  .shop-price .price-label {
+    font-family: 'Caveat', cursive;
+    font-size: 16px; color: #aaa; font-weight: 700;
+  }
+  .shop-price .price-val {
+    font-family: 'Zen Dots', sans-serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--yellow); letter-spacing: 2px;
+  }
+  .shop-price .price-note {
+    font-size: 11px; color: #777;
+    font-family: 'Caveat', cursive; font-weight: 700;
+  }
+  .shop-btn {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--dark);
+    font-family: 'Boogaloo', sans-serif;
+    font-size: clamp(22px, 4.5vw, 38px);
+    letter-spacing: 4px;
+    padding: 18px 60px;
+    border: 5px solid var(--dark);
+    border-radius: 12px 255px 10px 255px / 255px 10px 255px 8px;
+    box-shadow: 8px 8px 0 var(--orange);
+    text-decoration: none;
+    transition: all .15s;
+    position: relative; z-index: 1; overflow: hidden;
+  }
+  .shop-btn::before {
+    content: '';
+    position: absolute; top:-50%; left:-60%;
+    width: 35%; height: 200%;
+    background: rgba(255,255,255,.4);
+    transform: skewX(-20deg);
+    transition: left .4s;
+  }
+  .shop-btn:hover {
+    transform: translate(-4px,-4px);
+    box-shadow: 12px 12px 0 var(--dark);
+    background: var(--orange); color: #fff;
+  }
+  .shop-btn:hover::before { left: 130%; }
+  .shop-btn:active { transform: translate(4px,4px); box-shadow: 4px 4px 0 var(--dark); }
+  .shop-sub {
+    margin-top: 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 14px; color: #777; font-weight: 700;
+    position: relative; z-index: 1;
+  }
+  @media (max-width: 600px) {
+    .shop-grid { max-width: 100%; }
+    .shop-btn  { padding: 16px 32px; }
+  }
+
+  /* ─────────────────────────────────────
      FOOTER
   ───────────────────────────────────── */
   footer {
@@ -1580,6 +1744,32 @@
     <a href="meme/gallery.html" class="meme-btn">⚡ ミーム画像ギャラリー ⚡</a>
   </div>
 </div>
+
+<!-- ═══════════════════ STICKER SHOP ═══════════════════ -->
+<section class="shop-section">
+  <h2 class="shop-heading">
+    <span class="tag-new">NEW</span>⚡ ステッカー販売中 ⚡
+  </h2>
+  <div class="shop-inner">
+    <p class="shop-copy">Bitcoin バチーン！のステッカーを SUZURI で販売中！<br>お気に入りをスマホやPCに貼ってビットコインをアピールしよう！</p>
+    <div class="shop-grid">
+      <div class="sticker-thumb"><img src="icon/Sticker01.jpg" alt="ステッカー1"></div>
+      <div class="sticker-thumb"><img src="icon/Sticker02.jpg" alt="ステッカー2"></div>
+      <div class="sticker-thumb"><img src="icon/Sticker03.jpg" alt="ステッカー3"></div>
+    </div>
+    <div class="shop-price">
+      <span class="price-label">ステッカー</span>
+      <span class="price-val">¥512〜</span>
+      <span class="price-note">税込 / SUZURI</span>
+    </div>
+    <div>
+      <a class="shop-btn" href="https://suzuri.jp/dai-nonsugar?utm_source=bitcoinbacheen&utm_medium=website&utm_campaign=toppage" target="_blank" rel="noopener noreferrer">
+        🛒 ショップで見る
+      </a>
+    </div>
+    <p class="shop-sub">SUZURI（スズリ）で購入 — 送料別途</p>
+  </div>
+</section>
 
 <!-- ═══════════════════ CTA ═══════════════════ -->
 <div class="cta-section">
