@@ -1107,6 +1107,77 @@
   }
 
   /* ─────────────────────────────────────
+     EHON (PICTURE BOOK) SECTION
+  ───────────────────────────────────── */
+  .ehon-section {
+    position: relative; z-index: 10;
+    max-width: 860px;
+    margin: 0 auto 0;
+    padding: 0 24px 48px;
+  }
+  .ehon-inner {
+    background: #0a0a0a;
+    border: 4px solid var(--orange);
+    border-radius: 14px 255px 12px 255px / 255px 12px 255px 14px;
+    box-shadow: 8px 8px 0 var(--dark);
+    padding: 28px 28px 32px;
+    text-align: center;
+  }
+  .ehon-desc {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 14px;
+    color: #bbb;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .ehon-cover {
+    display: block;
+    margin: 0 auto 24px;
+    line-height: 0;
+  }
+  .ehon-cover img {
+    width: 100%;
+    aspect-ratio: 1400 / 875;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #222;
+    box-shadow: 5px 5px 0 var(--dark);
+    transition: border-color .2s, transform .15s, box-shadow .15s;
+  }
+  .ehon-cover:hover img {
+    border-color: var(--orange);
+    transform: translate(-2px,-2px);
+    box-shadow: 8px 8px 0 var(--orange);
+  }
+  .ehon-btn {
+    display: inline-block;
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    background: #111;
+    border: 4px solid var(--orange);
+    border-radius: 10px 200px 8px 200px / 200px 8px 200px 10px;
+    padding: 12px 36px;
+    box-shadow: 6px 6px 0 var(--orange);
+    text-decoration: none;
+    transition: all .15s;
+  }
+  .ehon-btn:hover {
+    background: var(--orange);
+    color: var(--dark);
+    transform: translate(-3px,-3px);
+    box-shadow: 9px 9px 0 var(--dark);
+  }
+  .ehon-sub {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 11px;
+    color: #666;
+    letter-spacing: 1px;
+    margin-top: 16px;
+  }
+
+  /* ─────────────────────────────────────
      STICKER SHOP
   ───────────────────────────────────── */
   .shop-section {
@@ -1729,7 +1800,19 @@
   </div>
 </div>
 
-<!-- ═══════════════════ MEME GALLERY ═══════════════════ -->
+<!-- ═══════════════════ EHON (PICTURE BOOK) ═══════════════════ -->
+<div class="sfx-head"><h2>ビットコイン絵本<em>⚡</em>よんでみて！</h2></div>
+
+<div class="ehon-section">
+  <div class="ehon-inner">
+    <p class="ehon-desc">むずかしい話はナシ。パラパラめくって楽しむ、全54ページのビットコイン絵本。</p>
+    <a href="ehon/index.html" class="ehon-cover"><img src="ehon/pages/001.jpg" alt="ビットコイン絵本 表紙"></a>
+    <a href="ehon/index.html" class="ehon-btn">⚡ 絵本を読む ⚡</a>
+    <p class="ehon-sub">パラパラめくれるWeb絵本 — スマホ・PC対応</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ MEME GALLERY (差し替えのため非表示 / 2026-06-30) ═══════════════════
 <div class="sfx-head"><h2>ミーム画像<em>⚡</em>シェアしよ！</h2></div>
 
 <div class="meme-section">
@@ -1744,6 +1827,7 @@
     <a href="meme/gallery.html" class="meme-btn">⚡ ミーム画像ギャラリー ⚡</a>
   </div>
 </div>
+═══════════════════════════════════════════════════════════════════════════════ -->
 
 <!-- ═══════════════════ STICKER SHOP ═══════════════════ -->
 <section class="shop-section">
@@ -1783,7 +1867,7 @@
     </div>
     <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
     <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
-    <a class="cta-btn cta-btn-col" href="meme/gallery.html">🖼 ミームをシェア</a>
+    <a class="cta-btn cta-btn-col" href="ehon/index.html">📖 絵本を読む</a>
   </div>
   <p class="cta-note">※ 投資は自己責任でお願いします / クイズやコラムをよく理解した上でご利用ください</p>
 </div>

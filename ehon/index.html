@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bitcoin Bacheen! 絵本ビューアー</title>
+<meta name="description" content="Bitcoin Bacheen! 絵本 — パラパラめくれるWeb絵本ビューアー">
+
+<link rel="icon" href="/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Boogaloo&family=M+PLUS+Rounded+1c:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --yellow:#FFD700; --orange:#FF6600; --dark:#160A00; --cyan:#00F5FF; --white:#FFFDE7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{
+    height:100%; background:#0d0d0d; color:var(--white);
+    font-family:'M PLUS Rounded 1c',sans-serif; overflow:hidden;
+  }
+
+  /* ── HEADER ── */
+  #header{
+    position:fixed; top:0; left:0; right:0; height:52px; background:var(--dark);
+    border-bottom:3px solid var(--orange); display:flex; align-items:center;
+    justify-content:space-between; padding:0 16px; z-index:100; gap:12px;
+  }
+  #header a.home-btn{
+    font-family:'Zen Dots',sans-serif; font-size:11px; color:var(--yellow);
+    text-decoration:none; border:2px solid var(--orange); padding:4px 12px;
+    border-radius:20px; white-space:nowrap; transition:background .15s; flex-shrink:0;
+  }
+  #header a.home-btn:hover{background:var(--orange);}
+  #header .title{
+    font-family:'Boogaloo',sans-serif; font-size:16px; color:var(--yellow);
+    letter-spacing:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  #page-info{font-family:'Zen Dots',sans-serif; font-size:12px; color:var(--cyan); white-space:nowrap; flex-shrink:0;}
+
+  #progress-bar{position:fixed; top:52px; left:0; height:3px; background:var(--orange); z-index:100; transition:width .25s ease;}
+
+  /* ── STAGE ── */
+  #stage{
+    position:fixed; top:55px; bottom:52px; left:0; right:0;
+    display:flex; align-items:center; justify-content:center; user-select:none;
+  }
+  #book{ touch-action:pan-y; }
+  /* page surface */
+  .page{
+    width:100%; height:100%;
+    background:#0d0d0d; box-shadow:0 0 0 1px rgba(255,102,0,.25);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .page img{width:100%; height:100%; object-fit:contain; display:block; pointer-events:none;}
+  .page-hard{ background:var(--dark); }
+
+  /* click zones */
+  #zone-prev,#zone-next{position:fixed; top:55px; bottom:52px; width:18%; z-index:40;}
+  #zone-prev{left:0; cursor:w-resize;}
+  #zone-next{right:0; cursor:e-resize;}
+  .zone-hint{
+    position:absolute; top:50%; transform:translateY(-50%);
+    font-size:46px; color:rgba(255,215,0,0); transition:color .2s; pointer-events:none;
+  }
+  #zone-prev .zone-hint{left:14px;} #zone-next .zone-hint{right:14px;}
+  #zone-prev:hover .zone-hint,#zone-next:hover .zone-hint{color:rgba(255,215,0,.4);}
+
+  /* ── FOOTER ── */
+  #footer{
+    position:fixed; bottom:0; left:0; right:0; height:52px; background:var(--dark);
+    border-top:3px solid var(--orange); display:flex; align-items:center;
+    justify-content:center; gap:14px; z-index:100; padding:0 16px;
+  }
+  .nav-btn{
+    font-family:'Boogaloo',sans-serif; font-size:18px; background:transparent;
+    border:2px solid var(--orange); color:var(--yellow); padding:5px 20px;
+    border-radius:100px; cursor:pointer; transition:background .15s,transform .1s;
+  }
+  .nav-btn:hover{background:var(--orange); transform:scale(1.06);}
+  .icon-btn{
+    font-family:'Zen Dots',sans-serif; font-size:10px; background:transparent;
+    border:2px solid rgba(255,102,0,.4); color:rgba(255,215,0,.6); padding:4px 14px;
+    border-radius:20px; cursor:pointer; transition:all .15s; letter-spacing:1px;
+  }
+  .icon-btn:hover{border-color:var(--orange); color:var(--yellow);}
+  .icon-btn.on{border-color:var(--cyan); color:var(--cyan);}
+
+  /* ── THUMBNAILS ── */
+  #thumb-strip{
+    position:fixed; bottom:52px; left:0; right:0; height:0; overflow:hidden;
+    background:rgba(22,10,0,.97); border-top:0 solid var(--orange); z-index:99;
+    transition:height .25s ease, border-top-width .25s ease;
+  }
+  #thumb-strip.open{height:116px; border-top-width:3px;}
+  #thumb-inner{display:flex; gap:6px; padding:8px 12px; overflow-x:auto; height:100%; align-items:center; scrollbar-width:thin; scrollbar-color:var(--orange) transparent;}
+  .thumb{flex-shrink:0; height:92px; aspect-ratio:1400/875; object-fit:cover; border:2px solid rgba(255,102,0,.3); border-radius:4px; cursor:pointer; opacity:.6; transition:opacity .15s,border-color .15s,transform .15s;}
+  .thumb:hover{opacity:1; transform:scale(1.06);}
+  .thumb.active{border-color:var(--cyan); opacity:1; box-shadow:0 0 8px var(--cyan);}
+
+  /* ── LOADING ── */
+  #loading{position:fixed; inset:0; background:#0d0d0d; display:flex; align-items:center; justify-content:center; z-index:200; font-family:'Boogaloo',sans-serif; font-size:28px; color:var(--yellow); letter-spacing:4px; animation:blink 1s infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<div id="loading">⚡ LOADING ⚡</div>
+
+<div id="header">
+  <a class="home-btn" href="/">⚡ TOP</a>
+  <div class="title">Bitcoin Bacheen! 絵本</div>
+  <div id="page-info">1 / 54</div>
+</div>
+<div id="progress-bar" style="width:0%"></div>
+
+<div id="stage"><div id="book"></div></div>
+
+<div id="zone-prev"><span class="zone-hint">‹</span></div>
+<div id="zone-next"><span class="zone-hint">›</span></div>
+
+<div id="thumb-strip"><div id="thumb-inner"></div></div>
+
+<div id="footer">
+  <button class="nav-btn" id="btn-prev">‹ まえ</button>
+  <button class="icon-btn" id="thumb-toggle">■ ページ一覧</button>
+  <button class="icon-btn on" id="sound-toggle">♪ 音</button>
+  <button class="nav-btn" id="btn-next">つぎ ›</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+<script>
+  const TOTAL = 54;
+  const RATIO = 875/1400; // height / width
+  const src = n => `pages/${String(n).padStart(3,'0')}.jpg`;
+
+  const bookEl   = document.getElementById('book');
+  const stageEl  = document.getElementById('stage');
+  const pageInfo = document.getElementById('page-info');
+  const progress = document.getElementById('progress-bar');
+  const loading  = document.getElementById('loading');
+  const thumbStrip = document.getElementById('thumb-strip');
+  const thumbInner = document.getElementById('thumb-inner');
+
+  let soundOn = true;
+  let pageFlip;
+
+  // page-flip sizing: one landscape page filling the stage
+  function calcSize(){
+    const availW = (stageEl.clientWidth  || window.innerWidth)        - 24;
+    const availH = (stageEl.clientHeight || (window.innerHeight-107)) - 16;
+    let w = availW, h = w * RATIO;
+    if (h > availH){ h = availH; w = h / RATIO; }
+    return { w: Math.max(100, Math.round(w)), h: Math.max(100, Math.round(h)) };
+  }
+
+  function boot(){
+  const { w, h } = calcSize();
+  pageFlip = new St.PageFlip(bookEl, {
+    width: w, height: h,
+    size: 'fixed',
+    minWidth: 200, maxWidth: 4000, minHeight: 100, maxHeight: 3000,
+    drawShadow: true,
+    flippingTime: 650,
+    usePortrait: true,        // landscape pages → single-page flip
+    autoSize: false,
+    maxShadowOpacity: 0.5,
+    showCover: false,
+    mobileScrollSupport: false
+  });
+
+  // load all page images (canvas renderer)
+  const urls = [];
+  for (let i = 1; i <= TOTAL; i++) urls.push(src(i));
+  pageFlip.loadFromImages(urls);
+
+  // flip sound (WebAudio — no asset needed)
+  let actx;
+  function flipSound(){
+    if(!soundOn) return;
+    try{
+      actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+      const t = actx.currentTime;
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type='triangle'; o.frequency.setValueAtTime(1200,t); o.frequency.exponentialRampToValueAtTime(280,t+0.16);
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.12,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t+0.24);
+    }catch(e){}
+  }
+
+  function updateUI(){
+    const p = pageFlip.getCurrentPageIndex() + 1;
+    pageInfo.textContent = `${p} / ${TOTAL}`;
+    progress.style.width = (p/TOTAL*100)+'%';
+    [...thumbInner.children].forEach((t,i)=>t.classList.toggle('active', i===p-1));
+    const active = thumbInner.children[p-1];
+    if(active) active.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+  }
+
+  pageFlip.on('flip', () => { updateUI(); });
+  pageFlip.on('changeState', e => { if(e.data==='flipping') flipSound(); });
+
+  // controls
+  document.getElementById('btn-prev').onclick  = () => pageFlip.flipPrev();
+  document.getElementById('btn-next').onclick  = () => pageFlip.flipNext();
+  document.getElementById('zone-prev').onclick = () => pageFlip.flipPrev();
+  document.getElementById('zone-next').onclick = () => pageFlip.flipNext();
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'||e.key==='ArrowDown') pageFlip.flipNext();
+    if(e.key==='ArrowLeft' ||e.key==='ArrowUp')   pageFlip.flipPrev();
+  });
+
+  // sound toggle
+  const sBtn = document.getElementById('sound-toggle');
+  sBtn.onclick = ()=>{ soundOn=!soundOn; sBtn.classList.toggle('on',soundOn); sBtn.textContent = soundOn?'♪ 音':'♪ 消'; };
+
+  // thumbnails
+  for(let i=1;i<=TOTAL;i++){
+    const t=document.createElement('img');
+    t.className='thumb'+(i===1?' active':''); t.src=src(i); t.alt=`ページ ${i}`; t.loading='lazy';
+    t.onclick=()=>{ pageFlip.flip(i-1); thumbStrip.classList.remove('open'); tBtn.classList.remove('on'); };
+    thumbInner.appendChild(t);
+  }
+  const tBtn=document.getElementById('thumb-toggle');
+  tBtn.onclick=()=>{ const open=thumbStrip.classList.toggle('open'); tBtn.classList.toggle('on',open); };
+
+  // resize → recompute page size
+  let rt;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(rt);
+    rt=setTimeout(()=>{ const s=calcSize(); pageFlip.update({width:s.w,height:s.h}); }, 150);
+  });
+
+  // hide loader once first images are in
+  window.addEventListener('load', ()=>{ setTimeout(()=>loading.style.display='none', 250); });
+  setTimeout(()=>loading.style.display='none', 2500);
+  updateUI();
+  }
+
+  // wait for the page-flip library before booting
+  (function ready(){
+    if (window.St && St.PageFlip && stageEl.clientHeight > 0){ boot(); }
+    else { setTimeout(ready, 30); }
+  })();
+</script>
+</body>
+</html>
