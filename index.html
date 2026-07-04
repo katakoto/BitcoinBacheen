@@ -16,6 +16,8 @@
 <meta name="twitter:description" content="クイズとコラムで学ぶビットコインと経済の基礎知識。サウンドマネーの世界へようこそ！">
 <meta name="twitter:image" content="https://bitcoinbacheen.com/icon/bitcoin.jpg">
 <link rel="icon" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+Rounded+1c:wght@700;900&family=Boogaloo&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -110,7 +112,7 @@
   .hero-kana {
     font-family: 'Caveat', cursive;
     font-size: clamp(17px, 3.2vw, 30px);
-    color: var(--orange);
+    color: var(--dark);
     letter-spacing: 5px;
     position: relative; z-index: 1;
     text-decoration: underline;
@@ -544,10 +546,10 @@
     margin-top: 22px;
     font-family: 'Caveat', cursive;
     font-size: 17px; font-weight: 700;
-    color: var(--orange); letter-spacing: 1px;
+    color: var(--dark); letter-spacing: 1px;
     text-decoration: underline;
     text-decoration-style: wavy;
-    text-decoration-color: var(--dark);
+    text-decoration-color: var(--orange);
     text-underline-offset: 3px;
   }
 
@@ -1495,6 +1497,187 @@
     display: block;
     filter: sepia(0.2);
   }
+
+  /* ─────────────────────────────────────
+     STICKY TOP NAV
+  ───────────────────────────────────── */
+  html { scroll-behavior: smooth; }
+
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--dark);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px;
+    padding: 8px 18px;
+    border-bottom: 4px solid var(--orange);
+  }
+  .top-nav-logo {
+    font-family: 'Boogaloo', sans-serif;
+    font-size: 18px;
+    color: var(--yellow);
+    letter-spacing: 2px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .top-nav-logo .z { color: var(--cyan); }
+  .top-nav-links {
+    display: flex; gap: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .top-nav-links::-webkit-scrollbar { display: none; }
+  .top-nav-links a {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--white);
+    text-decoration: none;
+    padding: 6px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: background .15s, color .15s;
+  }
+  .top-nav-links a:hover {
+    background: var(--orange);
+    color: var(--dark);
+  }
+  /* anchor jump: keep headings below the sticky bar */
+  #stats, #chart, #manga, #tv, #ehon, #shop { scroll-margin-top: 64px; }
+
+  @media (max-width: 600px) {
+    .top-nav { padding: 6px 10px; gap: 8px; }
+    .top-nav-logo { font-size: 14px; letter-spacing: 1px; }
+    .top-nav-links a { font-size: 12px; padding: 5px 10px; }
+  }
+
+  /* ─────────────────────────────────────
+     HERO TAGLINE & AWARD BADGE
+  ───────────────────────────────────── */
+  .hero-tagline {
+    position: relative; z-index: 2;
+    display: inline-block;
+    margin-top: 22px;
+    font-size: clamp(13px, 2.6vw, 17px);
+    font-weight: 900;
+    color: var(--dark);
+    background: var(--white);
+    border: 3px solid var(--dark);
+    border-radius: 100px;
+    padding: 9px 24px;
+    box-shadow: 4px 4px 0 var(--dark);
+    letter-spacing: 1px;
+  }
+  .hero-award {
+    position: relative; z-index: 2;
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'Zen Dots', sans-serif;
+    font-size: clamp(10px, 2.2vw, 13px);
+    color: var(--yellow);
+    background: var(--dark);
+    border: 3px solid var(--orange);
+    border-radius: 100px;
+    padding: 7px 20px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    box-shadow: 4px 4px 0 var(--orange);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .hero-award:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 6px 6px 0 var(--orange);
+  }
+
+  /* ─────────────────────────────────────
+     SECONDARY (SUB) CTA LINKS
+  ───────────────────────────────────── */
+  .cta-sub-row {
+    position: relative; z-index: 2;
+    display: flex; gap: 12px;
+    justify-content: center; flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .cta-sub {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--white);
+    border: 3px solid var(--dark);
+    border-radius: 100px;
+    padding: 8px 22px;
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--dark);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .cta-sub:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 5px 5px 0 var(--dark);
+  }
+
+  /* ─────────────────────────────────────
+     SECTION HEADING SUB-TEXT
+  ───────────────────────────────────── */
+  .sfx-sub {
+    display: block;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--dark);
+    opacity: .72;
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+
+  /* ─────────────────────────────────────
+     YOUTUBE CLICK-TO-LOAD FACADE
+  ───────────────────────────────────── */
+  .yt-facade {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none; padding: 0; margin: 0;
+    background: #000;
+    cursor: pointer;
+    display: block;
+  }
+  .yt-facade img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: .85;
+    display: block;
+  }
+  .yt-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 64px; height: 64px;
+    background: var(--red);
+    border: 4px solid var(--dark);
+    border-radius: 50%;
+    color: var(--yellow);
+    font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    padding-left: 4px;
+    box-shadow: 0 0 18px rgba(232,32,32,.6);
+    transition: transform .15s;
+    pointer-events: none;
+  }
+  .yt-facade:hover .yt-play {
+    transform: translate(-50%,-50%) scale(1.12);
+  }
+
+  /* ─────────────────────────────────────
+     REDUCED MOTION
+  ───────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HJNG0VNSKY"></script>
 <script>
@@ -1505,6 +1688,19 @@
 </script>
 </head>
 <body>
+
+<!-- ═══════════════════ STICKY NAV ═══════════════════ -->
+<nav class="top-nav" aria-label="サイト内ナビゲーション">
+  <a class="top-nav-logo" href="/"><span class="z">⚡</span> BITCOIN バチーン！</a>
+  <div class="top-nav-links">
+    <a href="Quiz/quiz-top.html">クイズ</a>
+    <a href="columns/index.html">コラム</a>
+    <a href="#manga">マンガ</a>
+    <a href="#ehon">絵本</a>
+    <a href="#tv">TV</a>
+    <a href="#shop">ショップ</a>
+  </div>
+</nav>
 
 <!-- Vertical text sashes -->
 <div class="v-sash l">⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡ BITCOIN ⚡</div>
@@ -1519,14 +1715,20 @@
   <span class="dz dz4">⚡</span>
   <div class="hero-kana">～世界最強のデジタル通貨～</div>
   <div class="hero-title">BITCOIN</div>
+  <div class="hero-sfx">バチーン！</div>
   <a href="sitemap.html" class="mascot-link" aria-label="号外！サイトマップへ">
-    <img src="icon/bitcoin.jpg" alt="Bitcoin バーン！" class="hero-mascot">
+    <img src="icon/bitcoin.jpg" alt="Bitcoin バーン！" class="hero-mascot" width="551" height="519">
     <span class="mascot-gougai" aria-hidden="true">号外！</span>
   </a>
+  <div><a class="hero-award" href="Manga/index.html">🏆 賞金総額1BTC 漫画コンテスト 準大賞受賞</a></div>
+  <div><p class="hero-tagline">クイズ × マンガ × 絵本で楽しく学ぶ、ビットコイン教育サイト</p></div>
   <div class="hero-cta">
     <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
-    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
-    <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
+  </div>
+  <div class="cta-sub-row">
+    <a class="cta-sub" href="columns/index.html">📖 コラムを読む</a>
+    <a class="cta-sub" href="Manga/index.html">📚 マンガを読む</a>
+    <a class="cta-sub" href="ehon/index.html">📕 絵本を読む</a>
   </div>
 </header>
 
@@ -1564,7 +1766,7 @@
 </div>
 
 <!-- ═══════════════════ STATS ═══════════════════ -->
-<div class="sfx-head"><h2>ドーン！<em>⚡</em></h2></div>
+<div class="sfx-head" id="stats"><h2>ドーン！<em>⚡</em></h2><span class="sfx-sub">いまのビットコイン価格</span></div>
 
 <div class="stats-grid">
   <div class="sbcard">
@@ -1600,7 +1802,7 @@
 </div>
 
 <!-- ═══════════════════ CHART ═══════════════════ -->
-<div class="sfx-head"><h2>チャート<em>⚡</em>バシッ</h2></div>
+<div class="sfx-head" id="chart"><h2>チャート<em>⚡</em>バシッ</h2><span class="sfx-sub">値動きをチェック</span></div>
 
 <div class="chart-section">
   <div class="chart-frame">
@@ -1654,37 +1856,37 @@
 </div>
 
 <!-- ═══════════════════ MANGA PANELS ═══════════════════ -->
-<div class="sfx-head"><h2>なぜ ビットコインなのか！！</h2></div>
+<div class="sfx-head"><h2>なぜ ビットコインなのか！！</h2><span class="sfx-sub">ビットコインが強い5つの理由</span></div>
 
 <div class="panels-section">
   <div class="manga-grid">
     <div class="mpanel big">
       <div class="m-ghost">₿</div>
-      <span class="m-icon"><img src="icon/002.png" alt="Bitcoin キャラ"></span>
+      <span class="m-icon"><img src="icon/002.png" alt="Bitcoin キャラ" loading="lazy" decoding="async"></span>
       <h3 class="m-title">デジタルゴールド<br>2100万枚のみ</h3>
       <p class="m-body">ビットコインの価値が上がるんじゃない。マネーの価値が下がるのだ。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">ズバッ</div>
-      <span class="m-icon" style="animation-delay:.2s"><img src="icon/004.png" alt="セキュリティ"></span>
+      <span class="m-icon" style="animation-delay:.2s"><img src="icon/004.png" alt="セキュリティ" loading="lazy" decoding="async"></span>
       <h3 class="m-title">最強セキュリティ</h3>
       <p class="m-body">偽札や偽ゴールドはあっても偽ビットコインはありえない。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">バシッ</div>
-      <span class="m-icon" style="animation-delay:.4s"><img src="icon/003.png" alt="送金"></span>
+      <span class="m-icon" style="animation-delay:.4s"><img src="icon/003.png" alt="送金" loading="lazy" decoding="async"></span>
       <h3 class="m-title">国境なし送金</h3>
       <p class="m-body">ビットコインは自由に持ち運べる。身ぐるみ剥がされたって大丈夫。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">ドーン</div>
-      <span class="m-icon" style="animation-delay:.6s"><img src="icon/005.png" alt="分散型"></span>
+      <span class="m-icon" style="animation-delay:.6s"><img src="icon/005.png" alt="分散型" loading="lazy" decoding="async"></span>
       <h3 class="m-title">分散型ネットワーク</h3>
       <p class="m-body">ビットコインは消えない。ウイルスのように消えない。核兵器のように消えない。麻薬のように消えない。</p>
     </div>
     <div class="mpanel">
       <div class="m-ghost">カッ</div>
-      <span class="m-icon" style="animation-delay:.8s"><img src="icon/001.png" alt="半減期"></span>
+      <span class="m-icon" style="animation-delay:.8s"><img src="icon/001.png" alt="半減期" loading="lazy" decoding="async"></span>
       <h3 class="m-title">半減期4年サイクル</h3>
       <p class="m-body">4年ごとに報酬が半減。稀少性が増すたびに注目集まる。</p>
     </div>
@@ -1703,13 +1905,13 @@
 </div>
 
 <!-- ═══════════════════ MANGA FEATURE ═══════════════════ -->
-<div class="sfx-head"><h2>マンガ<em>⚡</em>よんでけ！</h2></div>
+<div class="sfx-head" id="manga"><h2>マンガ<em>⚡</em>よんでけ！</h2><span class="sfx-sub">準大賞受賞マンガを無料公開中</span></div>
 
 <div class="manga-feature-section">
   <div class="manga-feature-card">
     <div class="manga-award-badge">🏆 準大賞受賞作</div>
     <a href="Manga/index.html" class="manga-cover-link">
-      <img src="Manga/0000.png" alt="ビットコイナーを嫌いになってもビットコインは嫌いにならないでください！" class="manga-cover">
+      <img src="Manga/0000.png" alt="ビットコイナーを嫌いになってもビットコインは嫌いにならないでください！" class="manga-cover" width="720" height="1112" loading="lazy" decoding="async">
     </a>
     <div class="manga-feature-info">
       <div class="manga-feature-title">ビットコイナーを嫌いになっても<br>ビットコインは嫌いにならないでください！</div>
@@ -1737,7 +1939,7 @@
 </div>
 
 <!-- ═══════════════════ SHOWA RETRO TV ═══════════════════ -->
-<div class="sfx-head"><h2>📺 ビットコインバチーンTV！</h2></div>
+<div class="sfx-head" id="tv"><h2>📺 ビットコインバチーンTV！</h2><span class="sfx-sub">動画で学ぶビットコイン</span></div>
 
 <div class="tv-section">
   <span class="tv-deco-zap left">⚡</span>
@@ -1759,12 +1961,10 @@
         <!-- Screen -->
         <div class="tv-screen-bezel">
           <div class="tv-screen">
-            <iframe
-              src="https://www.youtube.com/embed/6VGDRYGWR-Y?rel=0&modestbranding=1"
-              title="ビットコインバチーンTV"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
-            </iframe>
+            <button class="yt-facade" type="button" data-video="6VGDRYGWR-Y" aria-label="ビットコインバチーンTVを再生">
+              <img src="https://i.ytimg.com/vi/6VGDRYGWR-Y/hqdefault.jpg" alt="ビットコインバチーンTV 動画サムネイル" loading="lazy" decoding="async">
+              <span class="yt-play" aria-hidden="true">▶</span>
+            </button>
             <div class="tv-scanlines"></div>
             <div class="tv-vignette"></div>
           </div>
@@ -1801,12 +2001,12 @@
 </div>
 
 <!-- ═══════════════════ EHON (PICTURE BOOK) ═══════════════════ -->
-<div class="sfx-head"><h2>ビットコイン絵本<em>⚡</em>よんでみて！</h2></div>
+<div class="sfx-head" id="ehon"><h2>ビットコイン絵本<em>⚡</em>よんでみて！</h2><span class="sfx-sub">全54ページ、スマホでパラパラめくれる</span></div>
 
 <div class="ehon-section">
   <div class="ehon-inner">
     <p class="ehon-desc">むずかしい話はナシ。パラパラめくって楽しむ、全54ページのビットコイン絵本。</p>
-    <a href="ehon/index.html" class="ehon-cover"><img src="ehon/pages/001.jpg" alt="ビットコイン絵本 表紙"></a>
+    <a href="ehon/index.html" class="ehon-cover"><img src="ehon/pages/001.jpg" alt="ビットコイン絵本 表紙" loading="lazy" decoding="async"></a>
     <a href="ehon/index.html" class="ehon-btn">⚡ 絵本を読む ⚡</a>
     <p class="ehon-sub">パラパラめくれるWeb絵本 — スマホ・PC対応</p>
   </div>
@@ -1830,16 +2030,16 @@
 ═══════════════════════════════════════════════════════════════════════════════ -->
 
 <!-- ═══════════════════ STICKER SHOP ═══════════════════ -->
-<section class="shop-section">
+<section class="shop-section" id="shop">
   <h2 class="shop-heading">
     <span class="tag-new">NEW</span>⚡ ステッカー販売中 ⚡
   </h2>
   <div class="shop-inner">
     <p class="shop-copy">Bitcoin バチーン！のステッカーを SUZURI で販売中！<br>お気に入りをスマホやPCに貼ってビットコインをアピールしよう！</p>
     <div class="shop-grid">
-      <div class="sticker-thumb"><img src="icon/Sticker01.jpg" alt="ステッカー1"></div>
-      <div class="sticker-thumb"><img src="icon/Sticker02.jpg" alt="ステッカー2"></div>
-      <div class="sticker-thumb"><img src="icon/Sticker03.jpg" alt="ステッカー3"></div>
+      <div class="sticker-thumb"><img src="icon/Sticker01.jpg" alt="ステッカー1" loading="lazy" decoding="async"></div>
+      <div class="sticker-thumb"><img src="icon/Sticker02.jpg" alt="ステッカー2" loading="lazy" decoding="async"></div>
+      <div class="sticker-thumb"><img src="icon/Sticker03.jpg" alt="ステッカー3" loading="lazy" decoding="async"></div>
     </div>
     <div class="shop-price">
       <span class="price-label">ステッカー</span>
@@ -1858,16 +2058,18 @@
 <!-- ═══════════════════ CTA ═══════════════════ -->
 <div class="cta-section">
   <div><div class="cta-tag">さあ、カモン！！</div></div>
-  <img src="icon/0003.png" alt="Bitcoin マスコット" class="cta-mascot">
+  <img src="icon/0003.png" alt="Bitcoin マスコット" class="cta-mascot" width="2201" height="2847" loading="lazy" decoding="async">
   <div class="cta-btns">
     <div class="cta-wrap">
       <span class="flank l">⚡</span>
       <a class="cta-btn" href="Quiz/quiz-top.html">⚡ クイズに挑戦 ⚡</a>
       <span class="flank r">⚡</span>
     </div>
-    <a class="cta-btn cta-btn-col" href="columns/index.html">📖 コラムを読む</a>
-    <a class="cta-btn cta-btn-col" href="Manga/index.html">📚 マンガを読む</a>
-    <a class="cta-btn cta-btn-col" href="ehon/index.html">📖 絵本を読む</a>
+  </div>
+  <div class="cta-sub-row">
+    <a class="cta-sub" href="columns/index.html">📖 コラムを読む</a>
+    <a class="cta-sub" href="Manga/index.html">📚 マンガを読む</a>
+    <a class="cta-sub" href="ehon/index.html">📕 絵本を読む</a>
   </div>
   <p class="cta-note">※ 投資は自己責任でお願いします / クイズやコラムをよく理解した上でご利用ください</p>
 </div>
@@ -2018,12 +2220,30 @@
   }
 
   // ── SCROLL REVEAL ─────────────────────────────────────
+  // translate プロパティを使う（transform は rotate 装飾と競合するため）
   document.querySelectorAll('.sbcard, .mpanel').forEach((el, i) => {
     el.style.opacity = '0';
-    el.style.transition = `opacity .5s ${i * .09}s ease`;
-    new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) el.style.opacity = '1';
-    }, { threshold: .12 }).observe(el);
+    el.style.translate = '0 14px';
+    el.style.transition = `opacity .5s ${i * .07}s ease, translate .5s ${i * .07}s ease`;
+    new IntersectionObserver(([e], obs) => {
+      if (e.isIntersecting) {
+        el.style.opacity = '1';
+        el.style.translate = '0 0';
+        obs.disconnect();
+      }
+    }, { threshold: .05 }).observe(el);
+  });
+
+  // ── YOUTUBE FACADE (クリックで初めてiframeを読み込む) ──
+  document.querySelectorAll('.yt-facade').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube.com/embed/${btn.dataset.video}?rel=0&modestbranding=1&autoplay=1`;
+      iframe.title = 'ビットコインバチーンTV';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      btn.replaceWith(iframe);
+    });
   });
 
   // ── INIT ──────────────────────────────────────────────
