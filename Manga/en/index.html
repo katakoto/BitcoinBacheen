@@ -150,8 +150,8 @@
   .panel.mild .badge.rec{transform:rotate(-2deg)}
 
   .cover{
-    position:relative;aspect-ratio:3/4;margin:14px 0 18px;border:3px solid var(--ink);
-    border-radius:5px;overflow:hidden;
+    display:block;position:relative;aspect-ratio:3/4;margin:14px 0 18px;border:3px solid var(--ink);
+    border-radius:5px;overflow:hidden;text-decoration:none;
   }
   .panel.spicy .cover{background:repeating-linear-gradient(45deg,#E9CFC8,#E9CFC8 10px,#E0C2ba 10px,#E0C2ba 20px)}
   .panel.mild .cover{background:repeating-linear-gradient(45deg,#D2E4ee,#D2E4ee 10px,#C2D9e6 10px,#C2D9e6 20px)}
@@ -303,10 +303,10 @@
           <span class="badge rec">★ RECOMMENDED</span>
         </div>
 
-        <div class="cover">
+        <a class="cover" href="/Manga/en/viewer.html" aria-label="Read the Spicy Cut">
           <img src="/Manga/en/Pages/1.png" alt="Bitcoin Bacheen spicy cover">
           <span class="stamp uncut">UNCUT</span>
-        </div>
+        </a>
 
         <div class="heat">
           <div class="squares">
@@ -322,7 +322,7 @@
           <span class="chip">As awarded</span>
           <span class="chip">No filter</span>
         </div>
-        <a class="panel-cta" href="viewer.html">Read the Spicy Cut ⚡</a>
+        <a class="panel-cta" href="/Manga/en/viewer.html">Read the Spicy Cut ⚡</a>
       </div>
 
       <!-- VS DIVIDER -->
@@ -334,10 +334,10 @@
           <span class="badge allages">🥛 ALL-AGES · SOFTENED</span>
         </div>
 
-        <div class="cover">
+        <a class="cover" href="/Manga/en/mild/viewer.html" aria-label="Read the Mild Cut">
           <img src="/Manga/en/mild/Pages/1.png" alt="Bitcoin Bacheen mild cover">
           <span class="stamp milded">MILD ED.</span>
-        </div>
+        </a>
 
         <div class="heat">
           <div class="squares">
@@ -353,7 +353,7 @@
           <span class="chip">Beginner-friendly</span>
           <span class="chip">Share-safe</span>
         </div>
-        <a class="panel-cta" href="mild/viewer.html">Read the Mild Cut 🥛</a>
+        <a class="panel-cta" href="/Manga/en/mild/viewer.html">Read the Mild Cut 🥛</a>
       </div>
     </div>
 
